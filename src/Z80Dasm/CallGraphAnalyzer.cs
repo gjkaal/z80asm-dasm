@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Z80Mnemonics;
 
@@ -18,8 +19,11 @@ namespace Z80DAsm
         private readonly List<Instruction> _sorted;
         private readonly Dictionary<int, Proc> _procs = [];
 
-        public Dictionary<int, Proc> Analyse()
+        public ReadOnlyDictionary<int, Proc> Procs => new ReadOnlyDictionary<int, Proc>(_procs);
+
+        public void Analyse()
         {
+            _procs.Clear();
             // Create a proc for every entry point
             foreach (var i in _sorted.Where(x => x.entryPoint))
             {
@@ -51,9 +55,6 @@ namespace Z80DAsm
                 // Analyse this proc
                 var newProcs = AnalyseProc(procList[i], procList);
             }
-
-            // Work out if the proc ever returns
-            return _procs;
         }
 
         private List<Proc> AnalyseProc(Proc p, List<Proc> procList)
@@ -108,8 +109,7 @@ namespace Z80DAsm
                         for (int j = i.addr + 1; j <= nextDependantAddress; j++)
                         {
                             // Get the instruction at that address, ignore if none
-                            Instruction i2 = null;
-                            if (!_instructions.TryGetValue(j, out i2))
+                            if (!_instructions.TryGetValue(j, out var i2))
                                 continue;
 
                             // Skip data instructions
@@ -155,8 +155,7 @@ namespace Z80DAsm
             foreach (var addr in dependants.Where(x => !_procs.ContainsKey(x)))
             {
                 // Get the dependant instruction, ignore if external
-                Instruction dependantInstruction;
-                if (!_instructions.TryGetValue(addr, out dependantInstruction))
+                if (!_instructions.TryGetValue(addr, out var dependantInstruction))
                     continue;
 
                 // Ignore if already a proc there
