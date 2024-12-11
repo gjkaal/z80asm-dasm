@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1DF40449-EFC2-4D08-B61E-5E0AC0D335DD}"
+	ProjectSection(SolutionItems) = preProject
+		test.asm = test.asm
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z80Mnemonics", "Z80Opcodes\Z80Mnemonics.csproj", "{A114A5BD-22F9-4D50-A611-B4DCFE137D9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z80Asm.UnitTests", "Z80Asm.UnitTests\Z80Asm.UnitTests.csproj", "{72FAA660-3A4B-401B-BAF7-2AB70A34692B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z80Asm", "Z80Asm\Z80Asm.csproj", "{6DEB547C-657B-4764-B060-7E483B70A6F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z80Dasm", "Z80Dasm\Z80Dasm.csproj", "{B52EF222-5A83-47A4-A65F-8BCC00026769}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A114A5BD-22F9-4D50-A611-B4DCFE137D9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A114A5BD-22F9-4D50-A611-B4DCFE137D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A114A5BD-22F9-4D50-A611-B4DCFE137D9A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A114A5BD-22F9-4D50-A611-B4DCFE137D9A}.Debug|x86.Build.0 = Debug|Any CPU
+		{A114A5BD-22F9-4D50-A611-B4DCFE137D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A114A5BD-22F9-4D50-A611-B4DCFE137D9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A114A5BD-22F9-4D50-A611-B4DCFE137D9A}.Release|x86.ActiveCfg = Release|Any CPU
+		{A114A5BD-22F9-4D50-A611-B4DCFE137D9A}.Release|x86.Build.0 = Release|Any CPU
+		{72FAA660-3A4B-401B-BAF7-2AB70A34692B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72FAA660-3A4B-401B-BAF7-2AB70A34692B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72FAA660-3A4B-401B-BAF7-2AB70A34692B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{72FAA660-3A4B-401B-BAF7-2AB70A34692B}.Debug|x86.Build.0 = Debug|Any CPU
+		{72FAA660-3A4B-401B-BAF7-2AB70A34692B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72FAA660-3A4B-401B-BAF7-2AB70A34692B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72FAA660-3A4B-401B-BAF7-2AB70A34692B}.Release|x86.ActiveCfg = Release|Any CPU
+		{72FAA660-3A4B-401B-BAF7-2AB70A34692B}.Release|x86.Build.0 = Release|Any CPU
+		{6DEB547C-657B-4764-B060-7E483B70A6F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DEB547C-657B-4764-B060-7E483B70A6F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DEB547C-657B-4764-B060-7E483B70A6F9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6DEB547C-657B-4764-B060-7E483B70A6F9}.Debug|x86.Build.0 = Debug|Any CPU
+		{6DEB547C-657B-4764-B060-7E483B70A6F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DEB547C-657B-4764-B060-7E483B70A6F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DEB547C-657B-4764-B060-7E483B70A6F9}.Release|x86.ActiveCfg = Release|Any CPU
+		{6DEB547C-657B-4764-B060-7E483B70A6F9}.Release|x86.Build.0 = Release|Any CPU
+		{B52EF222-5A83-47A4-A65F-8BCC00026769}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B52EF222-5A83-47A4-A65F-8BCC00026769}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B52EF222-5A83-47A4-A65F-8BCC00026769}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B52EF222-5A83-47A4-A65F-8BCC00026769}.Debug|x86.Build.0 = Debug|Any CPU
+		{B52EF222-5A83-47A4-A65F-8BCC00026769}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B52EF222-5A83-47A4-A65F-8BCC00026769}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B52EF222-5A83-47A4-A65F-8BCC00026769}.Release|x86.ActiveCfg = Release|Any CPU
+		{B52EF222-5A83-47A4-A65F-8BCC00026769}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC4D8F1E-55C3-471B-8E9D-F2B558061BA3}
+	EndGlobalSection
+EndGlobal

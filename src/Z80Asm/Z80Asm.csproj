@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\version.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Z80Asm</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackageTags>Z80,Assembler</PackageTags>
+    <Description>Easy to use Z80 assembler.</Description>
+    <GenerateFullPaths>True</GenerateFullPaths>
+    <OutputPath>..\Build\$(Configuration)\$(MSBuildProjectName)</OutputPath>
+    <IntermediateOutputPath>..\Build\$(Configuration)\$(MSBuildProjectName)\$(TargetFramework)\obj</IntermediateOutputPath>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>Z80Asm</ToolCommandName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\version.cs" Link="version.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Z80Opcodes\Z80Mnemonics.csproj" />
+  </ItemGroup>
+
+</Project>

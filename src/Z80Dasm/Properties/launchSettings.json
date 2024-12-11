@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Z80Dasm": {
+      "commandName": "Project",
+      "hotReloadEnabled": false,
+      "nativeDebugging": false
+    }
+  }
+}

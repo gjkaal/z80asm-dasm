@@ -1,0 +1,7 @@
+
+<Project>
+  <PropertyGroup>
+  	<Version Condition="'$(Variable)' == ''">8.0.0</Version>
+  </PropertyGroup>
+</Project>	
+	
