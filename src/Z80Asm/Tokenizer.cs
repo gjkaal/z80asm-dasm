@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Z80Asm
 {
@@ -167,7 +163,7 @@ namespace Z80Asm
         {
             switch (token)
             {
-                case Token.EOF: return "end of file"; 
+                case Token.EOF: return "end of file";
                 case Token.EOL: return "end of line";
                 case Token.Identifier: return "identifier";
                 case Token.Number: return "number";
@@ -209,7 +205,7 @@ namespace Z80Asm
                 return $"unknown token: '{raw}'";
             else
                 return "unknown token";
-       }
+        }
 
         private Token GetNextToken()
         {
@@ -415,7 +411,7 @@ namespace Z80Asm
             return Token.Unknown;
         }
 
-        private readonly StringBuilder _sb = new StringBuilder();
+        private readonly StringBuilder _sb = new();
 
         private string SkipString()
         {
@@ -446,7 +442,7 @@ namespace Z80Asm
                         case 't': _sb.Append('\t'); break;
                         case 'u':
                             var sbHex = new StringBuilder();
-                            for (int i = 0; i < 4; i++)
+                            for (var i = 0; i < 4; i++)
                             {
                                 _source.Next();
                                 sbHex.Append(_source.Current);
@@ -566,12 +562,12 @@ namespace Z80Asm
 
         private bool IsBinaryDigit(char ch)
         {
-            return (ch >= '0' && ch <= '1');
+            return ch >= '0' && ch <= '1';
         }
 
         private bool IsOctalDigit(char ch)
         {
-            return (ch >= '0' && ch <= '7');
+            return ch >= '0' && ch <= '7';
         }
 
         private static bool IsIdentifierLeadChar(char ch)
@@ -581,7 +577,7 @@ namespace Z80Asm
 
         private bool IsIdentifierChar(char ch)
         {
-            return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <='9') || ch == '_' || ch == '$';
+            return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_' || ch == '$';
         }
     }
 }

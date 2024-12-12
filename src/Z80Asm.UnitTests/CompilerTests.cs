@@ -5,7 +5,7 @@ namespace Z80Asm.UnitTests;
 [TestClass]
 public sealed class CompilerTests {
 
-    readonly Compiler Compiler = new();
+    readonly Z80Assembler Compiler = new();
 
     [DataTestMethod]
     [DataRow("nop")]

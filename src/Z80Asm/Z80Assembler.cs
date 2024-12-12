@@ -1,18 +1,20 @@
-﻿
-using Mono.Cecil.Cil;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 
-namespace Z80Asm.UnitTests;
+namespace Z80Asm;
 
-public sealed class Compiler
+public sealed class Z80Assembler
 {
-    readonly AstScope root;
-    readonly ExprNodeIP exprNodeIP;
-    readonly ExprNodeIP exprNodeIP2;
-    readonly ExprNodeOFS exprNodeOP;
-    readonly ExprNodeOFS exprNodeOP2;
+    private readonly AstScope root;
+    private readonly ExprNodeIP exprNodeIP;
+    private readonly ExprNodeIP exprNodeIP2;
+    private readonly ExprNodeOFS exprNodeOP;
+    private readonly ExprNodeOFS exprNodeOP2;
 
-    public Compiler()
+    public Z80Assembler()
     {
         var preString = new StringSource(string.Empty, "Pre-sets", "init");
         var preSource = new SourcePosition(preString, 0);
@@ -111,8 +113,8 @@ public sealed class Compiler
             listWriter = new StringBuilder();
         }
 
-        var compileResult = GenerateCode(sourcePosition, 
-            (s, b) => ListWriter(listWriter, s, b), 
+        var compileResult = GenerateCode(sourcePosition,
+            (s, b) => ListWriter(listWriter, s, b),
             (bytes) => CodeWriter(source, bytes));
 
         if (listWriter != null)
@@ -127,7 +129,7 @@ public sealed class Compiler
 
     public static void ListWriter(StringBuilder? source, string text, bool newLine)
     {
-        if(source != null)
+        if (source != null)
         {
             if (newLine)
             {
@@ -163,7 +165,7 @@ public static class IntelHex
 {
     // see https://developer.arm.com/documentation/ka003292/latest/
 
-    private const string DataRecord = "00";
+    private const byte DataRecord = 00;
     private const string EOF = ":00000001FF";
 
     /// <summary>
@@ -174,53 +176,57 @@ public static class IntelHex
     public static void Write(TextWriter writer, byte[] code)
     {
         // get every 16 bytes of data
-        for (int i = 0; i < code.Length; i += 16)
+        for (var i = 0; i < code.Length; i += 16)
         {
             var data = code.Skip(i).Take(16).ToArray();
             WriteRecord(writer, i, data);
         }
         // write the end of file record
         writer.WriteLine(EOF);
-
     }
 
     private static void WriteRecord(TextWriter writer, int address, byte[] record)
     {
-        if(record.Length == 0)
+        if (record.Length == 0)
         {
             return;
         }
-        if(record.Length > 16)
+        if (record.Length > 16)
         {
             throw new ArgumentException("record length must be less than 16 bytes");
         }
         // calculate the length of the data
-        int length = Math.Min(16, record.Length);
-        // write the length of the data
-        writer.Write(':');
-        writer.Write(length.ToString("X2"));
-        // write the address of the data
-        writer.Write(((address >> 8) & 0xff).ToString("X2"));
-        writer.Write((address & 0xff).ToString("X2"));
-        // write the record type
-        writer.Write(DataRecord);
+        var length = Math.Min(16, record.Length);
+
+        // extra space for the length, address, and record type
+        var testRecord = new byte[record.Length + 4];
+        // set the length of the data
+        testRecord[0] = (byte)length;
+        // set the address of the data
+        testRecord[1] = (byte)((address >> 8) & 0xff);
+        testRecord[2] = (byte)(address & 0xff);
+        // set the record type
+        testRecord[3] = DataRecord;
+        Array.Copy(record, 0, testRecord, 4, record.Length);
+
         // write the data
-        for (int j = 0; j < length; j++)
+        writer.Write(':');
+        for (var j = 0; j < testRecord.Length; j++)
         {
-            writer.Write(record[j].ToString("X2"));
+            writer.Write(testRecord[j].ToString("X2"));
         }
         // write the checksum
-        writer.Write(Checksum(record).ToString("X2"));
-        writer.WriteLine();        
+        writer.Write(Checksum(testRecord).ToString("X2"));
+        writer.WriteLine();
     }
 
-    private static byte Checksum(byte[] data)
+    public static byte Checksum(byte[] data)
     {
         byte sum = 0;
-        for (int i = 0; i < data.Length; i++)
+        for (var i = 0; i < data.Length; i++)
         {
             sum += data[i];
         }
-        return (byte)(-sum);
+        return (byte)-sum;
     }
 }

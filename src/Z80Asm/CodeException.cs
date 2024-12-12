@@ -8,6 +8,20 @@ namespace Z80Asm
         {
             Position = position;
             this.message = message;
+
+            if (position != null)
+            {
+                var s = position.Source.ExtractLine(position.LineNumber);
+                if (s != null)
+                {
+                    this.message += Environment.NewLine + s;
+                }
+                var pos = position.CharacterPosition;
+                if (pos > 0)
+                {
+                    this.message += Environment.NewLine + new string(' ', pos) + "^";
+                }
+            }
         }
 
         private readonly string message;

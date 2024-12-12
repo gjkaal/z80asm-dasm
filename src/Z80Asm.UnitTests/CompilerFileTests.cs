@@ -9,10 +9,11 @@ public sealed class CompilerFileTests
     // The file resides in the TestResources directory
     [DataTestMethod]
     [DataRow("allInstructions.asm")]
+    [DataRow("zc-bootstrap.asm")]
     public void CanCompileFile(string fileName)
     {
         Log.Reset();
-        var compiler = new Compiler();
+        var compiler = new Z80Assembler();
         var path = Path.Combine("TestResources", fileName);
         var source = new FileInfo(path);
         Assert.IsTrue(source.Exists);

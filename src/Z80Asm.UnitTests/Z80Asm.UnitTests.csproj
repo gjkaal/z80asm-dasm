@@ -18,16 +18,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestResources\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Z80Asm\Z80Asm.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="TestResources\allInstructions.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\zc-bootstrap.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\zc-kernel.asm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
