@@ -10,6 +10,8 @@ public sealed class CompilerFileTests
     [DataTestMethod]
     [DataRow("allInstructions.asm")]
     [DataRow("zc-bootstrap.asm")]
+    [DataRow("macro.asm")]
+    [DataRow("strings.asm")]
     public void CanCompileFile(string fileName)
     {
         Log.Reset();
@@ -22,9 +24,10 @@ public sealed class CompilerFileTests
         compiler.CreateBinaryFile = true;
         compiler.CreateIntelHexFile = true;
 
-        var result = compiler.Compile(source);
+        var (errorCount, warningCount) = compiler.Compile(source);
 
-        Assert.AreEqual(0, result);
+        Assert.AreEqual(0, errorCount);
+        Assert.AreEqual(0, warningCount);
         Log.DumpSummary();
     }
 }

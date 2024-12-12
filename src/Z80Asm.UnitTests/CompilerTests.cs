@@ -3,9 +3,9 @@
 namespace Z80Asm.UnitTests;
 
 [TestClass]
-public sealed class CompilerTests {
-
-    readonly Z80Assembler Compiler = new();
+public sealed class CompilerTests
+{
+    private readonly Z80Assembler Compiler = new();
 
     [DataTestMethod]
     [DataRow("nop")]
@@ -16,7 +16,7 @@ public sealed class CompilerTests {
     public void CanGenerateLayout(string code)
     {
         Log.Reset();
-        SourcePosition position = Compiler.ParseLiteral(code);
+        var position = Compiler.ParseLiteral(code);
         Assert.IsNotNull(position);
 
         var result = Compiler.CalculateLayout();
@@ -26,7 +26,85 @@ public sealed class CompilerTests {
     }
 
     [DataTestMethod]
+    [DataRow("pop A")]
+    public void ShouldShowWarning(string code)
+    {
+        Log.Reset();
+        var position = Compiler.ParseLiteral(code);
+
+        byte[]? codeBytes = null;
+        Assert.IsNotNull(position);
+
+        var result = Compiler.GenerateCode(
+            position,
+            (s, newLine) =>
+            {
+                if (newLine)
+                {
+                    Console.WriteLine(s);
+                }
+                else
+                {
+                    Console.Write(s);
+                }
+            },
+            (bytes) =>
+            {
+                codeBytes = bytes;
+            }
+        );
+
+        Assert.AreNotEqual(0, Log.WarningCount);
+        Assert.IsNotNull(codeBytes);
+        Assert.AreEqual(0, codeBytes.Length);
+
+        Console.WriteLine();
+        Console.WriteLine("# Log Summary");
+        Log.DumpSummary();
+    }
+
+    [DataTestMethod]
+    [DataRow("M_SLA MACRO\r\n    rla\r\n    rla\r\n    rla\r\n    rla\r\n    and 0xF0\r\nENDM")]
+    [DataRow("imm_offset: equ 0x45")]
+    public void ShouldNotGenerateCode(string code)
+    {
+        Log.Reset();
+        var position = Compiler.ParseLiteral(code);
+
+        byte[]? codeBytes = null;
+        Assert.IsNotNull(position);
+
+        var result = Compiler.GenerateCode(
+            position,
+            (s, newLine) =>
+            {
+                if (newLine)
+                {
+                    Console.WriteLine(s);
+                }
+                else
+                {
+                    Console.Write(s);
+                }
+            },
+            (bytes) =>
+            {
+                codeBytes = bytes;
+            }
+        );
+
+        Assert.AreEqual(0, Log.ErrorCount);
+        Assert.IsNotNull(codeBytes);
+        Assert.IsTrue(codeBytes.Length == 0);
+
+        Console.WriteLine();
+        Console.WriteLine("# Log Summary");
+        Log.DumpSummary();
+    }
+
+    [DataTestMethod]
     [DataRow("nop")]
+    [DataRow("pop AF")]
     [DataRow("ld a, 0")]
     [DataRow("ld a, 0x12")]
     [DataRow("ld a, 0x12\nld a, 0\n")]
@@ -58,13 +136,13 @@ DONE:")]
     public void CanGenerateCode(string code)
     {
         Log.Reset();
-        SourcePosition position = Compiler.ParseLiteral(code);
+        var position = Compiler.ParseLiteral(code);
 
         byte[]? codeBytes = null;
         Assert.IsNotNull(position);
 
         var result = Compiler.GenerateCode(
-            position, 
+            position,
             (s, newLine) =>
             {
                 if (newLine)
@@ -78,14 +156,13 @@ DONE:")]
             },
             (bytes) =>
             {
-                Assert.IsNotNull(bytes);
-                Assert.IsTrue(bytes.Length > 0);
                 codeBytes = bytes;
             }
         );
 
         Assert.AreEqual(0, Log.ErrorCount);
         Assert.IsNotNull(codeBytes);
+        Assert.IsTrue(codeBytes.Length > 0);
 
         // Dump the code bytes as hex, each line 16 bytes
         Utils.HexDump(codeBytes, 8, (o) => { o.ShowCrc = true; });

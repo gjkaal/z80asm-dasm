@@ -285,9 +285,9 @@ namespace Z80Asm
             var normalized = symbol.NormalizeSymbol();
             if (weakMatch)
             {
-                if (_weakMatchTable.Count==0)
+                if (_weakMatchTable.Count == 0)
                 {
-                    foreach(var s in _symbols.Keys.Select(ExprNodeParameterized.RemoveSuffix))
+                    foreach (var s in _symbols.Keys.Select(ExprNodeParameterized.RemoveSuffix))
                     {
                         _weakMatchTable.Add(s);
                     }
@@ -531,7 +531,7 @@ namespace Z80Asm
             {
                 var value = Utils.PackByte(ValueExpression.SourcePosition, ValueExpression.EvaluateNumber(currentScope));
 
-                for (int i = 0; i < bytes.Length; i++)
+                for (var i = 0; i < bytes.Length; i++)
                 {
                     bytes[i] = value;
                 }
@@ -545,8 +545,8 @@ namespace Z80Asm
     public class AstLabel : AstElement
     {
         public AstLabel(
-            string name, 
-            SourcePosition target, 
+            string name,
+            SourcePosition target,
             SourcePosition sourcePosition) : base(sourcePosition)
         {
             _name = name;
@@ -555,7 +555,7 @@ namespace Z80Asm
 
         private readonly string _name;
         private readonly SourcePosition _position;
-        private readonly Dictionary<AstScope, ExprNodeDeferredValue> _valueToScopeMap = new Dictionary<AstScope, ExprNodeDeferredValue>();
+        private readonly Dictionary<AstScope, ExprNodeDeferredValue> _valueToScopeMap = new();
 
         public string Name => _name;
 
@@ -697,7 +697,7 @@ namespace Z80Asm
 
         public override void Dump(Action<string> w, int indent)
         {
-            if(_data.Length == 0)
+            if (_data.Length == 0)
             {
                 w.Invoke($"{Utils.Indent(indent)}- INCBIN '{_filename}' {SourcePosition.AstDesc()}");
                 w.Invoke($"{Utils.Indent(indent + 1)}- <empty>");
@@ -707,9 +707,9 @@ namespace Z80Asm
             w.Invoke($"{Utils.Indent(indent)}- INCBIN '{_filename}' {SourcePosition.AstDesc()}");
 
             var sb = new StringBuilder();
-            for (int i = 0; i < _data.Length; i++)
+            for (var i = 0; i < _data.Length; i++)
             {
-                if ((i % 16) == 0 && i>0)
+                if ((i % 16) == 0 && i > 0)
                 {
                     sb.AppendLine($"\n{Utils.Indent(indent + 1)}- ");
                 }
@@ -738,8 +738,8 @@ namespace Z80Asm
     public class AstInstruction : AstElement
     {
         public AstInstruction(
-            SourcePosition position, 
-            string mnemonic, 
+            SourcePosition position,
+            string mnemonic,
             SourcePosition sourcePosition) : base(sourcePosition)
         {
             _position = position;
@@ -753,7 +753,7 @@ namespace Z80Asm
 
         private readonly SourcePosition _position;
         private readonly string _mnemonic;
-        private readonly List<ExprNode> _operands = new List<ExprNode>();
+        private readonly List<ExprNode> _operands = new();
         private Instruction? _instruction;
 
         public override void Dump(Action<string> w, int indent)
@@ -776,12 +776,12 @@ namespace Z80Asm
         }
 
         public override void Layout(AstScope currentScope, LayoutContext ctx)
-        {            
+        {
             var sb = new StringBuilder();
 
             sb.Append(_mnemonic);
 
-            for (int i = 0; i < _operands.Count; i++)
+            for (var i = 0; i < _operands.Count; i++)
             {
                 if (i > 0)
                     sb.Append(',');
@@ -845,7 +845,7 @@ namespace Z80Asm
 
             if (_instruction == null)
             {
-                // Log.Error(_position, $"invalid addressing mode: {sb.ToString()}");
+                Log.Warning(_position, $"invalid instruction: {sb.ToString()}");
             }
             else
             {
@@ -860,7 +860,7 @@ namespace Z80Asm
             try
             {
                 List<long> immediateValues = [];
-                for (int i = 0; i < _operands.Count; i++)
+                for (var i = 0; i < _operands.Count; i++)
                 {
                     var o = _operands[i];
 
@@ -882,7 +882,7 @@ namespace Z80Asm
                 }
 
                 // Generate the instruction
-                if(_instruction!=null)
+                if (_instruction != null)
                     _instruction.Generate(ctx, SourcePosition, immediateValues.ToArray());
             }
             finally
@@ -917,7 +917,7 @@ namespace Z80Asm
             {
                 _parameters = [];
             }
-                
+
             // Define the symbol
             currentScope.Define(_name + ExprNodeParameterized.MakeSuffix(_parameters.Length), this);
             return _parameters.Length;
@@ -939,7 +939,7 @@ namespace Z80Asm
             var scope = new AstScope("MACRO INVOCATION", currentScope.SourcePosition, currentScope);
 
             // Define it
-            for (int i = 0; i < _parameters.Length; i++)
+            for (var i = 0; i < _parameters.Length; i++)
             {
                 scope.Define(_parameters[i], arguments[i]);
             }
@@ -1002,7 +1002,7 @@ namespace Z80Asm
     public class AstMacroInvocationOrDataDeclaration : AstElement
     {
         public AstMacroInvocationOrDataDeclaration(
-            string macro, 
+            string macro,
             SourcePosition source) : base(source)
         {
             _macroOrDataTypeName = macro;
@@ -1014,7 +1014,7 @@ namespace Z80Asm
         }
 
         private readonly string _macroOrDataTypeName;
-        private readonly List<ExprNode> _operands = new List<ExprNode>();
+        private readonly List<ExprNode> _operands = new();
 
         public override void Dump(Action<string> w, int indent)
         {
@@ -1042,7 +1042,7 @@ namespace Z80Asm
             if (_dataType != null)
             {
                 // Work out how many elements in total
-                int totalElements = 0;
+                var totalElements = 0;
                 foreach (var n in _operands)
                 {
                     totalElements += n.EnumData(currentScope).Count();
@@ -1084,7 +1084,7 @@ namespace Z80Asm
                 var data = new List<byte?>();
 
                 // Pack data elements
-                bool anyPackErrors = false;
+                var anyPackErrors = false;
                 foreach (var n in _operands.SelectMany(x => x.EnumData(currentScope)))
                 {
                     try
@@ -1128,7 +1128,7 @@ namespace Z80Asm
             // Packing into an array?
             if (arraySize != 1)
             {
-                int packCount = 0;
+                var packCount = 0;
                 foreach (var d in expr.EnumData(scope))
                 {
                     PackData(scope, buffer, dataType, 1, d);
@@ -1182,7 +1182,7 @@ namespace Z80Asm
                 while (value is ExprNode)
                     value = ((ExprNode)value).Evaluate(scope);
 
-                ushort word = Utils.PackWord(expr.SourcePosition, value);
+                var word = Utils.PackWord(expr.SourcePosition, value);
                 buffer.Add((byte)(word & 0xFF));
                 buffer.Add((byte)((word >> 8) & 0xFF));
                 return;
@@ -1203,7 +1203,7 @@ namespace Z80Asm
                     }
 
                     // Pack all fields
-                    for (int i = 0; i < array.Length; i++)
+                    for (var i = 0; i < array.Length; i++)
                     {
                         PackData(scope, buffer, structDef.Fields[i].Type, structDef.Fields[i].ArraySize, array[i]);
                     }
@@ -1234,7 +1234,7 @@ namespace Z80Asm
                         }
 
                         // Pack it
-                        for (int i = 0; i < fieldPack.Count; i++)
+                        for (var i = 0; i < fieldPack.Count; i++)
                         {
                             data[fd.Offset + i] = fieldPack[i];
                         }
@@ -1256,7 +1256,7 @@ namespace Z80Asm
     {
         public AstDefBits(
             string character,
-            string bitPattern, 
+            string bitPattern,
             SourcePosition position) : base(position)
         {
             _character = character;
@@ -1264,8 +1264,8 @@ namespace Z80Asm
         }
 
         public AstDefBits(
-            string character, 
-            ExprNode value, 
+            string character,
+            ExprNode value,
             ExprNode bitWidth,
             SourcePosition position) : base(position)
         {
@@ -1320,7 +1320,7 @@ namespace Z80Asm
 
             if (_bitPattern != null)
             {
-                for (int i = 0; i < _bitPattern.Length; i++)
+                for (var i = 0; i < _bitPattern.Length; i++)
                 {
                     if (_bitPattern[i] != '0' && _bitPattern[i] != '1')
                     {
@@ -1347,9 +1347,9 @@ namespace Z80Asm
     public class AstBitmap : AstElement
     {
         public AstBitmap(
-            ExprNode width, 
-            ExprNode height, 
-            bool msbFirst, 
+            ExprNode width,
+            ExprNode height,
+            bool msbFirst,
             SourcePosition position) : base(position)
         {
             _width = width;
@@ -1360,7 +1360,7 @@ namespace Z80Asm
         private readonly ExprNode _width;
         private readonly ExprNode _height;
         private readonly bool _msbFirst;
-        protected List<string> _strings = new List<string>();
+        protected List<string> _strings = new();
 
         public void AddString(string str)
         {
@@ -1385,16 +1385,16 @@ namespace Z80Asm
         public override void Layout(AstScope currentScope, LayoutContext ctx)
         {
             // Work out width and height
-            int blockWidth = (int)_width.EvaluateNumber(currentScope);
-            int blockHeight = (int)_height.EvaluateNumber(currentScope);
+            var blockWidth = (int)_width.EvaluateNumber(currentScope);
+            var blockHeight = (int)_height.EvaluateNumber(currentScope);
             if (blockWidth < 1)
                 throw new CodeException("Invalid bitmap block width", SourcePosition);
             if (blockHeight < 1)
                 throw new CodeException("Invalid bitmap block height", SourcePosition);
 
             // Build the bitmap
-            List<string> bits = new List<string>();
-            for (int i = 0; i < _strings.Count; i++)
+            var bits = new List<string>();
+            for (var i = 0; i < _strings.Count; i++)
             {
                 var row = new StringBuilder();
 
@@ -1423,19 +1423,19 @@ namespace Z80Asm
             if ((blockWidth * bits.Count % 8) != 0)
                 throw new CodeException("Bitmap block width multiplied by bitmap height must be a multiple of 8", SourcePosition);
 
-            int blocksAcross = bits[0].Length / blockWidth;
-            int blocksDown = bits.Count / blockHeight;
+            var blocksAcross = bits[0].Length / blockWidth;
+            var blocksDown = bits.Count / blockHeight;
 
-            int bitCounter = 0;
+            var bitCounter = 0;
             byte assembledByte = 0;
             var bytes = new List<byte>();
-            for (int blockY = 0; blockY < blocksDown; blockY++)
+            for (var blockY = 0; blockY < blocksDown; blockY++)
             {
-                for (int blockX = 0; blockX < blocksAcross; blockX++)
+                for (var blockX = 0; blockX < blocksAcross; blockX++)
                 {
-                    for (int bitY = 0; bitY < blockHeight; bitY++)
+                    for (var bitY = 0; bitY < blockHeight; bitY++)
                     {
-                        for (int bitX = 0; bitX < blockWidth; bitX++)
+                        for (var bitX = 0; bitX < blockWidth; bitX++)
                         {
                             var bit = bits[(blockY * blockHeight) + bitY][(blockX * blockWidth) + bitX];
                             if (_msbFirst)
@@ -1474,8 +1474,8 @@ namespace Z80Asm
     public class AstErrorWarning : AstElement
     {
         public AstErrorWarning(
-            string message, 
-            bool warning, 
+            string message,
+            bool warning,
             SourcePosition position) : base(position)
         {
             _message = message;
@@ -1519,9 +1519,9 @@ namespace Z80Asm
     public class AstFieldDefinition : AstElement
     {
         public AstFieldDefinition(
-            SourcePosition pos, 
-            string name, 
-            string typename, 
+            SourcePosition pos,
+            string name,
+            string typename,
             ExprNode initializer) : base(pos)
         {
             _name = name;
@@ -1602,8 +1602,8 @@ namespace Z80Asm
         public abstract int SizeOf { get; }
 
         public virtual AstFieldDefinition? FindField(string name)
-        { 
-            return null; 
+        {
+            return null;
         }
 
         public override int DefineSymbols(AstScope currentScope)

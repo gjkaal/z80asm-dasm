@@ -7,11 +7,16 @@ namespace Z80Asm
 {
     public abstract class Instruction
     {
+        protected Instruction(string mnemonic)
+        {
+            Mnemonic = mnemonic;
+        }
+
         // The simplified version of the Mnemonic (ie: with immediate arguments replaced by '?')
-        public string Mnemonic { get; set; } = string.Empty;
+        public string Mnemonic { get; protected set; } = string.Empty;
 
         // Final calculated length of the instruction in bytes
-        public int Length;
+        public int Length { get; protected set; }
 
         // Get just the instruction name from the Mnemonic
         public string InstructionName
@@ -36,7 +41,7 @@ namespace Z80Asm
     // fake the immediate parameters on top of the underlying instruction definitions
     public class InstructionGroup : Instruction
     {
-        public InstructionGroup()
+        public InstructionGroup(string mnemonic) : base(mnemonic)
         {
         }
 
@@ -94,12 +99,16 @@ namespace Z80Asm
 
         // For instructions that contain hard coded immediate values eg: RST 0x68, SET 7,(HL) etc...
         // this is a dictionary of of the immediate values to a real final instruction
-        private readonly Dictionary<int, InstructionDefinition> immVariations = new Dictionary<int, InstructionDefinition>();
+        private readonly Dictionary<int, InstructionDefinition> immVariations = new();
     }
 
     // Represents a concrete definition of an instruction
     public class InstructionDefinition : Instruction
     {
+        public InstructionDefinition(string mnemonic) : base(mnemonic)
+        {
+        }
+
         // The Op code definition
         public OpCode? opCode;
 
@@ -136,8 +145,8 @@ namespace Z80Asm
 
         // Prepare this instruction instance
         public override void Generate(
-            GenerateContext ctx, 
-            SourcePosition sourcePosition, 
+            GenerateContext ctx,
+            SourcePosition sourcePosition,
             long[] immArgs)
         {
             var oldIp = ctx.Ip;
@@ -146,7 +155,7 @@ namespace Z80Asm
             ctx.EmitBytes(bytes, true);
 
             // Emit the immediate bytes
-            int arg = 0;
+            var arg = 0;
             foreach (var ch in Mnemonic)
             {
                 switch (ch)
@@ -182,13 +191,13 @@ namespace Z80Asm
 
         public void Dump()
         {
-            for (int i = 0; i < bytes.Length; i++)
+            for (var i = 0; i < bytes.Length; i++)
             {
                 Console.Write("{0:X2} ", bytes[i]);
             }
 
-            int length = bytes.Length;
-            int operandCount = 0;
+            var length = bytes.Length;
+            var operandCount = 0;
             if (Mnemonic.Contains('@'))
             {
                 Console.Write("@@ @@ ");
@@ -201,7 +210,7 @@ namespace Z80Asm
                 length++;
                 operandCount++;
             }
-            if (Mnemonic.Contains("#", StringComparison.CurrentCulture))
+            if (Mnemonic.Contains('#', StringComparison.CurrentCulture))
             {
                 Console.Write("## ");
                 length++;
@@ -216,7 +225,7 @@ namespace Z80Asm
 
             if (suffixBytes != null)
             {
-                for (int i = 0; i < suffixBytes.Length; i++)
+                for (var i = 0; i < suffixBytes.Length; i++)
                 {
                     Console.Write("{0:X2} ", suffixBytes[i]);
                     length++;

@@ -27,7 +27,9 @@ namespace Z80Asm
         public static Instruction? Find(string mnemonic)
         {
             if (!_opMap.TryGetValue(mnemonic, out var op))
+            {
                 return null;
+            }
             return op;
         }
 
@@ -41,15 +43,21 @@ namespace Z80Asm
             immValue = null;
 
             // Start after the instruction name
-            var spacePos = mnemonic.IndexOf(' ');
-            if (spacePos < 0)
+            var findString = mnemonic.Trim();
+            var spacePos = 0;
+            while (spacePos < findString.Length && char.IsLetterOrDigit(findString[spacePos]))
+                spacePos++;
+
+            //var spacePos = mnemonic.IndexOf(' ');
+
+            if (spacePos < 0 || spacePos == findString.Length)
                 return mnemonic;
 
             // Build the new Mnemonic
             var sb = new StringBuilder();
             sb.Append(mnemonic.AsSpan(0, spacePos));
 
-            for (int i = spacePos; i < mnemonic.Length; i++)
+            for (var i = spacePos; i < mnemonic.Length; i++)
             {
                 // Get the character
                 var ch = mnemonic[i];
@@ -67,7 +75,7 @@ namespace Z80Asm
                     sb.Append('?');
 
                     // Extract the immediate value
-                    int pos = i;
+                    var pos = i;
                     while (i < mnemonic.Length && ((mnemonic[i] >= '0' && mnemonic[i] <= '9') || mnemonic[i] == 'x'))
                         i++;
                     var immString = mnemonic.Substring(pos, i - pos);
@@ -99,7 +107,7 @@ namespace Z80Asm
             instruction.Prepare();
 
             // Get it's key, replacing operand placeholders with '?'
-            string key = KeyOfMnemonic(instruction.Mnemonic, out var immValue);
+            var key = KeyOfMnemonic(instruction.Mnemonic, out var immValue);
 
             // Get the existing instruction
             _opMap.TryGetValue(key, out var existing);
@@ -121,10 +129,7 @@ namespace Z80Asm
                 else
                 {
                     // Create new instruction group
-                    var group = new InstructionGroup
-                    {
-                        Mnemonic = key
-                    };
+                    var group = new InstructionGroup(key);
                     group.AddInstructionDefinition(immValue.Value, instruction);
                     _opMap.Add(key, group);
                 }
@@ -158,7 +163,7 @@ namespace Z80Asm
 
         private static void ProcessOpCodeTable(OpCode[] table, byte[] prefixBytes, bool opIsSuffix = false)
         {
-            for (int i = 0; i < table.Length; i++)
+            for (var i = 0; i < table.Length; i++)
             {
                 var opCode = table[i];
                 if (opCode.mnemonic == null || opCode.mnemonic.StartsWith("shift") || opCode.mnemonic.StartsWith("ignore"))
@@ -183,22 +188,20 @@ namespace Z80Asm
                 }
 
                 // Create the instruction
-                AddInstruction(new InstructionDefinition()
+                AddInstruction(new InstructionDefinition(opCode.mnemonic)
                 {
                     bytes = bytes,
                     suffixBytes = suffixBytes,
                     opCode = opCode,
-                    Mnemonic = opCode.mnemonic,
                 });
 
                 if (opCode.altMnemonic != null)
                 {
-                    AddInstruction(new InstructionDefinition()
+                    AddInstruction(new InstructionDefinition(opCode.altMnemonic)
                     {
                         bytes = bytes,
                         suffixBytes = suffixBytes,
                         opCode = opCode,
-                        Mnemonic = opCode.altMnemonic,
                     });
                 }
             }
@@ -244,7 +247,7 @@ namespace Z80Asm
             "RES", "SET", "RL", "RLC", "RR", "RRC", "SLA", "SLL", "SRA", "SRL",
         ];
 
-        private static readonly HashSet<string> _subOpNameMap = new HashSet<string>(_subOpNames, StringComparer.InvariantCultureIgnoreCase);
+        private static readonly HashSet<string> _subOpNameMap = new(_subOpNames, StringComparer.InvariantCultureIgnoreCase);
 
         public static bool IsValidSubOpName(string name)
         {
@@ -279,7 +282,7 @@ namespace Z80Asm
             "Z", "NZ", "C", "NC", "PE", "P", "PO", "M",
         ];
 
-        private static readonly HashSet<string> _conditionFlagMap = new HashSet<string>(_conditionFlags, StringComparer.InvariantCultureIgnoreCase);
+        private static readonly HashSet<string> _conditionFlagMap = new(_conditionFlags, StringComparer.InvariantCultureIgnoreCase);
 
         public static bool IsConditionFlag(string name)
         {

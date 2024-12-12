@@ -10,6 +10,7 @@ namespace Z80Asm
         private static int _errors = 0;
 
         public static int ErrorCount => _errors;
+        public static int WarningCount => _warnings;
 
         public static void Reset()
         {

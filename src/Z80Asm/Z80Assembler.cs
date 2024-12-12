@@ -39,7 +39,7 @@ public sealed class Z80Assembler
         return result;
     }
 
-    public int GenerateCode(
+    public (int errorCount, int warningCount) GenerateCode(
        SourcePosition position,
        Action<string, bool> listFile,
        Action<byte[]> codeFile)
@@ -53,7 +53,7 @@ public sealed class Z80Assembler
         root.Layout(null, layoutContext);
         if (Log.ErrorCount > 0)
         {
-            return Log.ErrorCount;
+            return (Log.ErrorCount, Log.WarningCount);
         }
 
         // Generate the code
@@ -68,12 +68,12 @@ public sealed class Z80Assembler
         generateContext.LeaveSourceFile();
         if (Log.ErrorCount > 0)
         {
-            return Log.ErrorCount;
+            return (Log.ErrorCount, Log.WarningCount);
         }
 
         var code = generateContext.GetGeneratedBytes();
         codeFile(code);
-        return Log.ErrorCount;
+        return (Log.ErrorCount, Log.WarningCount);
     }
 
     public int CalculateLayout()
@@ -94,7 +94,7 @@ public sealed class Z80Assembler
     public bool CreateBinaryFile { get; set; }
     public bool CreateIntelHexFile { get; set; }
 
-    public int Compile(FileInfo source)
+    public (int errorCount, int warningCount) Compile(FileInfo source)
     {
         var sourcePosition = root.ParseFile(source, IncludePaths);
         root.DefineSymbols(null);

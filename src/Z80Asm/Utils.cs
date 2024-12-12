@@ -21,7 +21,7 @@ namespace Z80Asm
         public void Update(byte data)
         {
             Value ^= data;
-            for (int i = 0; i < 8; i++)
+            for (var i = 0; i < 8; i++)
             {
                 if ((Value & 1) == 1)
                 {
@@ -55,7 +55,7 @@ namespace Z80Asm
         public void Update(byte data)
         {
             Value ^= data;
-            for (int i = 0; i < 8; i++)
+            for (var i = 0; i < 8; i++)
             {
                 if ((Value & 1) == 1)
                 {
@@ -86,14 +86,19 @@ namespace Z80Asm
 
     public static class Utils
     {
-        public static void HexDump(byte[] data, 
-            int bytesPerLine = 8, 
+        public static bool IsAlphaNumeric(char c)
+        {
+            return char.IsLetterOrDigit(c);
+        }
+
+        public static void HexDump(byte[] data,
+            int bytesPerLine = 8,
             Action<HexDumpOptions>? options = null,
             Action<string>? output = null)
         {
             output ??= Console.WriteLine;
             var opt = new HexDumpOptions();
-            if(options!=null) options(opt);
+            if (options != null) options(opt);
 
             if (!opt.NoHeader)
             {
@@ -106,18 +111,18 @@ namespace Z80Asm
             var line = 0;
             var hex = new StringBuilder();
 
-            for (int i = 0; i < data.Length; i++)
+            for (var i = 0; i < data.Length; i++)
             {
                 crc8.Update(data[i]);
                 crc16.Update(data[i]);
                 hex.Append(data[i].ToString("X2"));
-                if ((i % bytesPerLine) == bytesPerLine-1 || i == data.Length-1)
+                if ((i % bytesPerLine) == bytesPerLine - 1 || i == data.Length - 1)
                 {
                     if (opt.ShowLineNumbers)
                     {
                         hex.Insert(0, $"{line++:0000} ");
                     }
-                    if(opt.ShowCrc)
+                    if (opt.ShowCrc)
                     {
                         hex.Append($" / {crc8.Value:X2}");
                     }
@@ -128,11 +133,11 @@ namespace Z80Asm
                 }
                 else
                 {
-                    if(!opt.NoSpaces)
+                    if (!opt.NoSpaces)
                         hex.Append(' ');
                 }
             }
-            if(opt.ShowCrc)
+            if (opt.ShowCrc)
             {
                 output.Invoke($"CRC16: {crc16.Value:X4}");
             }
@@ -155,7 +160,9 @@ namespace Z80Asm
                 return new BinaryWriter(File.OpenWrite(System.IO.Path.ChangeExtension(filePath, defExt)));
             }
             else
+            {
                 return new BinaryWriter(File.OpenWrite(filename));
+            }
         }
 
         public static TextWriter OpenTextWriter(this FileInfo fileInfo, string filename, string defExt)
@@ -170,7 +177,9 @@ namespace Z80Asm
                 return new StreamWriter(System.IO.Path.ChangeExtension(filePath, defExt));
             }
             else
+            {
                 return new StreamWriter(filename);
+            }
         }
 
         public static string AstDesc(this SourcePosition? pos)
@@ -249,92 +258,92 @@ namespace Z80Asm
         }
 
         public static ushort ParseUShort(string str)
-		{
-			try
-			{
-				if (str.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
-				{
-					return Convert.ToUInt16(str.Substring(2), 16);
-				}
-				else
-				{
-					return ushort.Parse(str);
-				}
-			}
-			catch (Exception)
-			{
-				throw new InvalidOperationException(string.Format("Invalid number: '{0}'", str));
-			}
-		}
+        {
+            try
+            {
+                if (str.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return Convert.ToUInt16(str.Substring(2), 16);
+                }
+                else
+                {
+                    return ushort.Parse(str);
+                }
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException(string.Format("Invalid number: '{0}'", str));
+            }
+        }
 
-		public static int[] ParseIntegers(string str, int Count)
-		{
-			var values = new List<int>();
-			if (str != null)
-			{
-				foreach (var n in str.Split(','))
-				{
-					values.Add(int.Parse(n));
-				}
-			}
+        public static int[] ParseIntegers(string str, int Count)
+        {
+            var values = new List<int>();
+            if (str != null)
+            {
+                foreach (var n in str.Split(','))
+                {
+                    values.Add(int.Parse(n));
+                }
+            }
 
-			if (Count != 0 && Count != values.Count)
-			{
-				throw new InvalidOperationException(string.Format("Invalid value - expected {0} comma separated values", Count));
-			}
-
-
-			return [.. values];
-		}
+            if (Count != 0 && Count != values.Count)
+            {
+                throw new InvalidOperationException(string.Format("Invalid value - expected {0} comma separated values", Count));
+            }
 
 
-		public static List<string> ParseCommandLine(string args)
-		{
-			var newargs = new List<string>();
+            return [.. values];
+        }
 
-			var temp = new StringBuilder();
 
-			int i = 0;
-			while (i < args.Length)
-			{
-				if (char.IsWhiteSpace(args[i]))
-				{
-					i++;
-					continue;
-				}
+        public static List<string> ParseCommandLine(string args)
+        {
+            var newargs = new List<string>();
 
-				bool bInQuotes = false;
-				temp.Length = 0;
-				while (i < args.Length && (!char.IsWhiteSpace(args[i]) || bInQuotes))
-				{
-					if (args[i] == '\"')
-					{
-						if (args[i + 1] == '\"')
-						{
-							temp.Append('"');
-							i++;
-						}
-						else
-						{
-							bInQuotes = !bInQuotes;
-						}
-					}
-					else
-					{
-						temp.Append(args[i]);
-					}
+            var temp = new StringBuilder();
 
-					i++;
-				}
+            var i = 0;
+            while (i < args.Length)
+            {
+                if (char.IsWhiteSpace(args[i]))
+                {
+                    i++;
+                    continue;
+                }
 
-				if (temp.Length > 0)
-				{
-					newargs.Add(temp.ToString());
-				}
-			}
+                var bInQuotes = false;
+                temp.Length = 0;
+                while (i < args.Length && (!char.IsWhiteSpace(args[i]) || bInQuotes))
+                {
+                    if (args[i] == '\"')
+                    {
+                        if (args[i + 1] == '\"')
+                        {
+                            temp.Append('"');
+                            i++;
+                        }
+                        else
+                        {
+                            bInQuotes = !bInQuotes;
+                        }
+                    }
+                    else
+                    {
+                        temp.Append(args[i]);
+                    }
 
-			return newargs;
-		}
+                    i++;
+                }
 
-	}
+                if (temp.Length > 0)
+                {
+                    newargs.Add(temp.ToString());
+                }
+            }
+
+            return newargs;
+        }
+
+    }
 }

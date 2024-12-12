@@ -103,15 +103,15 @@ startup:
         ld HL, 0x1000
         call check_ram
         ; If error, halt the system
-        cp A, 0
+        cp 0
         jr Z, startup1
         ld IX, check_ram
         jp system_halt
 startup1:
         call watchdog_kick
 ; Set memory bank 0
-        ld IX, mem_select
-        ld (IX), 0
+        ld C, MEM_SELECT
+        out (C), 0
 
 ; Set the stack pointer to the top of the first bank of RAM        
         ld SP, 0x2000           
@@ -122,11 +122,11 @@ startup1:
 
 ; Initialize the monotor serial port
         ld A, 0b00101000         ; 9600 baud, 8 bits, no parity, 1 stop bit
-        ld IX, SERIAL_MONITOR
+        ld C, SERIAL_MONITOR
         call init_serial
 
 ; check hardware flags for using monitor during startup
-        in(HARDWARE_FLAGS), A
+        in A, (HARDWARE_FLAGS)
         and 0x01;
         jr Z, startup2
 
@@ -137,34 +137,34 @@ startup1:
 startup2:
         call watchdog_kick
 ; Check non system ram memory
-        in(HARDWARE_FLAGS), A
+        in A,(HARDWARE_FLAGS)
         and 0x02;
         jr Z, startup3
 
 ; RAM should be consequitive from 0x2000 to 0x7FFF (6 banks)
         ld HL, 0x2000
         call check_ram
-        cp A, 0
+        cp 0
         jr Z, show_ram
         ld H, 0x30
         call check_ram
-        cp A, 0
+        cp 0
         jr Z, show_ram
         ld H, 0x40
         call check_ram
-        cp A, 0
+        cp 0
         jr Z, show_ram
         ld H, 0x50
         call check_ram
-        cp A, 0
+        cp 0
         jr Z, show_ram
         ld H, 0x60
         call check_ram
-        cp A, 0
+        cp 0
         jr Z, show_ram
         ld H, 0x70
         call check_ram
-        cp A, 0
+        cp 0
         jr Z, show_ram
 ; Set H regfister to 0x80 to indicate 6 banks of RAM
         ld H, 0x80
@@ -183,7 +183,7 @@ show_ram:
         in A, (RAM_STATUS)      ; Set RAM status register
         and 0xF8                ; Clear the lower 3 bits
         or B                    ; Set the number of banks
-        out(RAM_STATUS), A  
+        out (RAM_STATUS), A
 
 ; check hardware flags for using monitor during startup
         in A, (HARDWARE_FLAGS)
@@ -191,12 +191,12 @@ show_ram:
         jr Z, startup3
 
 ; Print system RAM message
-        push A;                 ; Save the number of banks
+        push AF                 ; Save the number of banks
         ld HL, str_system_ram
         call serial_write
 
 ; Print the number of bytes of RAM
-        pop A;                  ; Restore the number of banks
+        pop AF                  ; Restore the number of banks
         rla                     ; Shift left 4 bits to get the number of bytes
         rla
         rla
@@ -216,7 +216,7 @@ interrupt:
 
 ; Watchdog routine
 watchdog_routine:
-        in(WATCHDOG), A
+        in A,(WATCHDOG)
         cp 0
         jr NZ, watchdog_halt
         retn
@@ -227,7 +227,7 @@ watchdog_halt:
 ; Reset the watchdog timer
 watchdog_kick:
         ld A, 0
-        out (WATCHDOG), 0
+        out (WATCHDOG), A
         ret
 
 ; Halt the system
@@ -275,42 +275,57 @@ check_ram_error:
 ; data bits  = bits 4-5 of the control register
 ; status bits= bits 6-7 of the control register 
 init_serial:
-        out(IX+1), A
+        push BC
+        ld B, C
+        inc C
+        out (C), A
         jr wait_for_port
+
+        pop BC
         ret
 
-; Write a string to the serial port in HL
+; Write a string to the serial port in C
 serial_write:
-        ld A, (HL)
+        push BC
+        ld B, C         ; Save the port address in B
+
+        ld A, (HL)      ; Load the first character an return if EOL
         cp 0
         jr Z, serial_write_done
+
 serial_write_loop:
+        ld C, B
         call wait_for_port
-        out(IX), A
+        out (C), A
         inc HL
         ld A, (HL)
         cp 0
         jr NZ, serial_write_loop
-serial_write_done:        
+serial_write_done:
+        pop BC
         ret 
 
-; Write A single byte to the serial port in HL
-serial_write_byte:                            
-        ld A, (HL)
-        out(IX), A
-        ret
 ; Wait for the serial port to contain data        
 wait_for_data:
-        in A, (IX+1)
+        push BC
+        ld B, C
+        inc C
+wait_for_data_loop:
+        in A, (C)
         and 0x01                    ; Check if data is available bit
-        jr Z, wait_for_data
-        in A, (IX)
+        jr Z, wait_for_data_loop
+        pop BC
+        in A, (C)
         ret
 ; Wait for the serial port to be ready for transmission        
 wait_for_port:
-        in A, (IX+1)
+        push BC
+wait_for_port_loop:
+        inc C
+        in A, (C)
         and 0x02                    ; Check if port is available bit
-        jr Z, wait_for_port
+        jr Z, wait_for_port_loop
+        pop BC
         ret
 
 system_messages:

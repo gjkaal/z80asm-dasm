@@ -4,7 +4,7 @@ namespace Z80Mnemonics;
 
 public static class OpCodes
 {
-    public readonly static ReadOnlyCollection<OpCode> DasmBase =
+    public static readonly ReadOnlyCollection<OpCode> DasmBase =
     new(
     [
         new( "NOP"               ,  4 ,  0 ), /* 00 */
@@ -248,7 +248,7 @@ public static class OpCodes
 		new( "XOR #"             ,  7 ,  0 ), /* EE */
 		new( "RST 0x28"          , 11 ,  0 , OpCodeFlags.Restarts | OpCodeFlags.Continues), /* EF */
 		new( "RET P"             ,  5 , 11 , OpCodeFlags.Returns | OpCodeFlags.Continues), /* F0 */
-		new( "POP AF"            , 10 ,  0 ), /* F1 */
+		new( "POP AF"            , 10 ,  0 , OpCodeFlags.Continues), /* F1 */
 		new( "JP P,@"            , 10 ,  0 , OpCodeFlags.Jumps | OpCodeFlags.Continues), /* F2 */
 		new( "DI"                ,  4 ,  0 ), /* F3 */
 		new( "CALL P,@"          , 10 , 17 , OpCodeFlags.Jumps | OpCodeFlags.Continues), /* F4 */
@@ -265,7 +265,7 @@ public static class OpCodes
 		new( "RST 0x38"          , 11 ,  0 , OpCodeFlags.Restarts | OpCodeFlags.Continues), /* FF */
     ]);
 
-    public readonly static ReadOnlyCollection<OpCode> DasmCB = new(
+    public static readonly ReadOnlyCollection<OpCode> DasmCB = new(
     [   new( "RLC B"             ,  8 ,  0 ), /* 00 */
 		new( "RLC C"             ,  8 ,  0 ), /* 01 */
 		new( "RLC D"             ,  8 ,  0 ), /* 02 */
@@ -524,7 +524,7 @@ public static class OpCodes
 		new( "SET 7,A"           ,  8 ,  0 ), /* FF */
 	]);
 
-    public readonly static ReadOnlyCollection<OpCode> DasmDD = new(
+    public static readonly ReadOnlyCollection<OpCode> DasmDD = new(
     [
         new( null                ,  0 ,  0 ), /* 00 */
 		new( null                ,  0 ,  0 ), /* 01 */
@@ -784,7 +784,7 @@ public static class OpCodes
 		new( null                ,  0 ,  0 ), /* FF */
     ]);
 
-    public readonly static ReadOnlyCollection<OpCode> DasmDDCB = new(
+    public static readonly ReadOnlyCollection<OpCode> DasmDDCB = new(
     [
         new( "LD B,RLC (IX+$)"   , 23 ,  0 ), /* 00 */
 		new( "LD C,RLC (IX+$)"   , 23 ,  0 ), /* 01 */
@@ -1044,9 +1044,9 @@ public static class OpCodes
 		new( "LD A,SET 7,(IX+$)" , 23 ,  0 ), /* FF */
     ]);
 
-    public readonly static ReadOnlyCollection<OpCode> DasmED = new(
-    [   
-		new( null                ,  0 ,  0 ), /* 00 */
+    public static readonly ReadOnlyCollection<OpCode> DasmED = new(
+    [
+        new( null                ,  0 ,  0 ), /* 00 */
 		new( null                ,  0 ,  0 ), /* 01 */
 		new( null                ,  0 ,  0 ), /* 02 */
 		new( null                ,  0 ,  0 ), /* 03 */
@@ -1305,7 +1305,7 @@ public static class OpCodes
 
     ]);
 
-    public readonly static ReadOnlyCollection<OpCode> DasmFD = new(
+    public static readonly ReadOnlyCollection<OpCode> DasmFD = new(
     [
         new( null                ,  0 ,  0 ), /* 00 */
 		new( null                ,  0 ,  0 ), /* 01 */
@@ -1564,8 +1564,8 @@ public static class OpCodes
 		new( null                ,  0 ,  0 ), /* FE */
 		new( null                ,  0 ,  0 ), /* FF */
 	]);
-    
-    public readonly static ReadOnlyCollection<OpCode> DasmFDCB = new(
+
+    public static readonly ReadOnlyCollection<OpCode> DasmFDCB = new(
     [
         new( "LD B,RLC (IY+$)"   , 23 ,  0 ), /* 00 */
 		new( "LD C,RLC (IY+$)"   , 23 ,  0 ), /* 01 */

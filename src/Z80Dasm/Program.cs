@@ -53,17 +53,17 @@ namespace Z80DAsm
             if (arg.StartsWith("@"))
             {
                 // Get the fully qualified response file name
-                string strResponseFile = System.IO.Path.GetFullPath(arg.Substring(1));
+                var strResponseFile = System.IO.Path.GetFullPath(arg.Substring(1));
 
                 // Load and parse the response file
                 var args = Utils.ParseCommandLine(System.IO.File.ReadAllText(strResponseFile));
 
                 // Set the current directory
-                string OldCurrentDir = System.IO.Directory.GetCurrentDirectory();
+                var OldCurrentDir = System.IO.Directory.GetCurrentDirectory();
                 System.IO.Directory.SetCurrentDirectory(System.IO.Path.GetDirectoryName(strResponseFile));
 
                 // Load the file
-                bool bRetv = ProcessArgs(args);
+                var bRetv = ProcessArgs(args);
 
                 // Restore current directory
                 System.IO.Directory.SetCurrentDirectory(OldCurrentDir);
@@ -74,10 +74,10 @@ namespace Z80DAsm
             // Args are in format [/-]<switchname>[:<value>];
             if (arg.StartsWith("/") || arg.StartsWith("-"))
             {
-                string SwitchName = arg.Substring(arg.StartsWith("--") ? 2 : 1);
+                var SwitchName = arg.Substring(arg.StartsWith("--") ? 2 : 1);
                 string Value = null;
 
-                int colonpos = SwitchName.IndexOf(':');
+                var colonpos = SwitchName.IndexOf(':');
                 if (colonpos >= 0)
                 {
                     // Split it
@@ -216,9 +216,9 @@ namespace Z80DAsm
             return true;
         }
 
-        public void ShowLogo()
+        public static void ShowLogo()
         {
-            System.Version v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            var v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             Console.WriteLine("Z80DAsm v{0} - Z80 Disassembler", v);
             Console.WriteLine("Copyright (C) Kaalenco. All Rights Reserved.");
             Console.WriteLine("Disassembler engine based on http://z80ex.sourceforge.net/");
@@ -226,7 +226,7 @@ namespace Z80DAsm
             Console.WriteLine("");
         }
 
-        public void ShowHelp()
+        public static void ShowHelp()
         {
             Console.WriteLine("usage: Z80DAsm source.bin [destination.asm] [options] [@responsefile]");
             Console.WriteLine();
@@ -319,7 +319,7 @@ namespace Z80DAsm
                 while (pendingCodePaths.Count > 0)
                 {
                     // Get a new address that needs disassembling
-                    int addr = pendingCodePaths[0];
+                    var addr = pendingCodePaths[0];
                     pendingCodePaths.RemoveAt(0);
 
                     // Disassemble
@@ -354,7 +354,7 @@ namespace Z80DAsm
             else
             {
                 // Linear disassembly
-                for (int addr = _start; addr < _start + _len;)
+                for (var addr = _start; addr < _start + _len;)
                 {
                     // Disassemble this instruction
                     var i = Disassembler.Disassemble(code, (ushort)(addr - _baseAddr + _header), (ushort)addr);
@@ -373,7 +373,7 @@ namespace Z80DAsm
             // Helper for generating DB directives
             Func<int, int, int, int> FillData = delegate (int from, int to, int index)
             {
-                for (int j = from; j < to; j++)
+                for (var j = from; j < to; j++)
                 {
                     var data = code[j - _baseAddr + _header];
 
@@ -402,8 +402,8 @@ namespace Z80DAsm
             };
 
             // Fill in all unpopulated areas with DBs
-            int expectedNextAddress = _start;
-            for (int i = 0; i < sorted.Count; i++)
+            var expectedNextAddress = _start;
+            for (var i = 0; i < sorted.Count; i++)
             {
                 var inst = sorted[i];
                 if (inst.addr != expectedNextAddress)
@@ -424,7 +424,7 @@ namespace Z80DAsm
             // Resolve references
             foreach (var i in instructions)
             {
-                ushort? ref_addr = i.Value.next_addr_2;
+                var ref_addr = i.Value.next_addr_2;
                 if (!ref_addr.HasValue)
                 {
                     if (i.Value.word_val.HasValue && (i.Value.opCode.flags & OpCodeFlags.RefAddr) != 0)
@@ -433,7 +433,7 @@ namespace Z80DAsm
 
                 if (ref_addr.HasValue)
                 {
-                    for (int stepback = 0; stepback < 6; stepback++)
+                    for (var stepback = 0; stepback < 6; stepback++)
                     {
                         Instruction target;
                         if (instructions.TryGetValue(ref_addr.Value - stepback, out target))
@@ -458,8 +458,8 @@ namespace Z80DAsm
             // Coalesc Ascii strings
             if (_coalescStrings)
             {
-                int coalescFrom = 0;
-                for (int i = 0; i < sorted.Count; i++)
+                var coalescFrom = 0;
+                for (var i = 0; i < sorted.Count; i++)
                 {
                     var inst = sorted[i];
 
@@ -476,7 +476,7 @@ namespace Z80DAsm
                             // Build the DB "string" string
                             var sb = new StringBuilder();
                             sb.Append("DB\t\"");
-                            for (int j = 0; j < bytesToCoalesc; j++)
+                            for (var j = 0; j < bytesToCoalesc; j++)
                             {
                                 sb.Append((char)code[fromInstruction.addr - _baseAddr + _header + j]);
                             }
@@ -491,7 +491,7 @@ namespace Z80DAsm
                             instruction.referencedFrom = fromInstruction.referencedFrom;
 
                             // Remove the old instructions
-                            for (int j = 0; j < bytesToCoalesc; j++)
+                            for (var j = 0; j < bytesToCoalesc; j++)
                             {
                                 instructions.Remove(fromInstruction.addr + j);
                                 sorted.RemoveAt(coalescFrom);
@@ -511,7 +511,7 @@ namespace Z80DAsm
                 }
             }
 
-            TextWriter targetWriter = Console.Out;
+            var targetWriter = Console.Out;
             if (_outputFile != null)
             {
                 targetWriter = new StreamWriter(_outputFile);
@@ -612,13 +612,13 @@ namespace Z80DAsm
                 if (_lst)
                 {
                     w.Invoke($"{i.addr:X4}:", false);
-                    for (int j = 0; j < Math.Min((int)i.bytes, 8); j++)
+                    for (var j = 0; j < Math.Min((int)i.bytes, 8); j++)
                     {
                         var data = code[i.addr + j - _baseAddr + _header];
                         w.Invoke($" {data:X2}", false);
                     }
 
-                    int spaces = 3 * (6 - i.bytes);
+                    var spaces = 3 * (6 - i.bytes);
 
                     if (spaces > 0)
                         w.Invoke(new string(' ', spaces), false);
@@ -626,7 +626,7 @@ namespace Z80DAsm
                 }
 
                 // Work out label
-                string label = "";
+                var label = "";
                 if (i.entryPoint || i.referencedFrom != null || (prev != null && !prev.next_addr_1.HasValue))
                 {
                     label = Disassembler.FormatAddr(i.addr, false);
@@ -648,7 +648,7 @@ namespace Z80DAsm
                 {
                     if (i.bytes > 8)
                     {
-                        for (int j = 8; j < i.bytes; j++)
+                        for (var j = 8; j < i.bytes; j++)
                         {
                             if ((j % 8) == 0)
                                 w.Invoke($"\n{i.addr + j:X4}:", false);
@@ -677,8 +677,8 @@ namespace Z80DAsm
             if (_lst)
             {
                 // Build a list of all possible address references
-                Dictionary<int, AddressInfo> addressInfos = new Dictionary<int, AddressInfo>();
-                Dictionary<int, PortInfo> portInfos = new Dictionary<int, PortInfo>();
+                var addressInfos = new Dictionary<int, AddressInfo>();
+                var portInfos = new Dictionary<int, PortInfo>();
                 foreach (var i in sorted)
                 {
                     // Does this instruction reference a word value?
@@ -714,7 +714,7 @@ namespace Z80DAsm
                     if (i.opCode != null && (i.opCode.flags & OpCodeFlags.PortRef) != 0)
                     {
                         // Which port (-1, referenced through a register)
-                        int port = -1;
+                        var port = -1;
                         if (i.byte_val.HasValue)
                             port = i.byte_val.Value;
 
@@ -792,7 +792,7 @@ namespace Z80DAsm
                 // Dump call graph
                 w.Invoke("\nCall Graph:", true);
 
-                List<int> CallStack = new List<int>();
+                var CallStack = new List<int>();
                 Action<int> DumpCallGraph = null;
                 DumpCallGraph = (int addr) =>
                 {
@@ -868,7 +868,7 @@ namespace Z80DAsm
                 w.Invoke($"\t{Disassembler.FormatAddr(i.addr, true, false)} {i.Asm}", true);
             }
 
-            bool bFirstOtherRef = true;
+            var bFirstOtherRef = true;
             foreach (var i in r.CodeReferences.Concat(r.DataReferences).OrderBy(x => x.addr))
             {
                 if (bFirstOtherRef)
@@ -887,7 +887,7 @@ namespace Z80DAsm
             }
 
             public int port;
-            public List<Instruction> References = new List<Instruction>();
+            public List<Instruction> References = new();
         }
 
         private class AddressInfo
@@ -898,9 +898,9 @@ namespace Z80DAsm
             }
 
             public int addr;
-            public List<Instruction> CodeReferences = new List<Instruction>();
-            public List<Instruction> DataReferences = new List<Instruction>();
-            public List<Instruction> PotentialReferences = new List<Instruction>();
+            public List<Instruction> CodeReferences = new();
+            public List<Instruction> DataReferences = new();
+            public List<Instruction> PotentialReferences = new();
         }
 
         private static int Main(string[] args)
