@@ -45,7 +45,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
 			Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return <#=reg=="(HL)" || reg=="n" ? 7 : isMem ? 19 : isIndexReg ? 8 : 4#>;
         }

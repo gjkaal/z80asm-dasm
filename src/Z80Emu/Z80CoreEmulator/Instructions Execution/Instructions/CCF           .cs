@@ -13,7 +13,7 @@
             Registers.NF = 0;
             Registers.HF = oldCF;
             Registers.CF = !oldCF;
-            SetFlags3and5From(Registers.A);
+            Registers.SetFlags3and5From(Registers.A);
 
             return 4;
         }

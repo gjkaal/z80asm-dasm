@@ -38,7 +38,7 @@ namespace Konamiman.Z80dotNet
 			Registers.PF = (oldValue ^ valueToAdd<#= isAdd ? " ^ 0x8000" : ""#>) & (<#= isAdd ? "valueToAdd" : "oldValue"#> ^ newValue) & 0x8000;
 
             Registers.NF = <#=op#>;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }

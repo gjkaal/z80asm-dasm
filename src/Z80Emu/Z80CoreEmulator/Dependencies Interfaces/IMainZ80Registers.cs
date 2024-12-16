@@ -36,7 +36,13 @@ namespace Konamiman.Z80dotNet
         byte F { get; }
 
         /// <summary>
-        /// Changes the flags in the F register.
+        /// Changes the flags 3 and 5 in the F register.
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetFlags3and5From(byte value);
+
+        /// <summary>
+        /// Changes the value of the F register.
         /// </summary>
         /// <param name="value"></param>
         public void ChangeFlags(byte value);

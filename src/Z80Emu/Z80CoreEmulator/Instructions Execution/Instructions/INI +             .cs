@@ -26,7 +26,7 @@ namespace Konamiman.Z80dotNet
             Registers.ZF = counter == 0;
             Registers.NF = 1;
             Registers.SF = counter.GetBit(7);
-            SetFlags3and5From(counter);
+            Registers.SetFlags3and5From(counter);
 
             return 16;
         }
@@ -55,7 +55,7 @@ namespace Konamiman.Z80dotNet
             Registers.ZF = counter == 0;
             Registers.NF = 1;
             Registers.SF = counter.GetBit(7);
-            SetFlags3and5From(counter);
+            Registers.SetFlags3and5From(counter);
 
             return 16;
         }
@@ -79,7 +79,7 @@ namespace Konamiman.Z80dotNet
             Registers.ZF = counter == 0;
             Registers.NF = 1;
             Registers.SF = counter.GetBit(7);
-            SetFlags3and5From(counter);
+            Registers.SetFlags3and5From(counter);
 
             if (counter != 0)
             {
@@ -109,7 +109,7 @@ namespace Konamiman.Z80dotNet
             Registers.ZF = counter == 0;
             Registers.NF = 1;
             Registers.SF = counter.GetBit(7);
-            SetFlags3and5From(counter);
+            Registers.SetFlags3and5From(counter);
 
             if (counter != 0)
             {
@@ -139,7 +139,7 @@ namespace Konamiman.Z80dotNet
             Registers.ZF = counter == 0;
             Registers.NF = 1;
             Registers.SF = counter.GetBit(7);
-            SetFlags3and5From(counter);
+            Registers.SetFlags3and5From(counter);
 
             return 16;
         }
@@ -163,7 +163,7 @@ namespace Konamiman.Z80dotNet
             Registers.ZF = counter == 0;
             Registers.NF = 1;
             Registers.SF = counter.GetBit(7);
-            SetFlags3and5From(counter);
+            Registers.SetFlags3and5From(counter);
 
             return 16;
         }
@@ -187,7 +187,7 @@ namespace Konamiman.Z80dotNet
             Registers.ZF = counter == 0;
             Registers.NF = 1;
             Registers.SF = counter.GetBit(7);
-            SetFlags3and5From(counter);
+            Registers.SetFlags3and5From(counter);
 
             if (counter != 0)
             {
@@ -217,7 +217,7 @@ namespace Konamiman.Z80dotNet
             Registers.ZF = counter == 0;
             Registers.NF = 1;
             Registers.SF = counter.GetBit(7);
-            SetFlags3and5From(counter);
+            Registers.SetFlags3and5From(counter);
 
             if (counter != 0)
             {

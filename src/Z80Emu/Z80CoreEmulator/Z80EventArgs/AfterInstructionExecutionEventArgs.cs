@@ -1,5 +1,17 @@
 namespace Konamiman.Z80dotNet.Z80EventArgs
 {
+    public class RegisterChangedEventArgs : ProcessorEventArgs
+    {
+        public RegisterChangedEventArgs(string registerName, short newValue, object? localUserState)
+        {
+            RegisterName = registerName;
+            NewValue = newValue;
+            LocalUserState = localUserState;
+        }
+        public string RegisterName { get; private set; }
+        public short NewValue { get; private set; }
+    }
+
     /// <summary>
     /// Event args for the event triggered by the <see cref="IZ80Processor"/> class after an instruction is executed.
     /// </summary>

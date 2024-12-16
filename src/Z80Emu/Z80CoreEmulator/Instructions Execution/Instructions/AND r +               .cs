@@ -24,7 +24,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -46,7 +46,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -68,7 +68,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -90,7 +90,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -112,7 +112,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -134,7 +134,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -156,7 +156,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -178,7 +178,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -200,7 +200,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -222,7 +222,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -244,7 +244,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -266,7 +266,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -288,7 +288,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -310,7 +310,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -332,7 +332,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -354,7 +354,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -376,7 +376,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -398,7 +398,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -420,7 +420,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -442,7 +442,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -464,7 +464,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -487,7 +487,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -510,7 +510,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -533,7 +533,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -555,7 +555,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -577,7 +577,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -599,7 +599,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -621,7 +621,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -643,7 +643,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -665,7 +665,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -687,7 +687,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -709,7 +709,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -731,7 +731,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -753,7 +753,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -775,7 +775,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -797,7 +797,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -819,7 +819,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -841,7 +841,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -863,7 +863,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -887,7 +887,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -911,7 +911,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -935,7 +935,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -959,7 +959,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -983,7 +983,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -1007,7 +1007,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = Parity[newValue];
             Registers.NF = 0;
             Registers.CF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }

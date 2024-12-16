@@ -1,3 +1,6 @@
+using Konamiman.Z80dotNet.Z80EventArgs;
+using Microsoft.Win32;
+
 namespace Konamiman.Z80dotNet
 {
     /// <summary>
@@ -38,20 +41,15 @@ namespace Konamiman.Z80dotNet
             {
                 lock (sync)
                 {
-                    aF = AF.SetHighByte(value);
+                    aF = aF.SetHighByte(value);
+                    OnRegisterChanged("A", (aF & 0xFF00) >> 8);
                 }
             }
         }
 
         public byte F
         {
-            get => AF.GetLowByte();
-        }
-
-        public void ChangeFlags(byte value)
-        {
-            lock (sync)
-                aF = AF.SetLowByte(value);
+            get => aF.GetLowByte();
         }
 
         public byte B
@@ -60,7 +58,8 @@ namespace Konamiman.Z80dotNet
             set
             {
                 lock (sync)
-                    bC = BC.SetHighByte(value);
+                    bC = bC.SetHighByte(value);
+                OnRegisterChanged("B", (bC & 0xFF00) >> 8);
             }
         }
 
@@ -69,7 +68,8 @@ namespace Konamiman.Z80dotNet
             get => bC.GetLowByte();
             set
             {
-                lock (sync) bC = BC.SetLowByte(value);
+                lock (sync) bC = bC.SetLowByte(value);
+                OnRegisterChanged("C", bC & 0xFF);
             }
         }
 
@@ -78,7 +78,8 @@ namespace Konamiman.Z80dotNet
             get => dE.GetHighByte();
             set
             {
-                lock (sync) dE = DE.SetHighByte(value);
+                lock (sync) dE = dE.SetHighByte(value);
+                OnRegisterChanged("D", (dE & 0xFF00) >> 8);
             }
         }
 
@@ -87,7 +88,8 @@ namespace Konamiman.Z80dotNet
             get => dE.GetLowByte();
             set
             {
-                lock (sync) dE = DE.SetLowByte(value);
+                lock (sync) dE = dE.SetLowByte(value);
+                OnRegisterChanged("E", dE & 0xFF);
             }
         }
 
@@ -96,14 +98,19 @@ namespace Konamiman.Z80dotNet
             get => hL.GetHighByte();
             set
             {
-                lock (sync) hL = HL.SetHighByte(value);
+                lock (sync) hL = hL.SetHighByte(value);
+                OnRegisterChanged("H", (hL & 0xFF00) >> 8);
             }
         }
 
         public byte L
         {
             get => hL.GetLowByte();
-            set { lock (sync) hL = HL.SetLowByte(value); }
+            set
+            {
+                lock (sync) hL = hL.SetLowByte(value);
+                OnRegisterChanged("L", hL & 0xFF);
+            }
         }
 
         public Bit CF
@@ -113,7 +120,28 @@ namespace Konamiman.Z80dotNet
             {
                 lock (sync)
                     aF = aF.SetBit(0, value);
+                OnRegisterChanged("F", aF & 0xFF);
             }
+        }
+
+        public void ChangeFlags(byte value)
+        {
+            lock (sync)
+            {
+                aF = (short)((aF & 0xFF00) | value);
+            }
+            OnRegisterChanged("F", aF & 0xFF);
+        }
+
+        public void SetFlags3and5From(byte value)
+        {
+            lock (sync)
+            {
+                const int Flags_3_5 = 0x0028;
+                var flags = AF;
+                aF = (short)((flags & ~Flags_3_5) | (value & Flags_3_5));
+            }
+            OnRegisterChanged("F", aF & 0xFF);
         }
 
         public Bit NF
@@ -122,7 +150,8 @@ namespace Konamiman.Z80dotNet
             set
             {
                 lock (sync)
-                    aF = AF.SetBit(1, value);
+                    aF = aF.SetBit(1, value);
+                OnRegisterChanged("F", aF & 0xFF);
             }
         }
 
@@ -132,7 +161,8 @@ namespace Konamiman.Z80dotNet
             set
             {
                 lock (sync)
-                    aF = AF.SetBit(2, value);
+                    aF = aF.SetBit(2, value);
+                OnRegisterChanged("F", aF & 0xFF);
             }
         }
 
@@ -142,7 +172,8 @@ namespace Konamiman.Z80dotNet
             set
             {
                 lock (sync)
-                    aF = AF.SetBit(3, value);
+                    aF = aF.SetBit(3, value);
+                OnRegisterChanged("F", aF & 0xFF);
             }
         }
 
@@ -152,7 +183,8 @@ namespace Konamiman.Z80dotNet
             set
             {
                 lock (sync)
-                    aF = AF.SetBit(4, value);
+                    aF = aF.SetBit(4, value);
+                OnRegisterChanged("F", aF & 0xFF);
             }
         }
 
@@ -162,7 +194,8 @@ namespace Konamiman.Z80dotNet
             set
             {
                 lock (sync)
-                    aF = AF.SetBit(5, value);
+                    aF = aF.SetBit(5, value);
+                OnRegisterChanged("F", aF & 0xFF);
             }
         }
 
@@ -171,7 +204,8 @@ namespace Konamiman.Z80dotNet
             get => aF.GetBit(6);
             set
             {
-                lock (sync) aF = AF.SetBit(6, value);
+                lock (sync) aF = aF.SetBit(6, value);
+                OnRegisterChanged("F", aF & 0xFF);
             }
         }
 
@@ -180,8 +214,16 @@ namespace Konamiman.Z80dotNet
             get => aF.GetBit(7);
             set
             {
-                lock (sync) aF = AF.SetBit(7, value);
+                lock (sync) aF = aF.SetBit(7, value);
+                OnRegisterChanged("F", aF & 0xFF);
             }
+        }
+
+        public EventHandler<RegisterChangedEventArgs>? RegisterChanged;
+
+        private void OnRegisterChanged(string registerName, int newValue)
+        {
+            RegisterChanged?.Invoke(this, new RegisterChangedEventArgs(registerName, (short)newValue, null));
         }
     }
 }

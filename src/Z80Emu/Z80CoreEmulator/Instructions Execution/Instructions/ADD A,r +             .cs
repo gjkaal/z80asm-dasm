@@ -26,7 +26,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -50,7 +50,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -74,7 +74,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -98,7 +98,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -121,7 +121,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 4;
         }
@@ -269,7 +269,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -293,7 +293,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -317,7 +317,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -341,7 +341,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -364,7 +364,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 4;
         }
@@ -388,7 +388,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -412,7 +412,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -436,7 +436,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -460,7 +460,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -483,7 +483,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 4;
         }
@@ -507,7 +507,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -531,7 +531,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -555,7 +555,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -579,7 +579,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -602,7 +602,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 4;
         }
@@ -626,7 +626,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -650,7 +650,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -674,7 +674,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -698,7 +698,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -721,7 +721,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 4;
         }
@@ -745,7 +745,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -769,7 +769,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -793,7 +793,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -817,7 +817,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -840,7 +840,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 4;
         }
@@ -864,7 +864,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -888,7 +888,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -912,7 +912,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -936,7 +936,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 4;
         }
@@ -959,7 +959,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 4;
         }
@@ -984,7 +984,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -1009,7 +1009,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -1034,7 +1034,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -1059,7 +1059,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -1083,7 +1083,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 7;
         }
@@ -1107,7 +1107,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -1131,7 +1131,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -1155,7 +1155,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -1179,7 +1179,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 7;
         }
@@ -1202,7 +1202,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 7;
         }
@@ -1226,7 +1226,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1250,7 +1250,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1274,7 +1274,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1298,7 +1298,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1321,7 +1321,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 8;
         }
@@ -1345,7 +1345,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1369,7 +1369,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1393,7 +1393,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1417,7 +1417,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1440,7 +1440,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 8;
         }
@@ -1464,7 +1464,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1488,7 +1488,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1512,7 +1512,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1536,7 +1536,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1559,7 +1559,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 8;
         }
@@ -1583,7 +1583,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1607,7 +1607,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1631,7 +1631,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1655,7 +1655,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 8;
         }
@@ -1678,7 +1678,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 8;
         }
@@ -1704,7 +1704,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -1730,7 +1730,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -1756,7 +1756,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -1782,7 +1782,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -1807,7 +1807,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 19;
         }
@@ -1833,7 +1833,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -1859,7 +1859,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -1885,7 +1885,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd ^ 0x80) & (valueToAdd ^ newValue) & 0x80;
             Registers.NF = 0;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -1911,7 +1911,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             return 19;
         }
@@ -1936,7 +1936,7 @@ namespace Konamiman.Z80dotNet
             Registers.CF = newValueInt & 0x100;
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x80;
             Registers.NF = 1;
-            SetFlags3and5From(valueToAdd);
+            Registers.SetFlags3and5From(valueToAdd);
 
             return 19;
         }

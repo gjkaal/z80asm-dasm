@@ -7,10 +7,13 @@ namespace Konamiman.Z80dotNet.Tests
         [Test]
         public void HelloWorldTest()
         {
-            var Sut = new Z80Processor();
+            IZ80Processor Sut = new Z80Processor();
             Sut.AutoStopOnRetWithStackEmpty = true;
             Sut.InstructionExecutor = new Z80InstructionExecutor();
-            Sut.InstructionExecutor.InitProcessorAgent(Sut);
+
+            var agent = Sut as IZ80ProcessorAgent;
+            Assert.That(agent, Is.Not.Null);
+            Sut.InstructionExecutor.InitProcessorAgent(agent!);
 
             var program = new byte[]
             {

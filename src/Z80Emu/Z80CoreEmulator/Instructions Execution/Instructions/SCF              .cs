@@ -17,7 +17,7 @@ namespace Konamiman.Z80dotNet
             var flags = Registers.F;
             var newValue = (byte)((flags & HF_NF_reset) | CF_set);
             Registers.ChangeFlags(newValue);
-            SetFlags3and5From(Registers.A);
+            Registers.SetFlags3and5From(Registers.A);
 
             return 4;
         }

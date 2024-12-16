@@ -23,7 +23,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 11;
         }
@@ -44,7 +44,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 11;
         }
@@ -65,7 +65,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 11;
         }
@@ -86,7 +86,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 11;
         }
@@ -107,7 +107,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -128,7 +128,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -149,7 +149,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -170,7 +170,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -191,7 +191,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -212,7 +212,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -233,7 +233,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -254,7 +254,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = (oldValue ^ newValue ^ valueToAdd) & 0x1000;
             Registers.CF = newValueInt & 0x10000;
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }

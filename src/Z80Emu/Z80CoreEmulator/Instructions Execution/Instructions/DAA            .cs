@@ -25,7 +25,7 @@
             Registers.SF = newValue & 0x80;
             Registers.ZF = newValue == 0;
             Registers.PF = Parity[newValue];
-            SetFlags3and5From(newValue);
+            Registers.SetFlags3and5From(newValue);
 
             Registers.A = newValue;
 

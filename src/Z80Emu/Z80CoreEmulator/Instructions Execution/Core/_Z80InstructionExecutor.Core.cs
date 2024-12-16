@@ -150,14 +150,6 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(address + 1)));
         }
 
-        private void SetFlags3and5From(byte value)
-        {
-            const int Flags_3_5 = 0x28;
-            var flags = Registers.F;
-            var update = (byte)((flags & ~Flags_3_5) | (value & Flags_3_5));
-            Registers.ChangeFlags(update);
-        }
-
         #endregion Auxiliary methods
     }
 }

@@ -831,11 +831,11 @@ namespace Konamiman.Z80dotNet.Tests
                 this.processorAgent = processorAgent;
             }
 
-            public Action<byte> ExtraBeforeFetchCode { get; set; }
+            public Action<byte> ExtraBeforeFetchCode { get; set; } = b => { };
 
-            public Action<byte> ExtraAfterFetchCode { get; set; }
+            public Action<byte> ExtraAfterFetchCode { get; set; } = b => { };
 
-            public Func<byte, byte> TStatesReturner { get; set; }
+            public Func<byte, byte> TStatesReturner { get; set; } = b => 0;
 
             public int Execute(byte firstOpcodeByte)
             {
@@ -866,7 +866,7 @@ namespace Konamiman.Z80dotNet.Tests
 
             public Dictionary<byte, int> TimesEachInstructionIsExecuted = new();
 
-            public event EventHandler<InstructionFetchFinishedEventArgs> InstructionFetchFinished;
+            public event EventHandler<InstructionFetchFinishedEventArgs>? InstructionFetchFinished;
         }
 
         #endregion

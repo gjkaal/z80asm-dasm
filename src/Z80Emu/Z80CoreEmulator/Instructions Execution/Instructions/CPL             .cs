@@ -5,7 +5,7 @@
         /// <summary>
         /// The CPL instruction.
         /// </summary>
-        byte CPL()
+        private byte CPL()
         {
             FetchFinished();
 
@@ -13,7 +13,7 @@
 
             Registers.HF = 1;
             Registers.NF = 1;
-            SetFlags3and5From(Registers.A);
+            Registers.SetFlags3and5From(Registers.A);
 
             return 4;
         }

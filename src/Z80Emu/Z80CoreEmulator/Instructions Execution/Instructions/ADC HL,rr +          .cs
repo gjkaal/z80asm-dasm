@@ -27,7 +27,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = (oldValue ^ valueToAdd ^ 0x8000) & (valueToAdd ^ newValue) & 0x8000;
 
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -52,7 +52,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x8000;
 
             Registers.NF = 1;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -77,7 +77,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = (oldValue ^ valueToAdd ^ 0x8000) & (valueToAdd ^ newValue) & 0x8000;
 
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -102,7 +102,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x8000;
 
             Registers.NF = 1;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -127,7 +127,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = (oldValue ^ valueToAdd ^ 0x8000) & (valueToAdd ^ newValue) & 0x8000;
 
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -152,7 +152,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x8000;
 
             Registers.NF = 1;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -177,7 +177,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = (oldValue ^ valueToAdd ^ 0x8000) & (valueToAdd ^ newValue) & 0x8000;
 
             Registers.NF = 0;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }
@@ -202,7 +202,7 @@ namespace Konamiman.Z80dotNet
             Registers.PF = (oldValue ^ valueToAdd) & (oldValue ^ newValue) & 0x8000;
 
             Registers.NF = 1;
-            SetFlags3and5From(newValue.GetHighByte());
+            Registers.SetFlags3and5From(newValue.GetHighByte());
 
             return 15;
         }

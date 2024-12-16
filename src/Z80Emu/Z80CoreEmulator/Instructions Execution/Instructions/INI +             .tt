@@ -42,7 +42,7 @@ namespace Konamiman.Z80dotNet
             Registers.ZF = (counter == 0);
             Registers.NF = 1;
             Registers.SF = counter.GetBit(7);
-            SetFlags3and5From(counter);
+            Registers.SetFlags3and5From(counter);
 
 <# if(isRepeat) { #>
 			if(counter != 0) {

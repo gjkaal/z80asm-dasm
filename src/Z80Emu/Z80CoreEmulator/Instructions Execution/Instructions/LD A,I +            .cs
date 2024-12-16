@@ -22,7 +22,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = 0;
             Registers.NF = 0;
             Registers.PF = Registers.IFF2;
-            SetFlags3and5From(value);
+            Registers.SetFlags3and5From(value);
 
             return 9;
         }
@@ -42,7 +42,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = 0;
             Registers.NF = 0;
             Registers.PF = Registers.IFF2;
-            SetFlags3and5From(value);
+            Registers.SetFlags3and5From(value);
 
             return 9;
         }

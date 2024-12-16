@@ -22,7 +22,7 @@ namespace Konamiman.Z80dotNet
             Registers.NF = 0;
             Registers.HF = 0;
             Registers.PF = Parity[value];
-            SetFlags3and5From(value);
+            Registers.SetFlags3and5From(value);
 
             return 12;
         }
@@ -42,7 +42,7 @@ namespace Konamiman.Z80dotNet
             Registers.NF = 0;
             Registers.HF = 0;
             Registers.PF = Parity[value];
-            SetFlags3and5From(value);
+            Registers.SetFlags3and5From(value);
 
             return 12;
         }
@@ -62,7 +62,7 @@ namespace Konamiman.Z80dotNet
             Registers.NF = 0;
             Registers.HF = 0;
             Registers.PF = Parity[value];
-            SetFlags3and5From(value);
+            Registers.SetFlags3and5From(value);
 
             return 12;
         }
@@ -82,7 +82,7 @@ namespace Konamiman.Z80dotNet
             Registers.NF = 0;
             Registers.HF = 0;
             Registers.PF = Parity[value];
-            SetFlags3and5From(value);
+            Registers.SetFlags3and5From(value);
 
             return 12;
         }
@@ -102,7 +102,7 @@ namespace Konamiman.Z80dotNet
             Registers.NF = 0;
             Registers.HF = 0;
             Registers.PF = Parity[value];
-            SetFlags3and5From(value);
+            Registers.SetFlags3and5From(value);
 
             return 12;
         }
@@ -122,7 +122,7 @@ namespace Konamiman.Z80dotNet
             Registers.NF = 0;
             Registers.HF = 0;
             Registers.PF = Parity[value];
-            SetFlags3and5From(value);
+            Registers.SetFlags3and5From(value);
 
             return 12;
         }
@@ -142,7 +142,7 @@ namespace Konamiman.Z80dotNet
             Registers.NF = 0;
             Registers.HF = 0;
             Registers.PF = Parity[value];
-            SetFlags3and5From(value);
+            Registers.SetFlags3and5From(value);
 
             return 12;
         }
@@ -161,7 +161,7 @@ namespace Konamiman.Z80dotNet
             Registers.NF = 0;
             Registers.HF = 0;
             Registers.PF = Parity[value];
-            SetFlags3and5From(value);
+            Registers.SetFlags3and5From(value);
 
             return 12;
         }

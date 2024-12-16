@@ -29,7 +29,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = 0;
             Registers.PF = Parity[newAvalue];
             Registers.NF = 0;
-            SetFlags3and5From(newAvalue);
+            Registers.SetFlags3and5From(newAvalue);
 
             return 18;
         }
@@ -56,7 +56,7 @@ namespace Konamiman.Z80dotNet
             Registers.HF = 0;
             Registers.PF = Parity[newAvalue];
             Registers.NF = 0;
-            SetFlags3and5From(newAvalue);
+            Registers.SetFlags3and5From(newAvalue);
 
             return 18;
         }
