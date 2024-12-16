@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <RootNamespace>Konamiman.Z80dotNet</RootNamespace>
+    <Authors>Konamiman</Authors>
+    <Description>A Z80 CPU emulator written in C#</Description>
+    <PackageId>Z80dotNet</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageVersion>8.0.0</PackageVersion>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <Copyright>Copyright © Konamiman 2015</Copyright>
+  </PropertyGroup>
+
+</Project>

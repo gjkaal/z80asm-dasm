@@ -1,0 +1,682 @@
+﻿using AutoFixture;
+using Konamiman.Z80dotNet.Enums;
+using Moq;
+
+namespace Konamiman.Z80dotNet.Tests
+{
+    public class Z80ProcessorTests_MemoryAccess
+    {
+        private Z80ProcessorForTests Sut { get; set; }
+        private Fixture Fixture { get; set; }
+        private Mock<IMemory> Memory { get; set; }
+        private Mock<IMemory> Ports { get; set; }
+
+        [SetUp]
+        public void Setup()
+        {
+            Fixture = new Fixture();
+
+            Sut = new Z80ProcessorForTests();
+            Sut.SetInstructionExecutionContextToNonNull();
+
+            Memory = new Mock<IMemory>();
+            Sut.Memory = Memory.Object;
+            Ports = new Mock<IMemory>();
+            Sut.PortsSpace = Ports.Object;
+        }
+
+        [Test]
+        public void Can_create_instances()
+        {
+            Assert.That(Sut, Is.Not.Null);
+        }
+
+        #region ReadFromMemory and ReadFromPort
+
+        [Test]
+        [TestCase(MemoryAccessMode.ReadAndWrite, false)]
+        [TestCase(MemoryAccessMode.ReadOnly, false)]
+        [TestCase(MemoryAccessMode.ReadAndWrite, true)]
+        [TestCase(MemoryAccessMode.ReadOnly, true)]
+        public void ReadFromMemory_accesses_memory_if_memory_mode_is_ReadAndWrite_or_ReadOnly(MemoryAccessMode accessMode, bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            memory.Setup(m => m[address]).Returns(value);
+            SetAccessMode(address, accessMode, isPort);
+
+            var actual = Read(address, isPort);
+
+            Assert.That(value, Is.EqualTo(actual));
+            memory.Verify(m => m[address]);
+        }
+
+        private void SetAccessMode(byte address, MemoryAccessMode accessMode, bool isPort)
+        {
+            if (isPort)
+                Sut.SetPortsSpaceAccessMode(address, 1, accessMode);
+            else
+                Sut.SetMemoryAccessMode(address, 1, accessMode);
+        }
+
+        [Test]
+        [TestCase(MemoryAccessMode.NotConnected, false)]
+        [TestCase(MemoryAccessMode.WriteOnly, false)]
+        [TestCase(MemoryAccessMode.NotConnected, true)]
+        [TestCase(MemoryAccessMode.WriteOnly, true)]
+        public void ReadFromMemory_does_not_access_memory_if_memory_mode_is_NotConnected_or_WriteOnly(MemoryAccessMode accessMode, bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            memory.Setup(m => m[address]).Throws<Exception>();
+            SetAccessMode(address, accessMode, isPort);
+
+            Read(address, isPort);
+        }
+
+        private byte Read(byte address, bool isPort)
+        {
+            if (isPort)
+                return Sut.ReadFromPort(address);
+            else
+                return Sut.ReadFromMemory(address);
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReadFromMemory_fires_Before_event_with_appropriate_address_and_value(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+
+            var eventFired = false;
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeReadEventType(isPort))
+                {
+                    eventFired = true;
+                    Assert.That(sender, Is.EqualTo(Sut));
+                    Assert.That(address, Is.EqualTo(args.Address));
+                    Assert.That(args.Value, Is.EqualTo(0xFF));
+                }
+            };
+
+            Read(address, isPort);
+
+            Assert.That(eventFired);
+        }
+
+        private MemoryAccessEventType BeforeReadEventType(bool isPort)
+        {
+            if (isPort)
+                return MemoryAccessEventType.BeforePortRead;
+            else
+                return MemoryAccessEventType.BeforeMemoryRead;
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReadFromMemory_fires_After_event_with_appropriate_address_and_value_if_memory_is_accessed(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            var eventFired = false;
+
+            memory.Setup(m => m[address]).Returns(value);
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == AfterReadEventType(isPort))
+                {
+                    eventFired = true;
+                    Assert.That(sender, Is.EqualTo(Sut));
+                    Assert.That(address, Is.EqualTo(args.Address));
+                    Assert.That(value, Is.EqualTo(args.Value));
+                }
+            };
+
+            var actual = Read(address, isPort);
+
+            Assert.That(eventFired);
+            Assert.That(value, Is.EqualTo(actual));
+        }
+
+        private MemoryAccessEventType AfterReadEventType(bool isPort)
+        {
+            if (isPort)
+                return MemoryAccessEventType.AfterPortRead;
+            else
+                return MemoryAccessEventType.AfterMemoryRead;
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReadFromMemory_fires_After_event_with_same_value_as_Before_event_if_memory_is_not_accessed(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            var beforeEventFired = false;
+            var afterEventFired = false;
+
+            memory.Setup(m => m[address]).Throws<Exception>();
+            SetAccessMode(address, MemoryAccessMode.NotConnected, isPort);
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeReadEventType(isPort))
+                {
+                    beforeEventFired = true;
+                    Assert.That(address, Is.EqualTo(args.Address));
+                    args.Value = value;
+                }
+                if (args.EventType == AfterReadEventType(isPort))
+                {
+                    afterEventFired = true;
+                    Assert.That(address, Is.EqualTo(args.Address));
+                    Assert.That(value, Is.EqualTo(args.Value));
+                }
+            };
+
+            var actual = Read(address, isPort);
+
+            Assert.That(beforeEventFired);
+            Assert.That(afterEventFired);
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReadFromMemory_returns_value_set_in_After_event(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var valueFromMemory = Fixture.Create<byte>();
+            var valueFromEvent = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            var eventFired = false;
+
+            memory.Setup(m => m[address]).Returns(valueFromMemory);
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == AfterReadEventType(isPort))
+                {
+                    eventFired = true;
+                    args.Value = valueFromEvent;
+                }
+            };
+
+            var actual = Read(address, isPort);
+
+            Assert.That(eventFired);
+            Assert.That(valueFromEvent, Is.EqualTo(actual));
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReadFromMemory_does_not_access_memory_if_Cancel_is_set_from_Before_event(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            memory.Setup(m => m[address]).Throws<Exception>();
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeReadEventType(isPort))
+                {
+                    args.CancelMemoryAccess = true;
+                    args.Value = value;
+                }
+            };
+
+            var actual = Read(address, isPort);
+
+            Assert.That(value, Is.EqualTo(actual));
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReadFromMemory_propagates_Cancel_from_Before_to_after_event(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            memory.Setup(m => m[address]).Throws<Exception>();
+
+            var eventFired = false;
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeReadEventType(isPort))
+                {
+                    args.CancelMemoryAccess = true;
+                }
+                else if (args.EventType == AfterReadEventType(isPort))
+                {
+                    eventFired = true;
+                    Assert.That(args.CancelMemoryAccess);
+                }
+            };
+
+            Read(address, isPort);
+
+            Assert.That(eventFired);
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReadFromMemory_enters_with_null_LocalState(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            var eventFired = false;
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeReadEventType(isPort))
+                {
+                    eventFired = true;
+                    Assert.That(args.LocalUserState, Is.Null);
+                }
+            };
+
+            Read(address, isPort);
+
+            Assert.That(eventFired);
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReadFromMemory_passes_LocalState_from_Before_to_After(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var localUserState = Fixture.Create<object>();
+            var memory = isPort ? Ports : Memory;
+
+            var eventFired = false;
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeReadEventType(isPort))
+                {
+                    args.LocalUserState = localUserState;
+                }
+                else if (args.EventType == AfterReadEventType(isPort))
+                {
+                    eventFired = true;
+                    Assert.That(localUserState, Is.EqualTo(args.LocalUserState));
+                }
+            };
+
+            Read(address, isPort);
+
+            Assert.That(eventFired);
+        }
+
+        #endregion
+
+        #region FetchNextOpcode
+
+        [Test]
+        public void FetchNextOpcode_reads_from_address_pointed_by_PC()
+        {
+            var address = Fixture.Create<ushort>();
+            var value = Fixture.Create<byte>();
+
+            Memory.Setup(m => m[address]).Returns(value);
+            Sut.Registers.PC = address;
+
+            var actual = Sut.FetchNextOpcode();
+
+            Assert.That(value, Is.EqualTo(actual));
+            Memory.Verify(m => m[address]);
+        }
+
+        [Test]
+        public void FetchNextOpcode_increases_PC_by_one()
+        {
+            var address = Fixture.Create<ushort>();
+            Sut.Registers.PC = address;
+
+            Sut.FetchNextOpcode();
+
+            Assert.That(Sut.Registers.PC, Is.EqualTo(address.ToShort().Inc()));
+        }
+
+        #endregion
+
+        #region WriteToMemory and WriteToPort
+
+        [Test]
+        [TestCase(MemoryAccessMode.ReadAndWrite, false)]
+        [TestCase(MemoryAccessMode.WriteOnly, false)]
+        [TestCase(MemoryAccessMode.ReadAndWrite, true)]
+        [TestCase(MemoryAccessMode.WriteOnly, true)]
+        public void WriteToMemory_accesses_memory_if_memory_mode_is_ReadAndWrite_or_WriteOnly(MemoryAccessMode accessMode, bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            SetAccessMode(address, accessMode, isPort);
+
+            Write(address, value, isPort);
+
+            memory.VerifySet(m => m[address] = value);
+        }
+
+        private void Write(byte address, byte value, bool isPort)
+        {
+            if (isPort)
+                Sut.WriteToPort(address, value);
+            else
+                Sut.WriteToMemory(address, value);
+        }
+
+
+        [Test]
+        [TestCase(MemoryAccessMode.NotConnected, false)]
+        [TestCase(MemoryAccessMode.ReadOnly, false)]
+        [TestCase(MemoryAccessMode.NotConnected, true)]
+        [TestCase(MemoryAccessMode.ReadOnly, true)]
+        public void WriteToMemory_does_not_access_memory_if_memory_mode_is_NotConnected_or_ReadOnly(MemoryAccessMode accessMode, bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            memory.SetupSet(m => m[address] = value).Throws<Exception>();
+            SetAccessMode(address, accessMode, isPort);
+
+            Write(address, value, isPort);
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void WriteMemory_fires_Before_event_with_appropriate_address_and_value(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+
+            var eventFired = false;
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeWriteEventType(isPort))
+                {
+                    eventFired = true;
+                    Assert.That(sender, Is.EqualTo(Sut));
+                    Assert.That(address, Is.EqualTo(args.Address));
+                    Assert.That(value, Is.EqualTo(args.Value));
+                }
+            };
+
+            Write(address, value, isPort);
+
+            Assert.That(eventFired);
+        }
+
+        private MemoryAccessEventType BeforeWriteEventType(bool isPort)
+        {
+            if (isPort)
+                return MemoryAccessEventType.BeforePortWrite;
+            else
+                return MemoryAccessEventType.BeforeMemoryWrite;
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void WriteToMemory_fires_After_event_with_appropriate_address_and_value_if_memory_is_accessed(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            var eventFired = false;
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == AfterWriteEventType(isPort))
+                {
+                    eventFired = true;
+                    Assert.That(sender, Is.EqualTo(Sut));
+                    Assert.That(address, Is.EqualTo(args.Address));
+                    Assert.That(value, Is.EqualTo(args.Value));
+                }
+            };
+
+            Write(address, value, isPort);
+
+            Assert.That(eventFired);
+            memory.VerifySet(m => m[address] = value);
+        }
+
+        private MemoryAccessEventType AfterWriteEventType(bool isPort)
+        {
+            if (isPort)
+                return MemoryAccessEventType.AfterPortWrite;
+            else
+                return MemoryAccessEventType.AfterMemoryWrite;
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void WriteToMemory_fires_After_event_with_same_value_as_Before_event_if_memory_is_not_accessed(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var originalValue = Fixture.Create<byte>();
+            var modifiedValue = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            var beforeEventFired = false;
+            var afterEventFired = false;
+
+            memory.SetupSet(m => m[address] = modifiedValue).Throws<Exception>();
+            SetAccessMode(address, MemoryAccessMode.NotConnected, isPort);
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeWriteEventType(isPort))
+                {
+                    beforeEventFired = true;
+                    Assert.That(address, Is.EqualTo(args.Address));
+                    args.Value = modifiedValue;
+                }
+                if (args.EventType == AfterWriteEventType(isPort))
+                {
+                    afterEventFired = true;
+                    Assert.That(address, Is.EqualTo(args.Address));
+                    Assert.That(modifiedValue, Is.EqualTo(args.Value));
+                }
+            };
+
+            Write(address, originalValue, isPort);
+
+            Assert.That(beforeEventFired);
+            Assert.That(afterEventFired);
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void WriteToMemory_writes_value_set_in_Before_event(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var originalValue = Fixture.Create<byte>();
+            var modifiedValue = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            var eventFired = false;
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeWriteEventType(isPort))
+                {
+                    eventFired = true;
+                    args.Value = modifiedValue;
+                }
+            };
+
+            Write(address, originalValue, isPort);
+
+            Assert.That(eventFired);
+            memory.VerifySet(m => m[address] = modifiedValue);
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void WriteToMemory_does_not_access_memory_if_Cancel_is_set_from_Before_event(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            var eventFired = false;
+
+            memory.SetupSet(m => m[address] = value).Throws<Exception>();
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeWriteEventType(isPort))
+                {
+                    eventFired = true;
+                    args.CancelMemoryAccess = true;
+                    args.Value = value;
+                }
+            };
+
+            Write(address, value, isPort);
+
+            Assert.That(eventFired);
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void WriteToMemory_propagates_Cancel_from_Before_to_after_event(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            memory.SetupSet(m => m[address] = value).Throws<Exception>();
+
+            var eventFired = false;
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeWriteEventType(isPort))
+                {
+                    args.CancelMemoryAccess = true;
+                }
+                else if (args.EventType == AfterWriteEventType(isPort))
+                {
+                    eventFired = true;
+                    Assert.That(args.CancelMemoryAccess);
+                }
+            };
+
+            Write(address, value, isPort);
+
+            Assert.That(eventFired);
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void WriteToMemory_enters_with_null_LocalState(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            var eventFired = false;
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeWriteEventType(isPort))
+                {
+                    eventFired = true;
+                    Assert.That(args.LocalUserState, Is.Null);
+                }
+            };
+
+            Write(address, value, isPort);
+
+            Assert.That(eventFired);
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void WriteToMemory_passes_LocalState_from_Before_to_After(bool isPort)
+        {
+            var address = Fixture.Create<byte>();
+            var localUserState = Fixture.Create<object>();
+            var value = Fixture.Create<byte>();
+            var memory = isPort ? Ports : Memory;
+
+            var eventFired = false;
+
+            Sut.MemoryAccess += (sender, args) =>
+            {
+                if (args.EventType == BeforeWriteEventType(isPort))
+                {
+                    args.LocalUserState = localUserState;
+                }
+                else if (args.EventType == AfterWriteEventType(isPort))
+                {
+                    eventFired = true;
+                    Assert.That(localUserState, Is.EqualTo(args.LocalUserState));
+                }
+            };
+
+            Write(address, value, isPort);
+
+            Assert.That(eventFired);
+        }
+
+        #endregion
+
+        #region Other
+
+        [Test]
+        public void ReadAndWrite_operations_fail_if_not_execution_an_instruction()
+        {
+            var address = Fixture.Create<byte>();
+            var value = Fixture.Create<byte>();
+
+            Sut.SetInstructionExecutionContextToNull();
+
+            Assert.Throws<InvalidOperationException>(() => Sut.ReadFromMemory(address));
+            Assert.Throws<InvalidOperationException>(() => Sut.ReadFromPort(address));
+            Assert.Throws<InvalidOperationException>(() => Sut.FetchNextOpcode());
+            Assert.Throws<InvalidOperationException>(() => Sut.WriteToMemory(address, value));
+            Assert.Throws<InvalidOperationException>(() => Sut.WriteToPort(address, value));
+        }
+
+        #endregion
+    }
+}
