@@ -31,6 +31,9 @@
     <None Update="TestResources\overwrite-error.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestResources\rewriting-code.asm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestResources\stack-underflow.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

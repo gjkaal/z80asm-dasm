@@ -3,6 +3,13 @@ using System.Linq;
 
 namespace Konamiman.Z80dotNet
 {
+    public enum BankType
+    {
+        None, // no data stored or retrieved
+        Ram,  // data stored and retrieved
+        Rom,  // read only memory  (except when SetContents is used or LoadFromIntelHexFile)
+    }
+
     /// <summary>
     /// Represents a trivial memory implementation in which all the addresses are RAM 
     /// and the values written are simply read back. This is the default implementation
@@ -21,12 +28,45 @@ namespace Konamiman.Z80dotNet
             Size = size;
         }
 
+        private readonly Dictionary<byte, BankType> memoryBanks = new();
+        public void SetMemoryBankType(byte bank, BankType bankType)
+        {
+            // upper 4 bits are the bank number
+            var bankNumber = (byte)(bank & 0xF0);
+            if (memoryBanks.ContainsKey(bankNumber)) memoryBanks.Remove(bankNumber);
+            memoryBanks.Add(bankNumber, bankType);
+        }
+
+        public BankType GetBanktype(int address)
+        {
+            var bankNumber = (byte)((address >> 8) & 0xF0);
+            if (memoryBanks.ContainsKey(bankNumber))
+                return memoryBanks[bankNumber];
+            // default to RAM
+            return BankType.Ram;
+        }
+
         public int Size { get; private set; }
 
         public byte this[int address]
         {
-            get => memory[address];
-            set => memory[address] = value;
+            get
+            {
+                switch (GetBanktype(address))
+                {
+                    case BankType.Ram:
+                        return memory[address];
+                    case BankType.Rom:
+                        return memory[address];
+                    default:
+                        return 0xFF;
+                }
+            }
+            set
+            {
+                if (GetBanktype(address) == BankType.Ram)
+                    memory[address] = value;
+            }
         }
 
         /// <summary>

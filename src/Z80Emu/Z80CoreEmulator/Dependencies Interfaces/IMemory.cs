@@ -19,6 +19,13 @@
         byte this[int address] { get; set; }
 
         /// <summary>
+        /// Simple method to set the memory type per bank. (e.g. 0x0000 - 0x1000)
+        /// </summary>
+        /// <param name="bank"></param>
+        /// <param name="bankType"></param>
+        void SetMemoryBankType(byte bank, BankType bankType);
+
+        /// <summary>
         /// Sets a portion of the memory with the contents of a byte array.
         /// </summary>
         /// <param name="startAddress">First memory address that will be set</param>

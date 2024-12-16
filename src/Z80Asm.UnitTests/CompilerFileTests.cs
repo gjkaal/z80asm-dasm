@@ -13,6 +13,7 @@ public sealed class CompilerFileTests
     [DataRow("macro.asm")]
     [DataRow("stack-underflow.asm")]
     [DataRow("strings.asm")]
+    [DataRow("rewriting-code.asm")]
     public void CanCompileFile(string fileName)
     {
         Log.Reset();
