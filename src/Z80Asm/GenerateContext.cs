@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Z80Asm
@@ -87,11 +88,32 @@ namespace Z80Asm
                 }
             }
 
+            if (Ip > OutputBytes.Count)
+            {
+                // Add empty
+                OutputBytes.AddRange(Enumerable.Repeat<byte>(0xFF, Ip - OutputBytes.Count));
+                Op = Ip;
+            }
+
+            if (Ip < Op)
+            {
+                throw new InvalidDataException($"error: output bytes out of sync: {Ip} < {Op}");
+            }
+
             if (Op < OutputBytes.Count)
             {
-                // Don't overwrite old data if NULL
-                if (val != null)
-                    OutputBytes[Op] = val.Value;
+                if (val.HasValue)
+                {
+                    // Do not overwrite existing data
+                    if (OutputBytes[Op] != 0xFF)
+                    {
+                        throw new InvalidDataException($"error: output overwrite at address 0x{Op:X}");
+                    }
+                    else
+                    {
+                        OutputBytes[Op] = val.Value;
+                    }
+                }
             }
             else if (Op == OutputBytes.Count)
             {
@@ -100,6 +122,7 @@ namespace Z80Asm
             else
             {
                 OutputBytes.AddRange(Enumerable.Repeat<byte>(0xFF, Op - OutputBytes.Count));
+                Op += OutputBytes.Count;
                 OutputBytes.Add(val ?? 0xFF);
             }
 
@@ -124,22 +147,24 @@ namespace Z80Asm
         // Emit any 16-bit vaue (must be between -16384 and 65535)
         public void Emit16(SourcePosition pos, long value)
         {
+            var mempos = pos.Position;
             Emit(Utils.PackWord(pos, value));
         }
 
         // Emit any 8-bit value (must be between -128 and 255)
         public void Emit8(SourcePosition pos, long value)
         {
+            var mempos = pos.Position;
             Emit(Utils.PackByte(pos, value));
         }
 
         // Emit an array of bytes
         public void EmitBytes(byte[] bytes, bool list)
         {
-            bool wasListEnabled = _listEnabled;
+            var wasListEnabled = _listEnabled;
             _listEnabled = list;
 
-            for (int i = 0; i < bytes.Length; i++)
+            for (var i = 0; i < bytes.Length; i++)
             {
                 Emit(bytes[i]);
             }
@@ -150,10 +175,10 @@ namespace Z80Asm
         // Emit an array of bytes
         public void EmitBytes(byte?[] bytes, bool list)
         {
-            bool wasListEnabled = _listEnabled;
+            var wasListEnabled = _listEnabled;
             _listEnabled = list;
 
-            for (int i = 0; i < bytes.Length; i++)
+            for (var i = 0; i < bytes.Length; i++)
             {
                 Emit(bytes[i]);
             }
@@ -166,7 +191,7 @@ namespace Z80Asm
         public void EmitRelOffset(SourcePosition pos, int addr)
         {
             // Calculate the offset
-            int offset = addr - (_currentInstructionAddress + 2);
+            var offset = addr - (_currentInstructionAddress + 2);
 
             // Check range (yes, sbyte and byte)
             if (offset < sbyte.MinValue || offset > sbyte.MaxValue)
@@ -230,7 +255,7 @@ namespace Z80Asm
             if (_listPosition != null)
                 ListTo(_listPosition.Source.CreateEndPosition());
 
-            if(_sourceFileStack.Count > 0)
+            if (_sourceFileStack.Count > 0)
                 _listPosition = _sourceFileStack.Pop();
             else
                 _listPosition = null;
@@ -259,16 +284,16 @@ namespace Z80Asm
             System.Diagnostics.Debug.Assert(_listPosition == null || _listPosition.Source == pos.Source);
 
             // Work out the start and end lines
-            int fromLine = _listPosition == null ? 0 : _listPosition.LineNumber;
-            int toLine = pos.LineNumber;
+            var fromLine = _listPosition == null ? 0 : _listPosition.LineNumber;
+            var toLine = pos.LineNumber;
 
             // Add all listed lines
             var indent = new string(' ', ListColumnWidth);
-            for (int i = fromLine; i < toLine; i++)
+            for (var i = fromLine; i < toLine; i++)
             {
                 if (i == fromLine)
                 {
-                    int spaceNeeded = indent.Length - _listColumnPos;
+                    var spaceNeeded = indent.Length - _listColumnPos;
                     if (spaceNeeded > 0)
                         ListFile.Invoke(new string(' ', spaceNeeded), false);
                 }
@@ -332,7 +357,7 @@ namespace Z80Asm
 
         private void DumpUnlistedBytes()
         {
-            for (int b = 0; b < _unlistedBytes.Count; b++)
+            for (var b = 0; b < _unlistedBytes.Count; b++)
             {
                 if (b % 8 == 0)
                 {

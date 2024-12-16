@@ -65,6 +65,17 @@ namespace Konamiman.Z80dotNet.Enums
         /// <summary>
         /// Stack overflow was detected.
         /// </summary>
-        StackOverflow
+        StackOverflow,
+
+        /// <summary>
+        /// A breakpoint was encountered.
+        /// </summary>
+        Breakpoint,
+
+        /// <summary>
+        /// The processor was running and the cycle count reached the maximum value
+        /// as specified in the <see cref="IZ80Processor.AutoStopOnCycleCount"/> property.
+        /// </summary>
+        CycleCountReached
     }
 }

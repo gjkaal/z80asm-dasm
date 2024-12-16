@@ -1,5 +1,7 @@
 ﻿using Konamiman.Z80dotNet.Enums;
 using Konamiman.Z80dotNet.Z80EventArgs;
+using System.Collections.ObjectModel;
+using System.Net;
 
 namespace Konamiman.Z80dotNet
 {
@@ -81,6 +83,34 @@ namespace Konamiman.Z80dotNet
             }
         }
 
+        private readonly HashSet<ushort> activeBreakpoints = [];
+        private readonly List<Breakpoint> breakpoints = new();
+        public ReadOnlyCollection<Breakpoint> Breakpoints => breakpoints.AsReadOnly();
+
+        public void AddBreakpoint(string name, int address)
+        {
+            breakpoints.Add(new Breakpoint(name, address));
+            var uAddress = (ushort)address;
+            activeBreakpoints.Add(uAddress);
+        }
+
+        public void RemoveBreakpoint(string name)
+        {
+            breakpoints.RemoveAll(b => b.Name == name);
+            activeBreakpoints.Clear();
+            foreach (var breakpoint in breakpoints)
+            {
+                var uAddress = (ushort)breakpoint.Address;
+                activeBreakpoints.Add(uAddress);
+            }
+        }
+
+        public void ClearBreakpoints()
+        {
+            breakpoints.Clear();
+            activeBreakpoints.Clear();
+        }
+
         /// <summary>
         /// Executes the next instruction and returns the number of T-states elapsed.
         /// </summary>
@@ -118,6 +148,8 @@ namespace Konamiman.Z80dotNet
                     CheckForLdSpInstruction();
                     CheckForAutoStopOnRetInstruction();
                     CheckForAutoStopOnStackLimits();
+                    CheckBreakpoints();
+                    CheckAutostopOnCycleCount();
                 }
 
                 FireAfterInstructionExecutionEvent(totalTStates);
@@ -256,6 +288,21 @@ namespace Konamiman.Z80dotNet
         {
             if (AutoStopOnRetInstruction && executionContext.IsRetInstruction)
                 executionContext.StopReason = StopReason.RetInstruction;
+        }
+
+        private void CheckBreakpoints()
+        {
+            if (activeBreakpoints.Contains(Registers.PC))
+                executionContext.StopReason = StopReason.Breakpoint;
+        }
+
+        private void CheckAutostopOnCycleCount()
+        {
+            if (AutoStopOnCycleCount > 0)
+            {
+                if (TStatesElapsedSinceStart >= (ulong)AutoStopOnCycleCount)
+                    executionContext.StopReason = StopReason.CycleCountReached;
+            }
         }
 
         private void CheckForAutoStopOnStackLimits()
@@ -573,6 +620,8 @@ namespace Konamiman.Z80dotNet
         public bool AutoStopOnStackLimits { get; set; }
 
         public bool AutoStopOnRetWithStackEmpty { get; set; }
+
+        public int AutoStopOnCycleCount { get; set; }
 
         private readonly byte[] memoryWaitStatesForM1 = new byte[MemorySpaceSize];
 

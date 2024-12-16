@@ -1,5 +1,4 @@
 ﻿using Konamiman.Z80dotNet.Enums;
-using NUnit.Framework;
 
 namespace Konamiman.Z80dotNet.Tests
 {
@@ -57,6 +56,35 @@ namespace Konamiman.Z80dotNet.Tests
             Assert.That(Sut.StopReason, Is.EqualTo(StopReason.RetInstruction));
             Assert.That(Sut.Registers.A, Is.EqualTo(12));
             Assert.That(Sut.TStatesElapsedSinceStart, Is.EqualTo(28));
+        }
+
+        [Test]
+        public void TestStopOnCycleCount()
+        {
+            IZ80Processor Sut = new Z80Processor();
+            Sut.AutoStopOnCycleCount = 10;
+
+            // Auto stop as a guard against getting stuck in an infinite loop
+            Sut.AutoStopOnRetInstruction = true;
+            Sut.InstructionExecutor = new Z80InstructionExecutor();
+
+            var agent = Sut as IZ80ProcessorAgent;
+            Assert.That(agent, Is.Not.Null);
+            Sut.InstructionExecutor.InitProcessorAgent(agent!);
+
+            var program = new byte[]
+            {
+                0x3E, 0x07, //LD A,7
+                0xC6, 0x04, //ADD A,4
+                0x3C,       //INC A
+                0xC9        //RET
+            };
+
+            Sut.Memory.SetContents(0, program);
+            Sut.Start();
+
+            Assert.That(Sut.StopReason, Is.EqualTo(StopReason.CycleCountReached));
+            Assert.That(Sut.TStatesElapsedSinceStart, Is.LessThan(28));
         }
 
         [Test]
@@ -124,6 +152,40 @@ namespace Konamiman.Z80dotNet.Tests
 
             Assert.That(Sut.StopReason, Is.EqualTo(StopReason.StackOverflow));
             Assert.That(Sut.Registers.SP, Is.EqualTo(0x2FFF - 8));
+        }
+
+        [Test]
+        public void TestStopOnIP()
+        {
+            // 210000E5F1D1C9
+            IZ80Processor Sut = new Z80Processor();
+            Sut.Registers.InitializeSP(0x2FFF);
+            Sut.Registers.SPLowerLimit = 0x2FFF - 6;
+            Sut.AutoStopOnRetInstruction = true;
+            Sut.AddBreakpoint("Some name", 0x0007);
+            Sut.InstructionExecutor = new Z80InstructionExecutor();
+
+            var agent = Sut as IZ80ProcessorAgent;
+            Assert.That(agent, Is.Not.Null);
+            Sut.InstructionExecutor.InitProcessorAgent(agent!);
+
+            var program = new byte[]
+            {
+         0x31, 0xFF, 0x2F,   // ld sp, RAM_END
+         0xE5,               // push hl
+         0xE5,               // push hl
+         0xE5,               // push hl
+         0xE5,               // push hl
+         0xE5,               // push hl
+         0xE5,               // push hl
+         0xC9,               // ret
+            };
+
+            Sut.Memory.SetContents(0, program);
+            Sut.Start();
+
+            Assert.That(Sut.StopReason, Is.EqualTo(StopReason.Breakpoint));
+            Assert.That(Sut.Registers.PC, Is.EqualTo(0x0007));
         }
     }
 }

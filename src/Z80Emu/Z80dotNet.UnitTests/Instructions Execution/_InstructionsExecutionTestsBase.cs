@@ -253,7 +253,9 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
             else if (reg.StartsWith("(I"))
             {
                 var regName = reg.Substring(1, 2);
-                var address = GetReg<short>(regName).Add(offset.ToSignedByte());
+                var address =
+                    GetReg<short>(regName)
+                    .Add(offset.ToSignedByte());
                 return ProcessorAgent.Memory[address];
             }
             else

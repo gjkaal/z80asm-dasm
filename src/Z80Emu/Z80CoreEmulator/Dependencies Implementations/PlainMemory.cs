@@ -11,10 +11,10 @@ namespace Konamiman.Z80dotNet
     public class PlainMemory : IMemory
     {
         private readonly byte[] memory;
-        
+
         public PlainMemory(int size)
         {
-            if(size < 1)
+            if (size < 1)
                 throw new InvalidOperationException("Memory size must be greater than zero");
 
             memory = new byte[size];
@@ -29,20 +29,49 @@ namespace Konamiman.Z80dotNet
             set => memory[address] = value;
         }
 
+        /// <summary>
+        /// Loads the contents of a memory from an Intel HEX file.
+        /// </summary>
+        /// <param name="startAddress">The address where the data will be loaded.</param>
+        /// <param name="reader">The stream containing the data</param>
+        public void LoadFromIntelHexFile(int startAddress, TextReader reader)
+        {
+            // Read each line of the file and parse it
+            while (true)
+            {
+                var line = reader.ReadLine();
+                if (line == null)
+                    break;
+                var record = IntelHexFileRecord.Parse(line);
+                if (record == null)
+                    continue;
+                // If the record is a data record, copy the data to the memory
+                if (record.RecordType == IntelHexFileRecordType.DataRecord)
+                {
+                    SetContents(
+                        startAddress + record.Address,
+                        record.Data,
+                        0,
+                        record.Data.Length
+                        );
+                }
+            }
+        }
+
         public void SetContents(int startAddress, byte[] contents, int startIndex = 0, int? length = null)
         {
             ArgumentNullException.ThrowIfNull(contents);
 
             if (length == null)
                 length = contents.Length;
-            
-            if((startIndex + length) > contents.Length)
+
+            if ((startIndex + length) > contents.Length)
                 throw new IndexOutOfRangeException("startIndex + length cannot be greater than contents.length");
 
-            if(startIndex < 0)
+            if (startIndex < 0)
                 throw new IndexOutOfRangeException("startIndex cannot be negative");
 
-            if(startAddress + length > Size)
+            if (startAddress + length > Size)
                 throw new IndexOutOfRangeException("startAddress + length cannot go beyond the memory size");
 
             Array.Copy(
@@ -52,17 +81,17 @@ namespace Konamiman.Z80dotNet
                 destinationIndex: startAddress,
                 length: length.Value
                 );
-            }
+        }
 
         public byte[] GetContents(int startAddress, int length)
         {
-            if(startAddress >= memory.Length)
+            if (startAddress >= memory.Length)
                 throw new IndexOutOfRangeException("startAddress cannot go beyond memory size");
 
-            if(startAddress + length > memory.Length)
+            if (startAddress + length > memory.Length)
                 throw new IndexOutOfRangeException("startAddress + length cannot go beyond memory size");
 
-            if(startAddress < 0)
+            if (startAddress < 0)
                 throw new IndexOutOfRangeException("startAddress cannot be negative");
 
             return memory.Skip(startAddress).Take(length).ToArray();

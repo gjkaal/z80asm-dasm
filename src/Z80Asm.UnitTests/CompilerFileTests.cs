@@ -31,4 +31,23 @@ public sealed class CompilerFileTests
         Assert.AreEqual(0, warningCount);
         Log.DumpSummary();
     }
+
+    [DataTestMethod]
+    [DataRow("overwrite-error.asm")]
+    public void ThrowsExceptionWhenCreatingBinary(string fileName)
+    {
+        Log.Reset();
+        var compiler = new Z80Assembler();
+        var path = Path.Combine("TestResources", fileName);
+        var source = new FileInfo(path);
+        Assert.IsTrue(source.Exists);
+        compiler.CreateSyntaxTreeFile = true;
+        compiler.CreateListFile = true;
+        compiler.CreateBinaryFile = true;
+        compiler.CreateIntelHexFile = true;
+
+        Assert.ThrowsException<InvalidDataException>(() => compiler.Compile(source));
+
+        Log.DumpSummary();
+    }
 }

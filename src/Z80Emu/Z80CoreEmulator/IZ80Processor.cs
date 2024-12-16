@@ -1,8 +1,27 @@
 ﻿using Konamiman.Z80dotNet.Enums;
 using Konamiman.Z80dotNet.Z80EventArgs;
+using System.Collections.ObjectModel;
 
 namespace Konamiman.Z80dotNet
 {
+    public class Breakpoint
+    {
+        public string Name { get; private set; }
+        public ushort Address { get; private set; }
+
+        public Breakpoint(string name, int address)
+        {
+            Name = name;
+            Address = (ushort)address;
+        }
+
+        public Breakpoint(int address)
+        {
+            Name = $"BP-0x{address:X4}";
+            Address = (ushort)address;
+        }
+    }
+
     /// <summary>
     /// Represents a Z80 processor class that can be used to develop processor simulators or computer emulators.
     /// </summary>
@@ -107,6 +126,11 @@ namespace Konamiman.Z80dotNet
         /// inclusing extra wait states.</returns>
         /// <exception cref="InvalidOperationException">The method is invoked from within an event handler.</exception>
         int ExecuteNextInstruction();
+
+        ReadOnlyCollection<Breakpoint> Breakpoints { get; }
+        void ClearBreakpoints();
+        void AddBreakpoint(string name, int address);
+        void RemoveBreakpoint(string name);
 
         #endregion
 
@@ -303,6 +327,12 @@ namespace Konamiman.Z80dotNet
         /// is empty or overflows.
         /// </summary>
         bool AutoStopOnStackLimits { get; set; }
+
+        /// <summary>
+        /// Maximum number of cycles to execute before stopping automatically.
+        /// Initialized to 0, which means no limit. Any value less than 0 will be treated as 0.
+        /// </summary>
+        int AutoStopOnCycleCount { get; set; }
 
         /// <summary>
         /// If the stack is empty, returns true.
