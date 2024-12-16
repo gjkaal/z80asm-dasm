@@ -47,7 +47,7 @@ namespace Konamiman.Z80dotNet
         {
             var value = FetchWord();
             FetchFinished(isLdSp: true);
-            Registers.SP = value;
+            Registers.SetSpFromInstruction(value);
             return 10;
         }
 

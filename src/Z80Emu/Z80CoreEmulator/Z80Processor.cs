@@ -23,13 +23,14 @@ namespace Konamiman.Z80dotNet
         public Z80Processor()
         {
             ClockSynchronizer = new ClockSynchronizer();
+            Registers = new Z80Registers();
 
             ClockFrequencyInMHz = 4;
             ClockSpeedFactor = 1;
 
             AutoStopOnDiPlusHalt = true;
             AutoStopOnRetWithStackEmpty = false;
-            unchecked { StartOfStack = (short)0xFFFF; }
+            unchecked { Registers.InitializeSP((short)0xFFFF); }
 
             SetMemoryWaitStatesForM1(0, MemorySpaceSize, 0);
             SetMemoryWaitStatesForNonM1(0, MemorySpaceSize, 0);
@@ -41,7 +42,6 @@ namespace Konamiman.Z80dotNet
             SetMemoryAccessMode(0, MemorySpaceSize, MemoryAccessMode.ReadAndWrite);
             SetPortsSpaceAccessMode(0, PortSpaceSize, MemoryAccessMode.ReadAndWrite);
 
-            Registers = new Z80Registers();
             InterruptSources = [];
 
             StopReason = StopReason.NeverRan;
@@ -81,7 +81,12 @@ namespace Konamiman.Z80dotNet
             }
         }
 
-        private int InstructionExecutionLoopCore(bool isSingleInstruction)
+        /// <summary>
+        /// Executes the next instruction and returns the number of T-states elapsed.
+        /// </summary>
+        /// <param name="singleStep">If this value is true, only a single step (one complete opcode) will be executed</param>
+        /// <returns></returns>
+        private int InstructionExecutionLoopCore(bool singleStep)
         {
             if (clockSynchronizer != null) clockSynchronizer.Start();
             executionContext = new InstructionExecutionContext();
@@ -105,11 +110,14 @@ namespace Konamiman.Z80dotNet
 
                 ThrowIfNoFetchFinishedEventFired();
 
-                if (!isSingleInstruction)
+                // singleStep is true if the 
+                if (!singleStep)
                 {
                     CheckAutoStopForHaltOnDi();
                     CheckForAutoStopForRetWithStackEmpty();
                     CheckForLdSpInstruction();
+                    CheckForAutoStopOnRetInstruction();
+                    CheckForAutoStopOnStackLimits();
                 }
 
                 FireAfterInstructionExecutionEvent(totalTStates);
@@ -122,10 +130,14 @@ namespace Konamiman.Z80dotNet
                 TStatesElapsedSinceStart += (ulong)interruptTStates;
                 TStatesElapsedSinceReset += (ulong)interruptTStates;
 
-                if (isSingleInstruction)
+                if (singleStep)
+                {
                     executionContext.StopReason = StopReason.ExecuteNextInstructionInvoked;
+                }
                 else if (clockSynchronizer != null)
+                {
                     clockSynchronizer.TryWait(totalTStates);
+                }
             }
 
             if (clockSynchronizer != null)
@@ -211,7 +223,7 @@ namespace Konamiman.Z80dotNet
             sp = (ushort)(sp - 1);
             WriteToMemoryInternal(sp, oldAddress.GetLowByte());
 
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = address;
         }
 
@@ -221,7 +233,7 @@ namespace Konamiman.Z80dotNet
             var newPC = NumberUtils.CreateShort(ReadFromMemoryInternal(sp), ReadFromMemoryInternal((ushort)(sp + 1)));
 
             Registers.PC = (ushort)newPC;
-            Registers.SP += 2;
+            Registers.IncSp();
         }
 
         private void ThrowIfNoFetchFinishedEventFired()
@@ -240,6 +252,27 @@ namespace Konamiman.Z80dotNet
                 executionContext.StopReason = StopReason.DiPlusHalt;
         }
 
+        private void CheckForAutoStopOnRetInstruction()
+        {
+            if (AutoStopOnRetInstruction && executionContext.IsRetInstruction)
+                executionContext.StopReason = StopReason.RetInstruction;
+        }
+
+        private void CheckForAutoStopOnStackLimits()
+        {
+            if (AutoStopOnStackLimits)
+            {
+                if (registers.StackUnderflow)
+                {
+                    executionContext.StopReason = StopReason.StackUnderflow;
+                }
+                if (registers.StackOverflow)
+                {
+                    executionContext.StopReason = StopReason.StackOverflow;
+                }
+            }
+        }
+
         private void CheckForAutoStopForRetWithStackEmpty()
         {
             if (AutoStopOnRetWithStackEmpty && executionContext.IsRetInstruction && StackIsEmpty())
@@ -249,12 +282,16 @@ namespace Konamiman.Z80dotNet
         private void CheckForLdSpInstruction()
         {
             if (executionContext.IsLdSpInstruction)
-                StartOfStack = Registers.SP;
+            {
+                var sp = Registers.SP;
+                Registers.InitializeSP(sp);
+                // TODO : Raise SP initialization event ?
+            }
         }
 
-        private bool StackIsEmpty()
+        public bool StackIsEmpty()
         {
-            return executionContext.SpAfterInstructionFetch == StartOfStack;
+            return executionContext.SpAfterInstructionFetch == Registers.StartOfStack;
         }
 
         private bool InterruptsEnabled => Registers.IFF1 == 1;
@@ -324,14 +361,13 @@ namespace Konamiman.Z80dotNet
             Registers.IFF2 = 0;
             Registers.PC = 0;
             unchecked { Registers.AF = (short)0xFFFF; }
-            unchecked { Registers.SP = (short)0xFFFF; }
+            unchecked { Registers.InitializeSP((short)0xFFFF); }
             InterruptMode = 0;
 
             NmiInterruptPending = false;
             IsHalted = false;
 
             TStatesElapsedSinceReset = 0;
-            StartOfStack = Registers.SP;
         }
 
         public int ExecuteNextInstruction()
@@ -368,8 +404,6 @@ namespace Konamiman.Z80dotNet
                 _InterruptMode = value;
             }
         }
-
-        public short StartOfStack { get; protected set; }
 
         #endregion Information and state
 
@@ -533,6 +567,10 @@ namespace Konamiman.Z80dotNet
         }
 
         public bool AutoStopOnDiPlusHalt { get; set; }
+
+        public bool AutoStopOnRetInstruction { get; set; }
+
+        public bool AutoStopOnStackLimits { get; set; }
 
         public bool AutoStopOnRetWithStackEmpty { get; set; }
 

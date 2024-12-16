@@ -14,7 +14,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
             var returnAddress = Fixture.Create<ushort>();
             var oldSP = Fixture.Create<short>();
 
-            Registers.SP = oldSP;
+            Registers!.InitializeSP(oldSP);
             SetMemoryContentsAt(oldSP.ToUShort(), returnAddress.GetLowByte());
             SetMemoryContentsAt(oldSP.ToUShort().Inc(), returnAddress.GetHighByte());
 

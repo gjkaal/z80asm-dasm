@@ -19,7 +19,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = 0x00;
 
             return 11;
@@ -37,7 +37,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = 0x08;
 
             return 11;
@@ -55,7 +55,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = 0x10;
 
             return 11;
@@ -73,7 +73,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = 0x18;
 
             return 11;
@@ -91,7 +91,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = 0x20;
 
             return 11;
@@ -109,7 +109,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = 0x28;
 
             return 11;
@@ -127,7 +127,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = 0x30;
 
             return 11;
@@ -145,7 +145,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = 0x38;
 
             return 11;

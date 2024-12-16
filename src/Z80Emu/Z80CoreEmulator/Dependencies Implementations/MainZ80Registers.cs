@@ -8,7 +8,7 @@ namespace Konamiman.Z80dotNet
     /// </summary>
     public class MainZ80Registers : IMainZ80Registers
     {
-        private readonly object sync = new();
+        protected readonly object sync = new();
         private short aF;
         private short bC;
         private short dE;

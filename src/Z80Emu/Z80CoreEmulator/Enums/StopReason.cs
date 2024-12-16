@@ -50,6 +50,21 @@ namespace Konamiman.Z80dotNet.Enums
         /// <see cref="IZ80Processor.Start"/> method, the <see cref="IZ80Processor.Continue"/> method
         /// or the <see cref="IZ80Processor.ExecuteNextInstruction"/> method.
         /// </summary>
-        ExceptionThrown
+        ExceptionThrown,
+
+        /// <summary>
+        /// A RET instruction was encountered and the <see cref="IZ80Processor.AutoStopOnRetInstruction"/>
+        /// </summary>
+        RetInstruction,
+
+        /// <summary>
+        /// Stack underflow was detected.
+        /// </summary>
+        StackUnderflow,
+
+        /// <summary>
+        /// Stack overflow was detected.
+        /// </summary>
+        StackOverflow
     }
 }

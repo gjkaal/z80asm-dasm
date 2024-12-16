@@ -26,10 +26,10 @@
                 base.FailIfNoInstructionFetchComplete();
         }
 
-        public void SetStartOFStack(short value)
-        {
-            StartOfStack = value;
-        }
+        //public void SetStartOFStack(short value)
+        //{
+        //    StartOfStack = value;
+        //}
 
         public void SetIsHalted()
         {

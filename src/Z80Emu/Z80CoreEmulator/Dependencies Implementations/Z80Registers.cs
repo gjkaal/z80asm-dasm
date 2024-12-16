@@ -10,7 +10,7 @@
 
         public Z80Registers()
         {
-            Alternate = new MainZ80Registers();
+            alternate = new MainZ80Registers();
         }
 
         public IMainZ80Registers Alternate
@@ -32,7 +32,57 @@
 
         public ushort PC { get; set; }
 
-        public short SP { get; set; }
+        public short SP { get; private set; }
+
+        public short StartOfStack { get; private set; }
+
+        public void InitializeSP(short value)
+        {
+            StartOfStack = value;
+            StackUnderflow = false;
+            StackOverflow = false;
+            SP = value;
+        }
+
+        public bool StackUnderflow { get; private set; }
+        public bool StackOverflow { get; private set; }
+
+        public void SetSpFromInstruction(short value)
+        {
+            SP = value;
+        }
+
+        public void IncSp()
+        {
+            lock (sync)
+            {
+                SP += 2;
+            }
+            if (SP > StartOfStack)
+            {
+                StackUnderflow = true;
+                if (ThrowOnStackUnderflow)
+                {
+                    throw new InvalidOperationException("Stack underflow");
+                }
+            }
+        }
+
+        public void DecSp()
+        {
+            lock (sync)
+            {
+                SP -= 2;
+            }
+            if (SPLowerLimit != 0 && SP < SPLowerLimit)
+            {
+                StackOverflow = true;
+                if (ThrowOnStackOverflow)
+                {
+                    throw new InvalidOperationException("Stack stack overflow");
+                }
+            }
+        }
 
         public short IR { get; set; }
 
@@ -75,5 +125,11 @@
             get => IR.GetLowByte();
             set => IR = IR.SetLowByte(value);
         }
+
+        public bool ThrowOnStackOverflow { get; set; }
+
+        public bool ThrowOnStackUnderflow { get; set; }
+
+        public short SPLowerLimit { get; set; }
     }
 }

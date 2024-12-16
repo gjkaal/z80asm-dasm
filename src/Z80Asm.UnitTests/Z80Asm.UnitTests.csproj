@@ -28,6 +28,9 @@
     <None Update="TestResources\macro.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestResources\stack-underflow.asm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestResources\strings.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

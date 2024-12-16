@@ -19,7 +19,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
             var oldSP = Fixture.Create<short>();
 
             SetReg(reg, newSp);
-            Registers.SP = oldSP;
+            Registers!.InitializeSP(oldSP);
 
             Execute(opcode, prefix);
 

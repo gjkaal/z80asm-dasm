@@ -34,7 +34,7 @@ namespace Konamiman.Z80dotNet.Tests
 
             Assert.That(Sut.AutoStopOnDiPlusHalt);
             Assert.That(Sut.AutoStopOnRetWithStackEmpty, Is.Not.True);
-            Assert.That(Sut.StartOfStack, Is.EqualTo(0xFFFF.ToShort()));
+            Assert.That(Sut.Registers.StartOfStack, Is.EqualTo(0xFFFF.ToShort()));
 
             Assert.That(Sut.Memory, Is.InstanceOf<PlainMemory>());
             Assert.That(Sut.Memory.Size, Is.EqualTo(65536));
@@ -72,7 +72,7 @@ namespace Konamiman.Z80dotNet.Tests
             Sut.Registers.IFF1 = 1;
             Sut.Registers.PC = 1;
             Sut.Registers.AF = 0;
-            Sut.Registers.SP = 0;
+            Sut.Registers.InitializeSP(0);
             Sut.InterruptMode = 1;
             Sut.SetIsHalted();
 

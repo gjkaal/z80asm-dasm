@@ -14,7 +14,7 @@ namespace Konamiman.Z80dotNet
         {
             FetchFinished(isLdSp: true);
 
-            Registers.SP = Registers.HL;
+            Registers.SetSpFromInstruction(Registers.HL);
 
             return 6;
         }
@@ -26,7 +26,7 @@ namespace Konamiman.Z80dotNet
         {
             FetchFinished(isLdSp: true);
 
-            Registers.SP = Registers.IX;
+            Registers.SetSpFromInstruction(Registers.IX);
 
             return 10;
         }
@@ -38,7 +38,7 @@ namespace Konamiman.Z80dotNet
         {
             FetchFinished(isLdSp: true);
 
-            Registers.SP = Registers.IY;
+            Registers.SetSpFromInstruction(Registers.IY);
 
             return 10;
         }

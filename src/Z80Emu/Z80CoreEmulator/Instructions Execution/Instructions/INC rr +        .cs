@@ -73,7 +73,8 @@ namespace Konamiman.Z80dotNet
         private byte INC_SP()
         {
             FetchFinished();
-            Registers.SP++;
+            var sp = (short)(Registers.SP + 1);
+            Registers.SetSpFromInstruction(sp);
             return 6;
         }
 
@@ -83,7 +84,8 @@ namespace Konamiman.Z80dotNet
         private byte DEC_SP()
         {
             FetchFinished();
-            Registers.SP--;
+            var sp = (short)(Registers.SP - 1);
+            Registers.SetSpFromInstruction(sp);
             return 6;
         }
 

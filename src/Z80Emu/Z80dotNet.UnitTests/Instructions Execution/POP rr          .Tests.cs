@@ -22,7 +22,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
             var value = Fixture.Create<ushort>();
             var oldSP = Fixture.Create<short>();
 
-            Registers.SP = oldSP;
+            Registers!.InitializeSP(oldSP);
             SetMemoryContentsAt(oldSP.ToUShort(), value.GetLowByte());
             SetMemoryContentsAt(oldSP.ToUShort().Inc(), value.GetHighByte());
 

@@ -21,7 +21,7 @@ namespace Konamiman.Z80dotNet.Tests
             var oldPC = Fixture.Create<ushort>();
             var callAddress = Fixture.Create<ushort>();
             var oldSP = Fixture.Create<short>();
-            Sut.Registers.SP = oldSP;
+            Sut.Registers.InitializeSP(oldSP);
             Sut.Registers.PC = oldPC;
 
             Sut.ExecuteCall(callAddress);
@@ -37,7 +37,7 @@ namespace Konamiman.Z80dotNet.Tests
             var pushedAddress = Fixture.Create<ushort>();
             var sp = Fixture.Create<short>();
 
-            Sut.Registers.SP = sp;
+            Sut.Registers.InitializeSP(sp);
             Sut.Memory[sp.ToUShort()] = pushedAddress.GetLowByte();
             Sut.Memory[sp.ToUShort().Inc()] = pushedAddress.GetHighByte();
 

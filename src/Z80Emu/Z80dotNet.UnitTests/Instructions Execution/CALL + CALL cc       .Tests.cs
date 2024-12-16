@@ -51,7 +51,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
             var instructionAddress = Fixture.Create<ushort>();
             var callAddress = Fixture.Create<ushort>();
             var oldSP = Fixture.Create<short>();
-            Registers.SP = oldSP;
+            Registers!.InitializeSP(oldSP);
 
             SetFlagIfNotNull(flagName, flagValue);
             ExecuteAt(instructionAddress, opcode, nextFetches: new[] { callAddress.GetLowByte(), callAddress.GetHighByte() });

@@ -54,7 +54,7 @@ namespace Konamiman.Z80dotNet
             var address = (ushort)FetchWord();
             FetchFinished();
 
-            Registers.SP = ReadShortFromMemory(address);
+            Registers.SetSpFromInstruction(ReadShortFromMemory(address));
 
             return 20;
         }

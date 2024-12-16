@@ -22,7 +22,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
             var SP = Fixture.Create<ushort>();
 
             SetReg(reg, regValue);
-            Registers.SP = SP.ToShort();
+            Registers!.InitializeSP(SP.ToShort());
             WriteShortToMemory(SP, pushedValue);
 
             Execute(opcode, prefix);

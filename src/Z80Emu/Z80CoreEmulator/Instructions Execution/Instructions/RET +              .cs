@@ -20,7 +20,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             return 10;
         }
@@ -38,7 +38,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             return 14;
         }
@@ -71,7 +71,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = newAddress;
 
             return 17;
@@ -96,7 +96,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             return 11;
         }
@@ -133,7 +133,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = newAddress;
 
             return 17;
@@ -158,7 +158,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             return 11;
         }
@@ -195,7 +195,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = newAddress;
 
             return 17;
@@ -220,7 +220,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             return 11;
         }
@@ -257,7 +257,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = newAddress;
 
             return 17;
@@ -282,7 +282,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             return 11;
         }
@@ -319,7 +319,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = newAddress;
 
             return 17;
@@ -344,7 +344,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             return 11;
         }
@@ -381,7 +381,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = newAddress;
 
             return 17;
@@ -406,7 +406,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             return 11;
         }
@@ -443,7 +443,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = newAddress;
 
             return 17;
@@ -468,7 +468,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             return 11;
         }
@@ -505,7 +505,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = newAddress;
 
             return 17;
@@ -530,7 +530,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             return 11;
         }
@@ -567,7 +567,7 @@ namespace Konamiman.Z80dotNet
             processorAgent.WriteToMemory(sp, valueToPush.GetHighByte());
             sp--;
             processorAgent.WriteToMemory(sp, valueToPush.GetLowByte());
-            Registers.SP = (short)sp;
+            Registers.DecSp();
             Registers.PC = newAddress;
 
             return 17;

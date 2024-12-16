@@ -11,6 +11,7 @@ public sealed class CompilerFileTests
     [DataRow("allInstructions.asm")]
     [DataRow("zc-bootstrap.asm")]
     [DataRow("macro.asm")]
+    [DataRow("stack-underflow.asm")]
     [DataRow("strings.asm")]
     public void CanCompileFile(string fileName)
     {

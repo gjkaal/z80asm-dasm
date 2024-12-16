@@ -63,7 +63,7 @@ namespace Konamiman.Z80dotNet.Tests
         [Test]
         public void Start_sets_StartOfStack_to_0xFFFF()
         {
-            Sut.SetStartOFStack(Fixture.Create<short>());
+            Sut.Registers.InitializeSP(Fixture.Create<short>());
 
             Sut.AutoStopOnDiPlusHalt = true;
             Sut.Memory[0] = DI_opcode;
@@ -71,7 +71,7 @@ namespace Konamiman.Z80dotNet.Tests
 
             Sut.Start();
 
-            Assert.That(Sut.StartOfStack, Is.EqualTo(0xFFFF.ToShort()));
+            Assert.That(Sut.Registers.StartOfStack, Is.EqualTo(0xFFFF.ToShort()));
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace Konamiman.Z80dotNet.Tests
             var pc = Fixture.Create<ushort>();
             Sut.Registers.PC = pc;
             Sut.Memory[pc] = RET_opcode;
-            Sut.SetStartOFStack(Sut.Registers.SP);
+            Sut.Registers.InitializeSP(Sut.Registers.SP);
 
             Sut.Continue();
 
@@ -304,7 +304,7 @@ namespace Konamiman.Z80dotNet.Tests
             var spValue = Fixture.Create<short>();
 
             DoBeforeFetch(b => Sut.Registers.IFF1 = 1);
-            DoAfterFetch(b => { if (b == LD_SP_HL_opcode) Sut.Registers.SP = spValue; });
+            DoAfterFetch(b => { if (b == LD_SP_HL_opcode) Sut.Registers.SetSpFromInstruction(spValue); });
 
             Sut.Start();
 
@@ -323,11 +323,11 @@ namespace Konamiman.Z80dotNet.Tests
 
             Sut.Memory[0] = LD_SP_HL_opcode;
             Sut.Memory[1] = RET_opcode;
-            Sut.SetStartOFStack(Fixture.Create<short>());
+            Sut.Registers.InitializeSP(Fixture.Create<short>());
 
             var spValue = Fixture.Create<short>();
 
-            DoAfterFetch(b => { if (b == LD_SP_HL_opcode) Sut.Registers.SP = spValue; });
+            DoAfterFetch(b => { if (b == LD_SP_HL_opcode) Sut.Registers.SetSpFromInstruction(spValue); });
 
             Sut.Start();
 
@@ -336,7 +336,7 @@ namespace Konamiman.Z80dotNet.Tests
 
             Assert.That(StopReason.RetWithStackEmpty, Is.EqualTo(Sut.StopReason));
             Assert.That(ProcessorState.Stopped, Is.EqualTo(Sut.State));
-            Assert.That(spValue, Is.EqualTo(Sut.StartOfStack));
+            Assert.That(spValue, Is.EqualTo(Sut.Registers.StartOfStack));
         }
 
         [Test]
@@ -356,9 +356,9 @@ namespace Konamiman.Z80dotNet.Tests
             DoAfterFetch(b =>
             {
                 if (b == NOP_opcode)
-                    Sut.Registers.SP += 2;
+                    Sut.Registers.IncSp();
                 else if (b == RET_opcode)
-                    Sut.Registers.SP -= 2;
+                    Sut.Registers.DecSp();
             });
 
             Sut.Start();
@@ -681,11 +681,11 @@ namespace Konamiman.Z80dotNet.Tests
         [Test]
         public void Reset_sets_StartOfStack_to_0xFFFF()
         {
-            Sut.SetStartOFStack(Fixture.Create<short>());
+            Sut.Registers.InitializeSP(Fixture.Create<short>());
 
             Sut.Reset();
 
-            Assert.That(Sut.StartOfStack, Is.EqualTo(0xFFFF.ToShort()));
+            Assert.That(Sut.Registers.StartOfStack, Is.EqualTo(0xFFFF.ToShort()));
         }
 
         [Test]

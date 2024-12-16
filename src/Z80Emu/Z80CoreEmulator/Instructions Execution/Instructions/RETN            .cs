@@ -20,7 +20,7 @@ namespace Konamiman.Z80dotNet
                 processorAgent.ReadFromMemory((ushort)(sp + 1)));
             Registers.PC = (ushort)newPC;
 
-            Registers.SP += 2;
+            Registers.IncSp();
 
             Registers.IFF1 = Registers.IFF2;
 
