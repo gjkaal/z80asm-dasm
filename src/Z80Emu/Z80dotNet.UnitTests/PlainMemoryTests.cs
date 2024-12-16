@@ -209,5 +209,54 @@ namespace Konamiman.Z80dotNet.Tests
 
             Assert.That(actual, Is.EqualTo(new Byte[0]));
         }
+
+        [Test]
+        public void CanLoadFromIntelHex()
+        {
+            var memStream = new MemoryStream(Encoding.UTF8.GetBytes(IntelHexData));
+            var reader = new StreamReader(memStream);
+            Sut.LoadFromIntelHexFile(0, reader);
+
+            var expected = new byte[] { 0x31, 0xFF, 0x2F, 0x21, 0x00, 0x00, 0xE5, 0xF1, 0xD1, 0xC9, 0x00 };
+            for (var i = 0; i < expected.Length; i++)
+            {
+                Assert.That(Sut[i], Is.EqualTo(expected[i]));
+            }
+        }
+
+        [Test]
+        public void CanLoadFromListFile()
+        {
+            var memStream = new MemoryStream(Encoding.UTF8.GetBytes(ListFile));
+            var reader = new StreamReader(memStream);
+            Sut.LoadFromListFile(0, reader);
+
+            var expected = new byte[] { 0x31, 0xFF, 0x2F, 0x21, 0x00, 0x00, 0xE5, 0xF1, 0xD1, 0xC9, 0x00 };
+            for (var i = 0; i < expected.Length; i++)
+            {
+                Assert.That(Sut[i], Is.EqualTo(expected[i]));
+            }
+        }
+
+        private const string IntelHexData =
+            ":0A00000031FF2F210000E5F1D1C906\n" +
+            ":00000001FF\n";
+
+        private const string ListFile = @"
+                                ; This code causes a stack underflow by removing the return address
+                                ; from the stack before returning from the interrupt handler.
+                                RAM_END: equ 0x2FFF
+                                
+0000: 31 FF 2F                      ld sp, RAM_END
+0003: 21 00 00                      ld hl, 0x0000
+0006: E5                            push hl
+0007: F1                            pop af
+0008: D1                            pop de
+0009: C9                            ret
+                                
+                                
+
+000A:
+";
     }
 }

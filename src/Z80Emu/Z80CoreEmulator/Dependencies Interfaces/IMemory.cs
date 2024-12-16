@@ -1,4 +1,6 @@
-﻿namespace Konamiman.Z80dotNet
+﻿using Microsoft.Extensions.FileProviders;
+
+namespace Konamiman.Z80dotNet
 {
     /// <summary>
     /// Represents the memory that is visible by a processor.
@@ -15,7 +17,7 @@
         /// </summary>
         /// <param name="address">Address to read or write</param>
         /// <returns>Data to write</returns>
-        /// <exception cref="System.IndexOutOfRangeException"><c>address</c> is negative or beyond the memory size.</exception>
+        /// <exception cref="IndexOutOfRangeException"><c>address</c> is negative or beyond the memory size.</exception>
         byte this[int address] { get; set; }
 
         /// <summary>
@@ -33,10 +35,38 @@
         /// <param name="startIndex">Start index for starting copying within the contens array</param>
         /// <param name="length">Length of the contents array that will be copied. If null,
         /// the whole array is copied.</param>
-        /// <exception cref="System.IndexOutOfRangeException"><c>startAddress</c> + <c>length</c> (or <c>content.Length</c>)
+        /// <exception cref="IndexOutOfRangeException"><c>startAddress</c> + <c>length</c> (or <c>content.Length</c>)
         /// goes beyond the memory size, or <c>length</c> is greater that the actual length of <c>contents</c>.</exception>
-        /// <exception cref="System.ArgumentNullException">contents is null</exception>
+        /// <exception cref="ArgumentNullException">contents is null</exception>
         void SetContents(int startAddress, byte[] contents, int startIndex = 0, int? length = null);
+
+        /// <summary>
+        /// Loads the contents of a memory from an Intel HEX file.
+        /// </summary>
+        /// <param name="startAddress">The address where the data will be loaded.</param>
+        /// <param name="reader">The stream containing the data</param>
+        void LoadFromIntelHexFile(int startAddress, TextReader reader);
+
+        /// <summary>
+        /// Loads the contents of a memory from an Intel HEX file.
+        /// </summary>
+        /// <param name="startAddress">The address where the data will be loaded.</param>
+        /// <param name="file">A file containing the data</param>
+        void LoadFromListFile(int startAddress, IFileInfo file);
+
+        /// <summary>
+        /// Loads the contents of a memory from an assembly listing file.
+        /// </summary>
+        /// <param name="startAddress">The address offset where the data will be loaded.</param>
+        /// <param name="reader">The stream containing the data</param>
+        void LoadFromListFile(int startAddress, TextReader reader);
+
+        /// <summary>
+        /// Loads the contents of a memory from an assembly listing file.
+        /// </summary>
+        /// <param name="startAddress">The address offset where the data will be loaded.</param>
+        /// <param name="file">A file containing the data</param>
+        void LoadFromIntelHexFile(int startAddress, IFileInfo file);
 
         /// <summary>
         /// Returns the contents of a portion of the memory as a byte array.

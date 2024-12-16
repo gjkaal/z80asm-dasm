@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.FileProviders;
+using System;
+using System.Globalization;
 using System.Linq;
 
 namespace Konamiman.Z80dotNet
@@ -67,6 +69,80 @@ namespace Konamiman.Z80dotNet
                 if (GetBanktype(address) == BankType.Ram)
                     memory[address] = value;
             }
+        }
+
+        /// <summary>
+        /// Loads the contents of a memory from  an assembly listing file.
+        /// </summary>
+        /// <param name="startAddress">The address where the data will be loaded.</param>
+        /// <param name="file">A file containing the data</param>
+        public void LoadFromListFile(int startAddress, IFileInfo file)
+        {
+            ArgumentNullException.ThrowIfNull(file);
+            if (!file.Exists)
+                throw new InvalidOperationException("File does not exist");
+            using var stream = file.CreateReadStream();
+            using var reader = new StreamReader(stream);
+            LoadFromListFile(startAddress, reader);
+        }
+
+        /// <summary>
+        /// Loads the contents of a memory from an assembly listing file.
+        /// </summary>
+        /// <param name="startAddress">The address offset where the data will be loaded.</param>
+        /// <param name="reader">The stream containing the data</param>
+        public void LoadFromListFile(int startAddress, TextReader reader)
+        {
+            // Read each line of the file and parse it
+            while (true)
+            {
+                var line = reader.ReadLine()?.Trim();
+                if (line == null)
+                    break;
+                // A line starts with an address followed by a colon and a space
+                var colonIndex = line.IndexOf(':');
+                if (colonIndex != 4) continue; // Not an address line, line contains a symbol or comment
+                if (line.Length < 10) continue; // Not enough data, only the address is present
+
+                // After that, the data bytes are separated by spaces, max 8 bytes
+                var data = line.Substring(colonIndex + 2).Split(' ');
+                // Parse the address
+                var address = int.Parse(line.Substring(0, colonIndex), NumberStyles.HexNumber);
+                // Copy the data to the memory, if anything is there
+                // There are maximum 8 bytes in a line
+                var dataBytes = new List<byte>();
+                for (var i = 0; i < 8; i++)
+                {
+                    // If there is no data, break, the line is done
+                    // other data is mnemonics or comments
+                    if (data[i].Trim() == string.Empty) break;
+                    dataBytes.Add(byte.Parse(data[i], NumberStyles.HexNumber));
+                }
+                // If there is no data, continue to the next line
+                if (dataBytes.Count == 0) continue;
+                SetContents(
+                    startAddress + address,
+                    dataBytes.ToArray(),
+                    0,
+                    dataBytes.Count
+                    );
+            }
+        }
+
+
+        /// <summary>
+        /// Loads the contents of a memory from an Intel HEX file.
+        /// </summary>
+        /// <param name="startAddress">The address where the data will be loaded.</param>
+        /// <param name="file">A file containing the data</param>
+        public void LoadFromIntelHexFile(int startAddress, IFileInfo file)
+        {
+            ArgumentNullException.ThrowIfNull(file);
+            if (!file.Exists)
+                throw new InvalidOperationException("File does not exist");
+            using var stream = file.CreateReadStream();
+            using var reader = new StreamReader(stream);
+            LoadFromIntelHexFile(startAddress, reader);
         }
 
         /// <summary>
