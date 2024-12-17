@@ -14,7 +14,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("EX_Source")]
+        [TestCaseSource(nameof(EX_Source))]
         public void EX_SP_HL_IX_IY_exchanges_reg_and_pushed_value(string reg, byte opcode, byte? prefix)
         {
             var regValue = Fixture.Create<short>();
@@ -32,14 +32,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("EX_Source")]
+        [TestCaseSource(nameof(EX_Source))]
         public void EX_SP_HL_IX_IY_do_not_change_flags(string reg, byte opcode, byte? prefix)
         {
             AssertNoFlagsAreModified(opcode, prefix);
         }
 
         [Test]
-        [TestCaseSource("EX_Source")]
+        [TestCaseSource(nameof(EX_Source))]
         public void EX_SP_HL_return_proper_T_states(string reg, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);

@@ -13,7 +13,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("RRD_RLD_Source")]
+        [TestCaseSource(nameof(RRD_RLD_Source))]
         public void RRD_RLD_moves_data_appropriately(byte opcode, string direction)
         {
             var oldHLContents = "1001 0110".AsBinaryByte();
@@ -53,7 +53,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RRD_RLD_Source")]
+        [TestCaseSource(nameof(RRD_RLD_Source))]
         public void RRD_RLD_sets_SF_appropriately(byte opcode, string direction)
         {
             for (var i = 0; i <= 255; i++)
@@ -66,7 +66,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RRD_RLD_Source")]
+        [TestCaseSource(nameof(RRD_RLD_Source))]
         public void RRD_RLD_sets_ZF_appropriately(byte opcode, string direction)
         {
             for (var i = 0; i <= 255; i++)
@@ -79,14 +79,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RRD_RLD_Source")]
+        [TestCaseSource(nameof(RRD_RLD_Source))]
         public void RRD_RLD_resets_HF(byte opcode, string direction)
         {
             AssertResetsFlags(opcode, prefix, "H");
         }
 
         [Test]
-        [TestCaseSource("RRD_RLD_Source")]
+        [TestCaseSource(nameof(RRD_RLD_Source))]
         public void RRD_RLD_sets_PF_as_parity(byte opcode, string direction)
         {
             for (var i = 0; i <= 255; i++)
@@ -99,21 +99,21 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RRD_RLD_Source")]
+        [TestCaseSource(nameof(RRD_RLD_Source))]
         public void RRD_RLD_resets_NF(byte opcode, string direction)
         {
             AssertResetsFlags(opcode, prefix, "N");
         }
 
         [Test]
-        [TestCaseSource("RRD_RLD_Source")]
+        [TestCaseSource(nameof(RRD_RLD_Source))]
         public void RRD_RLD_does_not_chance_CF(byte opcode, string direction)
         {
             AssertDoesNotChangeFlags(opcode, prefix, "C");
         }
 
         [Test]
-        [TestCaseSource("RRD_RLD_Source")]
+        [TestCaseSource(nameof(RRD_RLD_Source))]
         public void RRD_RLD_sets_bits_3_and_5_from_result(byte opcode, string direction)
         {
             for (var i = 0; i <= 255; i++)
@@ -127,7 +127,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RRD_RLD_Source")]
+        [TestCaseSource(nameof(RRD_RLD_Source))]
         public void RRD_RLD_returns_proper_T_states(byte opcode, string direction)
         {
             var states = Execute(opcode, prefix);

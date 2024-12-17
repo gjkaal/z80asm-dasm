@@ -12,7 +12,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("LD_Source")]
+        [TestCaseSource(nameof(LD_Source))]
         public void LD_SP_HL_IX_IY_loads_SP_correctly(string reg, byte opcode, byte? prefix)
         {
             var newSp = Fixture.Create<short>();
@@ -28,7 +28,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LD_Source")]
+        [TestCaseSource(nameof(LD_Source))]
         public void LD_SP_HL_IX_IY_fire_FetchFinished_with_isLdSp_true(string reg, byte opcode, byte? prefix)
         {
             var eventFired = false;
@@ -45,14 +45,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LD_Source")]
+        [TestCaseSource(nameof(LD_Source))]
         public void LD_SP_HL_IX_IY_do_not_change_flags(string reg, byte opcode, byte? prefix)
         {
             AssertNoFlagsAreModified(opcode, prefix);
         }
 
         [Test]
-        [TestCaseSource("LD_Source")]
+        [TestCaseSource(nameof(LD_Source))]
         public void LD_SP_HL_IX_IY_return_proper_T_states(string reg, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);

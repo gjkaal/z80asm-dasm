@@ -14,7 +14,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         private readonly byte offset;
 
         [Test]
-        [TestCaseSource("SRA_Source")]
+        [TestCaseSource(nameof(SRA_Source))]
         public void SRA_shifts_negative_byte_and_loads_register_correctly(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var values = new byte[] { 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE, 0xFF };
@@ -31,7 +31,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRA_Source")]
+        [TestCaseSource(nameof(SRA_Source))]
         public void SRA_shifts_positive_byte_and_loads_register_correctly(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var values = new byte[] { 0x20, 0x10, 0x08, 0x04, 0x02, 0x01, 0 };
@@ -46,7 +46,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRA_Source")]
+        [TestCaseSource(nameof(SRA_Source))]
         public void SRA_sets_CF_from_bit_0(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             SetupRegOrMem(reg, (byte)(Fixture.Create<byte>() | 0x01), offset);
@@ -61,14 +61,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRA_Source")]
+        [TestCaseSource(nameof(SRA_Source))]
         public void SRA_resets_H_and_N(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             AssertResetsFlags(() => ExecuteBit(opcode, prefix, offset), opcode, prefix, "H", "N");
         }
 
         [Test]
-        [TestCaseSource("SRA_Source")]
+        [TestCaseSource(nameof(SRA_Source))]
         public void SRA_sets_SF_appropriately(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             SetupRegOrMem(reg, (byte)(Fixture.Create<byte>() | 0x80), offset);
@@ -81,7 +81,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRA_Source")]
+        [TestCaseSource(nameof(SRA_Source))]
         public void SRA_sets_ZF_appropriately(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             for (var i = 0; i < 256; i++)
@@ -93,7 +93,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRA_Source")]
+        [TestCaseSource(nameof(SRA_Source))]
         public void SRA_sets_PV_appropriately(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             for (var i = 0; i < 256; i++)
@@ -105,7 +105,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRA_Source")]
+        [TestCaseSource(nameof(SRA_Source))]
         public void SRA_sets_bits_3_and_5_from_result(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             foreach (var b in new byte[] { 0x00, 0xD7, 0x28, 0xFF })
@@ -119,7 +119,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRA_Source")]
+        [TestCaseSource(nameof(SRA_Source))]
         public void SRA_returns_proper_T_states(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var states = ExecuteBit(opcode, prefix, offset);

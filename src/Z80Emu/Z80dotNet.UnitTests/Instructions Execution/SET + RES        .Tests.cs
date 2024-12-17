@@ -23,7 +23,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SET_Source")]
+        [TestCaseSource(nameof(SET_Source))]
         public void SET_sets_bit_correctly(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var value = Fixture.Create<byte>().WithBit(bit, 0);
@@ -37,7 +37,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RES_Source")]
+        [TestCaseSource(nameof(RES_Source))]
         public void RES_resets_bit_correctly(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var value = Fixture.Create<byte>().WithBit(bit, 1);
@@ -49,16 +49,16 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SET_Source")]
-        [TestCaseSource("RES_Source")]
+        [TestCaseSource(nameof(SET_Source))]
+        [TestCaseSource(nameof(RES_Source))]
         public void SET_RES_do_not_change_flags(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             AssertDoesNotChangeFlags(() => ExecuteBit(opcode, prefix, offset), opcode, prefix);
         }
 
         [Test]
-        [TestCaseSource("SET_Source")]
-        [TestCaseSource("RES_Source")]
+        [TestCaseSource(nameof(SET_Source))]
+        [TestCaseSource(nameof(RES_Source))]
         public void SET_RES_return_proper_T_states(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var states = ExecuteBit(opcode, prefix, offset);

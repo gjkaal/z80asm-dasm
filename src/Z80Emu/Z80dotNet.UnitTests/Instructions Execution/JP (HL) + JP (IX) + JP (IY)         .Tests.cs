@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using AutoFixture;
+﻿using AutoFixture;
+using NUnit.Framework;
 
 namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
 {
@@ -13,7 +13,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("JP_Source")]
+        [TestCaseSource(nameof(JP_Source))]
         public void JP_aHL_IX_IY_jump_to_address_contained_in_HL(string reg, byte opcode, byte? prefix)
         {
             var instructionAddress = Fixture.Create<ushort>();
@@ -26,18 +26,18 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("JP_Source")]
+        [TestCaseSource(nameof(JP_Source))]
         public void JP_aHL_IX_IY_do_not_change_flags(string reg, byte opcode, byte? prefix)
         {
             AssertNoFlagsAreModified(opcode, prefix);
         }
 
         [Test]
-        [TestCaseSource("JP_Source")]
+        [TestCaseSource(nameof(JP_Source))]
         public void JP_aHL_IX_IY_return_proper_T_states(string reg, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);
-            Assert.That(states, Is.EqualTo(reg =="HL" ? 4 : 8));
+            Assert.That(states, Is.EqualTo(reg == "HL" ? 4 : 8));
         }
     }
 }

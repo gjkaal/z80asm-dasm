@@ -22,7 +22,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("CALL_cc_Source")]
+        [TestCaseSource(nameof(CALL_cc_Source))]
         public void CALL_cc_does_not_jump_if_flag_not_set(string flagName, byte opcode, int flagValue)
         {
             var instructionAddress = Fixture.Create<ushort>();
@@ -34,7 +34,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("CALL_cc_Source")]
+        [TestCaseSource(nameof(CALL_cc_Source))]
         public void CALL_cc_returns_proper_T_states_if_no_jump_is_made(string flagName, byte opcode, int flagValue)
         {
             SetFlag(flagName, !(Bit)flagValue);
@@ -44,8 +44,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("CALL_cc_Source")]
-        [TestCaseSource("CALL_Source")]
+        [TestCaseSource(nameof(CALL_cc_Source))]
+        [TestCaseSource(nameof(CALL_Source))]
         public void CALL_cc_pushes_SP_and_jumps_to_proper_address_if_flag_is_set_CALL_jumps_always(string flagName, byte opcode, int flagValue)
         {
             var instructionAddress = Fixture.Create<ushort>();
@@ -67,8 +67,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("CALL_cc_Source")]
-        [TestCaseSource("CALL_Source")]
+        [TestCaseSource(nameof(CALL_cc_Source))]
+        [TestCaseSource(nameof(CALL_Source))]
         public void CALL_and_CALL_cc_return_proper_T_states_if_jump_is_made(string flagName, byte opcode, int flagValue)
         {
             SetFlagIfNotNull(flagName, flagValue);
@@ -78,8 +78,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("CALL_cc_Source")]
-        [TestCaseSource("CALL_Source")]
+        [TestCaseSource(nameof(CALL_cc_Source))]
+        [TestCaseSource(nameof(CALL_Source))]
         public void CALL_and_CALL_cc_do_not_modify_flags(string flagName, byte opcode, int flagValue)
         {
             Registers.ChangeFlags(Fixture.Create<byte>());

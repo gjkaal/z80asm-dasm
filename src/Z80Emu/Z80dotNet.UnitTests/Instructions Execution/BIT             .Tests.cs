@@ -21,7 +21,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("BIT_Source")]
+        [TestCaseSource(nameof(BIT_Source))]
         public void BIT_gets_bit_correctly(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var value = ((byte)0).WithBit(bit, 1);
@@ -36,7 +36,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("BIT_Source")]
+        [TestCaseSource(nameof(BIT_Source))]
         public void BIT_sets_PF_as_ZF(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             for(int i = 0; i < 256; i++) {
@@ -47,7 +47,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("BIT_Source")]
+        [TestCaseSource(nameof(BIT_Source))]
         public void BIT_sets_SF_if_bit_is_7_and_is_set(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             for(int i = 0; i < 256; i++) {
@@ -60,28 +60,28 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("BIT_Source")]
+        [TestCaseSource(nameof(BIT_Source))]
         public void BIT_resets_N(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             AssertResetsFlags(() => ExecuteBit(opcode, prefix, offset), opcode, prefix, "N");
         }
 
         [Test]
-        [TestCaseSource("BIT_Source")]
+        [TestCaseSource(nameof(BIT_Source))]
         public void BIT_sets_H(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             AssertSetsFlags(() => ExecuteBit(opcode, prefix, offset), opcode, prefix, "H");
         }
 
         [Test]
-        [TestCaseSource("BIT_Source")]
+        [TestCaseSource(nameof(BIT_Source))]
         public void BIT_does_not_modify_CF(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             AssertDoesNotChangeFlags(() => ExecuteBit(opcode, prefix, offset), opcode, prefix, "C");
         }
 
         [Test]
-        [TestCaseSource("BIT_Source")]
+        [TestCaseSource(nameof(BIT_Source))]
         public void BIT_returns_proper_T_states(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var states = ExecuteBit(opcode, prefix, offset);

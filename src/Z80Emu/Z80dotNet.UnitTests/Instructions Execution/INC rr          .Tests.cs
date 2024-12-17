@@ -15,7 +15,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("INC_rr_Source")]
+        [TestCaseSource(nameof(INC_rr_Source))]
         public void INC_rr_increases_register(string reg, byte opcode, byte? prefix)
         {
             SetReg(reg, 0xFFFF.ToShort());
@@ -24,14 +24,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_rr_Source")]
+        [TestCaseSource(nameof(INC_rr_Source))]
         public void INC_rr_do_not_modify_flags(string reg, byte opcode, byte? prefix)
         {
             AssertNoFlagsAreModified(opcode, prefix);
         }
 
         [Test]
-        [TestCaseSource("INC_rr_Source")]
+        [TestCaseSource(nameof(INC_rr_Source))]
         public void INC_rr_returns_proper_T_states(string reg, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);

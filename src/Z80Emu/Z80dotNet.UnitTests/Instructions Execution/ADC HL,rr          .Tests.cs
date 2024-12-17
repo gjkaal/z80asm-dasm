@@ -19,8 +19,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("ADC_HL_rr_Source")]
-        [TestCaseSource("ADC_HL_HL_Source")]
+        [TestCaseSource(nameof(ADC_HL_rr_Source))]
+        [TestCaseSource(nameof(ADC_HL_HL_Source))]
         public void ADC_HL_rr_adds_both_registers_with_and_without_carry(string src, byte opcode)
         {
             for (var cf = 0; cf <= 1; cf++)
@@ -42,7 +42,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADC_HL_rr_Source")]
+        [TestCaseSource(nameof(ADC_HL_rr_Source))]
         public void ADC_HL_rr_sets_SF_appropriately(string src, byte opcode)
         {
             Setup(src, 0xFFFD.ToShort(), 1);
@@ -78,7 +78,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADC_HL_rr_Source")]
+        [TestCaseSource(nameof(ADC_HL_rr_Source))]
         public void ADC_HL_rr_sets_ZF_appropriately(string src, byte opcode)
         {
             Setup(src, 0xFFFD.ToShort(), 1);
@@ -99,7 +99,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADC_HL_rr_Source")]
+        [TestCaseSource(nameof(ADC_HL_rr_Source))]
         public void ADC_HL_rr_sets_HF_appropriately(string src, byte opcode)
         {
             foreach (var i in new int[] { 0x0FFE, 0x7FFE, 0xEFFE })
@@ -121,7 +121,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADC_HL_rr_Source")]
+        [TestCaseSource(nameof(ADC_HL_rr_Source))]
         public void ADC_HL_rr_sets_CF_appropriately(string src, byte opcode)
         {
             Setup(src, 0xFFFE.ToShort(), 1);
@@ -138,7 +138,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADC_HL_rr_Source")]
+        [TestCaseSource(nameof(ADC_HL_rr_Source))]
         public void ADC_HL_rr_sets_PF_appropriately(string src, byte opcode)
         {
             //http://stackoverflow.com/a/8037485/4574
@@ -172,14 +172,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADC_HL_rr_Source")]
+        [TestCaseSource(nameof(ADC_HL_rr_Source))]
         public void ADC_HL_rr_resets_NF(string src, byte opcode)
         {
             AssertResetsFlags(opcode, prefix, "N");
         }
 
         [Test]
-        [TestCaseSource("ADC_HL_rr_Source")]
+        [TestCaseSource(nameof(ADC_HL_rr_Source))]
         public void ADC_HL_rr_sets_bits_3_and_5_from_high_byte_of_result(string src, byte opcode)
         {
             Registers.HL = NumberUtils.CreateShort(0, ((byte)0).WithBit(3, 1).WithBit(5, 0));
@@ -195,7 +195,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADC_HL_rr_Source")]
+        [TestCaseSource(nameof(ADC_HL_rr_Source))]
         public void ADC_HL_rr_returns_proper_T_states(string src, byte opcode)
         {
             var states = Execute(opcode, prefix);

@@ -25,8 +25,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("ADD_rr_rr_Source")]
-        [TestCaseSource("ADD_rr_rr_Source_same_src_and_dest")]
+        [TestCaseSource(nameof(ADD_rr_rr_Source))]
+        [TestCaseSource(nameof(ADD_rr_rr_Source_same_src_and_dest))]
         public void ADD_rr_rr_adds_register_values(string dest, string src, byte opcode, byte? prefix)
         {
             var value1 = Fixture.Create<short>();
@@ -44,7 +44,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADD_rr_rr_Source")]
+        [TestCaseSource(nameof(ADD_rr_rr_Source))]
         public void ADD_rr_rr_sets_CF_properly(string dest, string src, byte opcode, byte? prefix)
         {
             Registers.CF = 1;
@@ -59,15 +59,15 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADD_rr_rr_Source")]
-        [TestCaseSource("ADD_rr_rr_Source_same_src_and_dest")]
+        [TestCaseSource(nameof(ADD_rr_rr_Source))]
+        [TestCaseSource(nameof(ADD_rr_rr_Source_same_src_and_dest))]
         public void ADD_rr_rr_resets_N(string dest, string src, byte opcode, byte? prefix)
         {
             AssertResetsFlags(opcode, prefix, "N");
         }
 
         [Test]
-        [TestCaseSource("ADD_rr_rr_Source")]
+        [TestCaseSource(nameof(ADD_rr_rr_Source))]
         public void ADD_rr_rr_sets_HF_appropriately(string dest, string src, byte opcode, byte? prefix)
         {
             SetReg(src, 0x10);
@@ -84,8 +84,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADD_rr_rr_Source")]
-        [TestCaseSource("ADD_rr_rr_Source_same_src_and_dest")]
+        [TestCaseSource(nameof(ADD_rr_rr_Source))]
+        [TestCaseSource(nameof(ADD_rr_rr_Source_same_src_and_dest))]
         public void ADD_rr_rr_does_not_change_SF_ZF_PF(string dest, string src, byte opcode, byte? prefix)
         {
             var randomValues = Fixture.Create<byte[]>();
@@ -110,7 +110,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADD_rr_rr_Source")]
+        [TestCaseSource(nameof(ADD_rr_rr_Source))]
         public void ADD_rr_rr_sets_bits_3_and_5_from_high_byte_of_result(string dest, string src, byte opcode, byte? prefix)
         {
             SetReg(dest, NumberUtils.CreateShort(0, ((byte)0).WithBit(3, 1).WithBit(5, 0)));
@@ -126,8 +126,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADD_rr_rr_Source")]
-        [TestCaseSource("ADD_rr_rr_Source_same_src_and_dest")]
+        [TestCaseSource(nameof(ADD_rr_rr_Source))]
+        [TestCaseSource(nameof(ADD_rr_rr_Source_same_src_and_dest))]
         public void ADD_rr_rr_returns_proper_T_states(string dest, string src, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);

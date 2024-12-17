@@ -15,7 +15,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("IM_n_Source")]
+        [TestCaseSource(nameof(IM_n_Source))]
         public void IM_n_changes_interrupt_mode_appropriately(byte newMode, byte opcode)
         {
             var oldMode = (byte)((newMode + 1) % 3);
@@ -28,14 +28,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("IM_n_Source")]
+        [TestCaseSource(nameof(IM_n_Source))]
         public void IM_n_does_not_modify_flags(byte newMode, byte opcode)
         {
             AssertDoesNotChangeFlags(opcode, prefix);
         }
 
         [Test]
-        [TestCaseSource("IM_n_Source")]
+        [TestCaseSource(nameof(IM_n_Source))]
         public void IM_n_returns_proper_T_states(byte newMode, byte opcode)
         {
             var states = Execute(opcode, prefix);

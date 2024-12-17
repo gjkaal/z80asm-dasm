@@ -36,8 +36,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("ADDC_A_r_Source")]
-        [TestCaseSource("ADDC_A_A_Source")]
+        [TestCaseSource(nameof(ADDC_A_r_Source))]
+        [TestCaseSource(nameof(ADDC_A_A_Source))]
         public void ADDC_A_r_adds_both_registers_with_or_without_carry(string src, byte opcode, int cf, byte? prefix)
         {
             var oldValue = Fixture.Create<byte>();
@@ -80,7 +80,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADDC_A_r_Source")]
+        [TestCaseSource(nameof(ADDC_A_r_Source))]
         public void ADDC_A_r_sets_SF_appropriately(string src, byte opcode, int cf, byte? prefix)
         {
             Setup(src, 0xFD, 1);
@@ -99,7 +99,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADDC_A_r_Source")]
+        [TestCaseSource(nameof(ADDC_A_r_Source))]
         public void ADDC_A_r_sets_ZF_appropriately(string src, byte opcode, int cf, byte? prefix)
         {
             Setup(src, 0xFD, 1);
@@ -118,7 +118,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADDC_A_r_Source")]
+        [TestCaseSource(nameof(ADDC_A_r_Source))]
         public void ADDC_A_r_sets_HF_appropriately(string src, byte opcode, int cf, byte? prefix)
         {
             foreach (var b in new byte[] { 0x0E, 0x7E, 0xFE })
@@ -137,7 +137,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADDC_A_r_Source")]
+        [TestCaseSource(nameof(ADDC_A_r_Source))]
         public void ADDC_A_r_sets_PF_appropriately(string src, byte opcode, int cf, byte? prefix)
         {
             Setup(src, 0x7E, 1);
@@ -153,15 +153,15 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADDC_A_r_Source")]
-        [TestCaseSource("ADDC_A_A_Source")]
+        [TestCaseSource(nameof(ADDC_A_r_Source))]
+        [TestCaseSource(nameof(ADDC_A_A_Source))]
         public void ADDC_A_r_resets_NF(string src, byte opcode, int cf, byte? prefix)
         {
             AssertResetsFlags(opcode, null, "N");
         }
 
         [Test]
-        [TestCaseSource("ADDC_A_r_Source")]
+        [TestCaseSource(nameof(ADDC_A_r_Source))]
         public void ADDC_A_r_sets_CF_appropriately(string src, byte opcode, int cf, byte? prefix)
         {
             Setup(src, 0xFE, 1);
@@ -177,7 +177,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADDC_A_r_Source")]
+        [TestCaseSource(nameof(ADDC_A_r_Source))]
         public void ADDC_A_r_sets_bits_3_and_5_from_result(string src, byte opcode, int cf, byte? prefix)
         {
             Setup(src, ((byte)0).WithBit(3, 1).WithBit(5, 0), 0);
@@ -192,8 +192,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("ADDC_A_r_Source")]
-        [TestCaseSource("ADDC_A_A_Source")]
+        [TestCaseSource(nameof(ADDC_A_r_Source))]
+        [TestCaseSource(nameof(ADDC_A_A_Source))]
         public void ADDC_A_r_returns_proper_T_states(string src, byte opcode, int cf, byte? prefix)
         {
             var states = Execute(opcode, prefix);

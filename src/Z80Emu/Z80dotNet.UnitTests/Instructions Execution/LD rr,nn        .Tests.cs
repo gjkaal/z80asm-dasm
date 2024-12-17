@@ -15,7 +15,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("LD_rr_nn_Source")]
+        [TestCaseSource(nameof(LD_rr_nn_Source))]
         public void LD_rr_nn_loads_register_with_value(string reg, byte opcode, byte? prefix)
         {
             var oldValue = Fixture.Create<short>();
@@ -29,7 +29,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LD_rr_nn_Source")]
+        [TestCaseSource(nameof(LD_rr_nn_Source))]
         public void LD_SP_nn_fires_FetchFinished_with_isLdSp_true(string reg, byte opcode, byte? prefix)
         {
             var eventFired = false;
@@ -46,14 +46,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LD_rr_nn_Source")]
+        [TestCaseSource(nameof(LD_rr_nn_Source))]
         public void LD_rr_nn_do_not_modify_flags(string reg, byte opcode, byte? prefix)
         {
             AssertNoFlagsAreModified(opcode, prefix);
         }
 
         [Test]
-        [TestCaseSource("LD_rr_nn_Source")]
+        [TestCaseSource(nameof(LD_rr_nn_Source))]
         public void LD_rr_nn_returns_proper_T_states(string reg, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);

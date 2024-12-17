@@ -15,7 +15,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("POP_rr_Source")]
+        [TestCaseSource(nameof(POP_rr_Source))]
         public void POP_rr_loads_register_with_value_and_increases_SP(string reg, byte opcode, byte? prefix)
         {
             var instructionAddress = Fixture.Create<ushort>();
@@ -33,7 +33,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("POP_rr_Source")]
+        [TestCaseSource(nameof(POP_rr_Source))]
         public void POP_rr_do_not_modify_flags_unless_AF_is_popped(string reg, byte opcode, byte? prefix)
         {
             if (reg != "AF")
@@ -41,7 +41,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("POP_rr_Source")]
+        [TestCaseSource(nameof(POP_rr_Source))]
         public void POP_rr_returns_proper_T_states(string reg, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);

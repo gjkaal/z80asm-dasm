@@ -47,7 +47,7 @@
         ];
 
         [Test]
-        [TestCaseSource("DAA_cases_Source")]
+        [TestCaseSource(nameof(DAA_cases_Source))]
         public void DAA_generates_A_and_CF_correctly_based_on_input(int inputNF, int inputCF, int inputHF, int inputA, int addedValue, int outputC)
         {
             Setup(inputNF, inputCF, inputHF, inputA);
@@ -60,7 +60,7 @@
 
 
         [Test]
-        [TestCaseSource("DAA_cases_Source")]
+        [TestCaseSource(nameof(DAA_cases_Source))]
         public void DAA_returns_proper_T_states(int inputNF, int inputCF, int inputHF, int inputA, int addedValue, int outputC)
         {
             Setup(inputNF, inputCF, inputHF, inputA);
@@ -89,7 +89,7 @@
         }
 
         [Test]
-        [TestCaseSource("DAA_cases_Source")]
+        [TestCaseSource(nameof(DAA_cases_Source))]
         public void DAA_generates_PF_properly(int inputNF, int inputCF, int inputHF, int inputA, int addedValue, int outputC)
         {
             Setup(inputNF, inputCF, inputHF, inputA);
@@ -100,7 +100,7 @@
         }
 
         [Test]
-        [TestCaseSource("DAA_cases_Source")]
+        [TestCaseSource(nameof(DAA_cases_Source))]
         public void DAA_generates_SF_properly(int inputNF, int inputCF, int inputHF, int inputA, int addedValue, int outputC)
         {
             Setup(inputNF, inputCF, inputHF, inputA);
@@ -111,7 +111,7 @@
         }
 
         [Test]
-        [TestCaseSource("DAA_cases_Source")]
+        [TestCaseSource(nameof(DAA_cases_Source))]
         public void DAA_generates_ZF_properly(int inputNF, int inputCF, int inputHF, int inputA, int addedValue, int outputC)
         {
             Setup(inputNF, inputCF, inputHF, inputA);
@@ -122,7 +122,7 @@
         }
 
         [Test]
-        [TestCaseSource("DAA_cases_Source")]
+        [TestCaseSource(nameof(DAA_cases_Source))]
         public void DAA_does_not_modify_NF(int inputNF, int inputCF, int inputHF, int inputA, int addedValue, int outputC)
         {
             Setup(inputNF, inputCF, inputHF, inputA);
@@ -131,7 +131,7 @@
         }
 
         [Test]
-        [TestCaseSource("DAA_cases_Source")]
+        [TestCaseSource(nameof(DAA_cases_Source))]
         public void DAA_sets_bits_3_and_5_from_of_result(int inputNF, int inputCF, int inputHF, int inputA, int addedValue, int outputC)
         {
             Setup(inputNF, inputCF, inputHF, inputA);

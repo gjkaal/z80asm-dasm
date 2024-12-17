@@ -27,10 +27,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("LDI_Source")]
-        [TestCaseSource("LDD_Source")]
-        [TestCaseSource("LDIR_Source")]
-        [TestCaseSource("LDDR_Source")]
+        [TestCaseSource(nameof(LDI_Source))]
+        [TestCaseSource(nameof(LDD_Source))]
+        [TestCaseSource(nameof(LDIR_Source))]
+        [TestCaseSource(nameof(LDDR_Source))]
         public void LDI_LDD_LDIR_LDDR_copy_value_correctly(string instr, byte opcode)
         {
             var oldValue = Fixture.Create<byte>();
@@ -51,8 +51,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LDI_Source")]
-        [TestCaseSource("LDIR_Source")]
+        [TestCaseSource(nameof(LDI_Source))]
+        [TestCaseSource(nameof(LDIR_Source))]
         public void LDI_LDIR_increase_DE_and_HL(string instr, byte opcode)
         {
             var srcAddress = Fixture.Create<short>();
@@ -68,8 +68,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LDD_Source")]
-        [TestCaseSource("LDDR_Source")]
+        [TestCaseSource(nameof(LDD_Source))]
+        [TestCaseSource(nameof(LDDR_Source))]
         public void LDD_LDDR_decreases_DE_and_HL(string instr, byte opcode)
         {
             var srcAddress = Fixture.Create<short>();
@@ -85,10 +85,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LDI_Source")]
-        [TestCaseSource("LDD_Source")]
-        [TestCaseSource("LDIR_Source")]
-        [TestCaseSource("LDDR_Source")]
+        [TestCaseSource(nameof(LDI_Source))]
+        [TestCaseSource(nameof(LDD_Source))]
+        [TestCaseSource(nameof(LDIR_Source))]
+        [TestCaseSource(nameof(LDDR_Source))]
         public void LDI_LDD_LDIR_LDDR_decrease_BC(string instr, byte opcode)
         {
             var counter = Fixture.Create<short>();
@@ -100,30 +100,30 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LDI_Source")]
-        [TestCaseSource("LDD_Source")]
-        [TestCaseSource("LDIR_Source")]
-        [TestCaseSource("LDDR_Source")]
+        [TestCaseSource(nameof(LDI_Source))]
+        [TestCaseSource(nameof(LDD_Source))]
+        [TestCaseSource(nameof(LDIR_Source))]
+        [TestCaseSource(nameof(LDDR_Source))]
         public void LDI_LDD_LDIR_LDDR_do_not_change_S_Z_C(string instr, byte opcode)
         {
             AssertDoesNotChangeFlags(opcode, prefix, "S", "Z", "C");
         }
 
         [Test]
-        [TestCaseSource("LDI_Source")]
-        [TestCaseSource("LDD_Source")]
-        [TestCaseSource("LDIR_Source")]
-        [TestCaseSource("LDDR_Source")]
+        [TestCaseSource(nameof(LDI_Source))]
+        [TestCaseSource(nameof(LDD_Source))]
+        [TestCaseSource(nameof(LDIR_Source))]
+        [TestCaseSource(nameof(LDDR_Source))]
         public void LDI_LDD_LDIR_LDDR_reset_H_N(string instr, byte opcode)
         {
             AssertResetsFlags(opcode, prefix, "H", "N");
         }
 
         [Test]
-        [TestCaseSource("LDI_Source")]
-        [TestCaseSource("LDD_Source")]
-        [TestCaseSource("LDIR_Source")]
-        [TestCaseSource("LDDR_Source")]
+        [TestCaseSource(nameof(LDI_Source))]
+        [TestCaseSource(nameof(LDD_Source))]
+        [TestCaseSource(nameof(LDIR_Source))]
+        [TestCaseSource(nameof(LDDR_Source))]
         public void LDI_LDD_LDIR_LDDR_resets_PF_if_BC_reaches_zero(string instr, byte opcode)
         {
             Registers.BC = 128;
@@ -137,10 +137,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LDI_Source")]
-        [TestCaseSource("LDD_Source")]
-        [TestCaseSource("LDIR_Source")]
-        [TestCaseSource("LDDR_Source")]
+        [TestCaseSource(nameof(LDI_Source))]
+        [TestCaseSource(nameof(LDD_Source))]
+        [TestCaseSource(nameof(LDIR_Source))]
+        [TestCaseSource(nameof(LDDR_Source))]
         public void LDI_LDD_LDIR_LDDR_set_Flag3_from_bit_3_of_value_plus_A_and_Flag5_from_bit_1(string instr, byte opcode)
         {
             var value = Fixture.Create<byte>();
@@ -162,8 +162,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LDIR_Source")]
-        [TestCaseSource("LDDR_Source")]
+        [TestCaseSource(nameof(LDIR_Source))]
+        [TestCaseSource(nameof(LDDR_Source))]
         public void LDIR_LDDR_decrease_PC_by_two_if_counter_does_not_reach_zero(string instr, byte opcode)
         {
             Registers.BC = 128;
@@ -179,8 +179,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LDI_Source")]
-        [TestCaseSource("LDD_Source")]
+        [TestCaseSource(nameof(LDI_Source))]
+        [TestCaseSource(nameof(LDD_Source))]
         public void LDI_LDD_return_proper_T_states(string instr, byte opcode)
         {
             var states = Execute(opcode, prefix);
@@ -188,8 +188,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LDIR_Source")]
-        [TestCaseSource("LDDR_Source")]
+        [TestCaseSource(nameof(LDIR_Source))]
+        [TestCaseSource(nameof(LDDR_Source))]
         public void LDIR_LDDR_return_proper_T_states_depending_of_value_of_BC(string instr, byte opcode)
         {
             Registers.BC = 128;

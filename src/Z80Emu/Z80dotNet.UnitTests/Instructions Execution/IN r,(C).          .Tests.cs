@@ -22,7 +22,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("IN_r_C_Source")]
+        [TestCaseSource(nameof(IN_r_C_Source))]
         public void IN_r_C_reads_value_from_port(string reg, byte opcode)
         {
             var portNumber = Fixture.Create<byte>();
@@ -39,8 +39,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("IN_r_C_Source")]
-        [TestCaseSource("IN_F_C_Source")]
+        [TestCaseSource(nameof(IN_r_C_Source))]
+        [TestCaseSource(nameof(IN_F_C_Source))]
         public void IN_r_C_sets_SF_appropriately(string reg, byte opcode)
         {
             var portNumber = Fixture.Create<byte>();
@@ -59,8 +59,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("IN_r_C_Source")]
-        [TestCaseSource("IN_F_C_Source")]
+        [TestCaseSource(nameof(IN_r_C_Source))]
+        [TestCaseSource(nameof(IN_F_C_Source))]
         public void IN_r_C_sets_ZF_appropriately(string reg, byte opcode)
         {
             var portNumber = Fixture.Create<byte>();
@@ -76,16 +76,16 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("IN_r_C_Source")]
-        [TestCaseSource("IN_F_C_Source")]
+        [TestCaseSource(nameof(IN_r_C_Source))]
+        [TestCaseSource(nameof(IN_F_C_Source))]
         public void IN_r_C_resets_HF_NF(string reg, byte opcode)
         {
             AssertResetsFlags(opcode, 0xED, "H", "N");
         }
 
         [Test]
-        [TestCaseSource("IN_r_C_Source")]
-        [TestCaseSource("IN_F_C_Source")]
+        [TestCaseSource(nameof(IN_r_C_Source))]
+        [TestCaseSource(nameof(IN_F_C_Source))]
         public void IN_r_C_does_not_change_CF(string reg, byte opcode)
         {
             var randomValues = Fixture.Create<byte[]>();
@@ -104,8 +104,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("IN_r_C_Source")]
-        [TestCaseSource("IN_F_C_Source")]
+        [TestCaseSource(nameof(IN_r_C_Source))]
+        [TestCaseSource(nameof(IN_F_C_Source))]
         public void IN_r_C_sets_PF_as_parity(string reg, byte opcode)
         {
             var randomValues = Fixture.Create<byte[]>();
@@ -119,8 +119,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("IN_r_C_Source")]
-        [TestCaseSource("IN_F_C_Source")]
+        [TestCaseSource(nameof(IN_r_C_Source))]
+        [TestCaseSource(nameof(IN_F_C_Source))]
         public void IN_r_C_sets_bits_3_and_5_from_result(string reg, byte opcode)
         {
             var portNumber = Fixture.Create<byte>();
@@ -136,8 +136,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("IN_r_C_Source")]
-        [TestCaseSource("IN_F_C_Source")]
+        [TestCaseSource(nameof(IN_r_C_Source))]
+        [TestCaseSource(nameof(IN_F_C_Source))]
         public void IN_r_C_returns_proper_T_states(string reg, byte opcode)
         {
             var portNumber = Fixture.Create<byte>();

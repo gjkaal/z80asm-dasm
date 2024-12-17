@@ -25,7 +25,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         public static object[] LD_r_r_Source;
 
         [Test]
-        [TestCaseSource("LD_r_r_Source")]
+        [TestCaseSource(nameof(LD_r_r_Source))]
         public void LD_r_r_loads_register_with_value(string dest, string src, byte opcode)
         {
             var oldValue = Fixture.Create<byte>();
@@ -40,14 +40,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LD_r_r_Source")]
+        [TestCaseSource(nameof(LD_r_r_Source))]
         public void LD_r_r_do_not_modify_flags(string dest, string src, byte opcode)
         {
             AssertNoFlagsAreModified(opcode);
         }
 
         [Test]
-        [TestCaseSource("LD_r_r_Source")]
+        [TestCaseSource(nameof(LD_r_r_Source))]
         public void LD_r_r_returns_proper_T_states(string dest, string src, byte opcode)
         {
             var states = Execute(opcode);

@@ -18,7 +18,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("jr_cc_Source")]
+        [TestCaseSource(nameof(jr_cc_Source))]
         public void JR_cc_does_not_jump_if_flag_not_set(string flagName, byte opcode, int flagValue)
         {
             var instructionAddress = Fixture.Create<ushort>();
@@ -30,7 +30,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("jr_cc_Source")]
+        [TestCaseSource(nameof(jr_cc_Source))]
         public void JR_cc_returns_proper_T_states_if_no_jump_is_made(string flagName, byte opcode, int flagValue)
         {
             SetFlag(flagName, !(Bit)flagValue);
@@ -40,8 +40,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("jr_cc_Source")]
-        [TestCaseSource("jr_Source")]
+        [TestCaseSource(nameof(jr_cc_Source))]
+        [TestCaseSource(nameof(jr_Source))]
         public void JR_cc_jumps_to_proper_address_if_flag_is_set_JR_jumps_always(string flagName, byte opcode, int flagValue)
         {
             var instructionAddress = Fixture.Create<ushort>();
@@ -61,8 +61,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("jr_cc_Source")]
-        [TestCaseSource("jr_Source")]
+        [TestCaseSource(nameof(jr_cc_Source))]
+        [TestCaseSource(nameof(jr_Source))]
         public void JR_and_JR_cc_returns_proper_T_states_if_jump_is_made(string flagName, byte opcode, int flagValue)
         {
             SetFlagIfNotNull(flagName, flagValue);
@@ -72,8 +72,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("jr_cc_Source")]
-        [TestCaseSource("jr_Source")]
+        [TestCaseSource(nameof(jr_cc_Source))]
+        [TestCaseSource(nameof(jr_Source))]
         public void JR_and_JR_cc_do_not_modify_flags(string flagName, byte opcode, int flagValue)
         {
             Registers.ChangeFlags(Fixture.Create<byte>());

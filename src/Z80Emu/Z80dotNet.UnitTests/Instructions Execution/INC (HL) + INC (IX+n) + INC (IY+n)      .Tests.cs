@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using AutoFixture;
+﻿using AutoFixture;
+using NUnit.Framework;
 
 namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
 {
@@ -13,14 +13,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("INC_Source")]
+        [TestCaseSource(nameof(INC_Source))]
         public void INC_aHL_IX_IY_plus_n_increases_value_appropriately(string reg, byte opcode, byte? prefix)
         {
             var oldValue = Fixture.Create<byte>();
             var offset = reg == "HL" ? (byte)0 : Fixture.Create<byte>();
             var address = Setup(reg, oldValue, offset);
 
-            if(reg == "HL")
+            if (reg == "HL")
                 Execute(opcode, prefix);
             else
                 Execute(opcode, prefix, offset);
@@ -43,7 +43,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_Source")]
+        [TestCaseSource(nameof(INC_Source))]
         public void INC_aHL_IX_IY_plus_n_sets_SF_appropriately(string reg, byte opcode, byte? prefix)
         {
             Setup(reg, 0xFD);
@@ -62,7 +62,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_Source")]
+        [TestCaseSource(nameof(INC_Source))]
         public void INC_aHL_IX_IY_plus_n_sets_ZF_appropriately(string reg, byte opcode, byte? prefix)
         {
             Setup(reg, 0xFD);
@@ -81,10 +81,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_Source")]
+        [TestCaseSource(nameof(INC_Source))]
         public void INC_aHL_IX_IY_plus_n_sets_HF_appropriately(string reg, byte opcode, byte? prefix)
         {
-            foreach(byte b in new byte[] { 0x0E, 0x7E, 0xFE })
+            foreach (var b in new byte[] { 0x0E, 0x7E, 0xFE })
             {
                 Setup(reg, b);
 
@@ -100,7 +100,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_Source")]
+        [TestCaseSource(nameof(INC_Source))]
         public void INC_aHL_IX_IY_plus_n_sets_PF_appropriately(string reg, byte opcode, byte? prefix)
         {
             Setup(reg, 0x7E);
@@ -116,14 +116,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_Source")]
+        [TestCaseSource(nameof(INC_Source))]
         public void INC_aHL_IX_IY_plus_n_resets_NF(string reg, byte opcode, byte? prefix)
         {
             AssertResetsFlags(opcode, prefix, "N");
         }
 
         [Test]
-        [TestCaseSource("INC_Source")]
+        [TestCaseSource(nameof(INC_Source))]
         public void INC_aHL_IX_IY_plus_n_does_not_change_CF(string reg, byte opcode, byte? prefix)
         {
             var randomValues = Fixture.Create<byte[]>();
@@ -143,7 +143,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_Source")]
+        [TestCaseSource(nameof(INC_Source))]
         public void INC_aHL_IX_IY_plus_n_sets_bits_3_and_5_from_result(string reg, byte opcode, byte? prefix)
         {
             Setup(reg, ((byte)0).WithBit(3, 1).WithBit(5, 0));
@@ -158,11 +158,11 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_Source")]
+        [TestCaseSource(nameof(INC_Source))]
         public void INC_aHL_IX_IY_plus_n_returns_proper_T_states(string reg, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);
-            Assert.That(states, Is.EqualTo(reg =="HL" ? 11 : 23));
+            Assert.That(states, Is.EqualTo(reg == "HL" ? 11 : 23));
         }
     }
 }

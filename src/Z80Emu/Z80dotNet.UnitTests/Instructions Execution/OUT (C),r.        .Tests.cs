@@ -22,8 +22,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("OUT_C_r_Source")]
-        [TestCaseSource("OUT_C_0_Source")]
+        [TestCaseSource(nameof(OUT_C_r_Source))]
+        [TestCaseSource(nameof(OUT_C_0_Source))]
         public void OUT_C_r_writes_value_to_port(string reg, byte opcode)
         {
             var portNumber = Fixture.Create<byte>();
@@ -40,16 +40,16 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("OUT_C_r_Source")]
-        [TestCaseSource("OUT_C_0_Source")]
+        [TestCaseSource(nameof(OUT_C_r_Source))]
+        [TestCaseSource(nameof(OUT_C_0_Source))]
         public void OUT_C_r_does_not_change_flags(string reg, byte opcode)
         {
             AssertDoesNotChangeFlags(opcode, 0xED);
         }
 
         [Test]
-        [TestCaseSource("OUT_C_r_Source")]
-        [TestCaseSource("OUT_C_0_Source")]
+        [TestCaseSource(nameof(OUT_C_r_Source))]
+        [TestCaseSource(nameof(OUT_C_0_Source))]
         public void OUT_C_r_returns_proper_T_states(string reg, byte opcode)
         {
             var portNumber = Fixture.Create<byte>();

@@ -11,7 +11,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("LD_Source")]
+        [TestCaseSource(nameof(LD_Source))]
         public void LD_IX_IY_plus_n_loads_value_in_memory(string reg, byte opcode, byte prefix)
         {
             var address = Fixture.Create<ushort>();
@@ -29,14 +29,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LD_Source")]
+        [TestCaseSource(nameof(LD_Source))]
         public void LD_IX_IY_plus_n_does_not_modify_flags(string reg, byte opcode, byte prefix)
         {
             AssertNoFlagsAreModified(opcode, prefix);
         }
 
         [Test]
-        [TestCaseSource("LD_Source")]
+        [TestCaseSource(nameof(LD_Source))]
         public void LD_IX_IY_plus_n_returns_proper_T_states(string reg, byte opcode, byte prefix)
         {
             var states = Execute(opcode, prefix);

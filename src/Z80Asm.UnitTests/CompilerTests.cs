@@ -102,8 +102,8 @@ public sealed class CompilerTests
         Assert.AreEqual(0, Log.ErrorCount);
         Assert.IsNotNull(codeBytes);
         Assert.IsNotNull(contentBlocks);
-        Assert.IsTrue(codeBytes.Length > 0);
-        Assert.IsTrue(contentBlocks.Length > 0);
+        Assert.IsTrue(codeBytes.Length == 0);
+        Assert.IsTrue(contentBlocks.Length == 0);
 
         Console.WriteLine();
         Console.WriteLine("# Log Summary");

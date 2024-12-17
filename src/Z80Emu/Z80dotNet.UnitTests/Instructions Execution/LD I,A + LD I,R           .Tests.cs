@@ -13,7 +13,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("LD_I_R_A_Source")]
+        [TestCaseSource(nameof(LD_I_R_A_Source))]
         public void LD_I_R_A_loads_value_correctly(string reg, byte opcode)
         {
             var oldValue = Fixture.Create<byte>();
@@ -27,14 +27,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LD_I_R_A_Source")]
+        [TestCaseSource(nameof(LD_I_R_A_Source))]
         public void LD_I_R_A_does_not_modify_flags(string reg, byte opcode)
         {
             AssertDoesNotChangeFlags(opcode, prefix);
         }
 
         [Test]
-        [TestCaseSource("LD_I_R_A_Source")]
+        [TestCaseSource(nameof(LD_I_R_A_Source))]
         public void LD_I_R_A_returns_proper_T_states(string reg, byte opcode)
         {
             var states = Execute(opcode, prefix);

@@ -15,7 +15,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("PUSH_rr_Source")]
+        [TestCaseSource(nameof(PUSH_rr_Source))]
         public void PUSH_rr_loads_stack_with_value_and_decreases_SP(string reg, byte opcode, byte? prefix)
         {
             var value = Fixture.Create<short>();
@@ -30,14 +30,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("PUSH_rr_Source")]
+        [TestCaseSource(nameof(PUSH_rr_Source))]
         public void PUSH_rr_do_not_modify_flags(string reg, byte opcode, byte? prefix)
         {
             AssertNoFlagsAreModified(opcode);
         }
 
         [Test]
-        [TestCaseSource("PUSH_rr_Source")]
+        [TestCaseSource(nameof(PUSH_rr_Source))]
         public void PUSH_rr_returns_proper_T_states(string reg, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);

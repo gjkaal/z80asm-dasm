@@ -25,7 +25,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("RET_cc_Source")]
+        [TestCaseSource(nameof(RET_cc_Source))]
         public void RET_cc_does_not_return_if_flag_not_set(string flagName, byte opcode, int flagValue)
         {
             var instructionAddress = Fixture.Create<ushort>();
@@ -39,7 +39,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RET_cc_Source")]
+        [TestCaseSource(nameof(RET_cc_Source))]
         public void RET_cc_returns_proper_T_states_if_no_jump_is_made(string flagName, byte opcode, int flagValue)
         {
             SetFlag(flagName, !(Bit)flagValue);
@@ -49,8 +49,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RET_cc_Source")]
-        [TestCaseSource("RET_Source")]
+        [TestCaseSource(nameof(RET_cc_Source))]
+        [TestCaseSource(nameof(RET_Source))]
         public void RET_cc_returns_to_proper_address_if_flag_is_set_RET_return_always(string flagName, byte opcode, int flagValue)
         {
             var instructionAddress = Fixture.Create<ushort>();
@@ -74,8 +74,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RET_cc_Source")]
-        [TestCaseSource("RET_Source")]
+        [TestCaseSource(nameof(RET_cc_Source))]
+        [TestCaseSource(nameof(RET_Source))]
         public void RET_and_RET_cc_return_proper_T_states_if_jump_is_made(string flagName, byte opcode, int flagValue)
         {
             SetFlagIfNotNull(flagName, flagValue);
@@ -85,8 +85,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RET_cc_Source")]
-        [TestCaseSource("RET_Source")]
+        [TestCaseSource(nameof(RET_cc_Source))]
+        [TestCaseSource(nameof(RET_Source))]
         public void RET_and_RET_cc_do_not_modify_flags(string flagName, byte opcode, int flagValue)
         {
             Registers.AF = Fixture.Create<short>();
@@ -99,8 +99,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RET_cc_Source")]
-        [TestCaseSource("RET_Source")]
+        [TestCaseSource(nameof(RET_cc_Source))]
+        [TestCaseSource(nameof(RET_Source))]
         public void RET_fires_FetchFinished_with_isRet_true_if_flag_is_set(string flagName, byte opcode, int flagValue)
         {
             var eventFired = false;

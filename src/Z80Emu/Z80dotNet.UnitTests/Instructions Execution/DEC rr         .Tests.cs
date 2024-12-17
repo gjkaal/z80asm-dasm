@@ -15,7 +15,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("DEC_rr_Source")]
+        [TestCaseSource(nameof(DEC_rr_Source))]
         public void DEC_rr_decreases_register(string reg, byte opcode, byte? prefix)
         {
             SetReg(reg, 0);
@@ -24,14 +24,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("DEC_rr_Source")]
+        [TestCaseSource(nameof(DEC_rr_Source))]
         public void DEC_rr_do_not_modify_flags(string reg, byte opcode, byte? prefix)
         {
             AssertNoFlagsAreModified(opcode, prefix);
         }
 
         [Test]
-        [TestCaseSource("DEC_rr_Source")]
+        [TestCaseSource(nameof(DEC_rr_Source))]
         public void DEC_rr_returns_proper_T_states(string reg, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);

@@ -14,7 +14,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         private readonly byte offset;
 
         [Test]
-        [TestCaseSource("SRL_Source")]
+        [TestCaseSource(nameof(SRL_Source))]
         public void SRL_shifts_byte_and_loads_register_correctly(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var values = new byte[] { 0x7F, 0x3F, 0x1F, 0x0F, 0x07, 0x03, 0x01, 0 };
@@ -31,7 +31,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRL_Source")]
+        [TestCaseSource(nameof(SRL_Source))]
         public void SRL_sets_CF_from_bit_0(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             SetupRegOrMem(reg, (byte)(Fixture.Create<byte>() | 0x01), offset);
@@ -46,14 +46,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRL_Source")]
+        [TestCaseSource(nameof(SRL_Source))]
         public void SRL_resets_H_N_and_S(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             AssertResetsFlags(() => ExecuteBit(opcode, prefix, offset), opcode, prefix, "H", "N", "S");
         }
 
         [Test]
-        [TestCaseSource("SRL_Source")]
+        [TestCaseSource(nameof(SRL_Source))]
         public void SRL_sets_ZF_appropriately(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             for (var i = 0; i < 256; i++)
@@ -65,7 +65,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRL_Source")]
+        [TestCaseSource(nameof(SRL_Source))]
         public void SRL_sets_PV_appropriately(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             for (var i = 0; i < 256; i++)
@@ -77,7 +77,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRL_Source")]
+        [TestCaseSource(nameof(SRL_Source))]
         public void SRL_sets_bits_3_and_5_from_result(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             foreach (var b in new byte[] { 0x00, 0xD7, 0x28, 0xFF })
@@ -91,7 +91,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("SRL_Source")]
+        [TestCaseSource(nameof(SRL_Source))]
         public void SRL_returns_proper_T_states(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var states = ExecuteBit(opcode, prefix, offset);

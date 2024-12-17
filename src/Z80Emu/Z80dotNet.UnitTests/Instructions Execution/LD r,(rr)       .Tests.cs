@@ -18,7 +18,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("LD_r_rr_Source")]
+        [TestCaseSource(nameof(LD_r_rr_Source))]
         public void LD_arr_r_loads_value_from_memory(string destReg, string srcPointerReg, byte opcode)
         {
             var isHorL = destReg == "H" || destReg == "L";
@@ -38,14 +38,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("LD_r_rr_Source")]
+        [TestCaseSource(nameof(LD_r_rr_Source))]
         public void LD_r_rr_do_not_modify_flags(string destPointerReg, string srcReg, byte opcode)
         {
             AssertNoFlagsAreModified(opcode);
         }
 
         [Test]
-        [TestCaseSource("LD_r_rr_Source")]
+        [TestCaseSource(nameof(LD_r_rr_Source))]
         public void LD_r_rr_returns_proper_T_states(string destPointerReg, string srcReg, byte opcode)
         {
             var states = Execute(opcode);

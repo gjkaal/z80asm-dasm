@@ -63,10 +63,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("INI_Source")]
-        [TestCaseSource("IND_Source")]
-        [TestCaseSource("INIR_Source")]
-        [TestCaseSource("INDR_Source")]
+        [TestCaseSource(nameof(INI_Source))]
+        [TestCaseSource(nameof(IND_Source))]
+        [TestCaseSource(nameof(INIR_Source))]
+        [TestCaseSource(nameof(INDR_Source))]
         public void INI_IND_INIR_INDR_read_value_from_port_aC_into_aHL(byte opcode)
         {
             var portNumber = Fixture.Create<byte>();
@@ -84,10 +84,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("OUTI_Source")]
-        [TestCaseSource("OUTD_Source")]
-        [TestCaseSource("OTIR_Source")]
-        [TestCaseSource("OTDR_Source")]
+        [TestCaseSource(nameof(OUTI_Source))]
+        [TestCaseSource(nameof(OUTD_Source))]
+        [TestCaseSource(nameof(OTIR_Source))]
+        [TestCaseSource(nameof(OTDR_Source))]
         public void OUTI_OUTD_OTIR_OTDR_write_value_from_aHL_into_port_aC(byte opcode)
         {
             var portNumber = Fixture.Create<byte>();
@@ -105,10 +105,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INI_Source")]
-        [TestCaseSource("INIR_Source")]
-        [TestCaseSource("OUTI_Source")]
-        [TestCaseSource("OTIR_Source")]
+        [TestCaseSource(nameof(INI_Source))]
+        [TestCaseSource(nameof(INIR_Source))]
+        [TestCaseSource(nameof(OUTI_Source))]
+        [TestCaseSource(nameof(OTIR_Source))]
         public void INI_INIR_OUTI_OTIR_increase_HL(byte opcode)
         {
             var address = Fixture.Create<ushort>();
@@ -122,10 +122,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("IND_Source")]
-        [TestCaseSource("INDR_Source")]
-        [TestCaseSource("OUTD_Source")]
-        [TestCaseSource("OTDR_Source")]
+        [TestCaseSource(nameof(IND_Source))]
+        [TestCaseSource(nameof(INDR_Source))]
+        [TestCaseSource(nameof(OUTD_Source))]
+        [TestCaseSource(nameof(OTDR_Source))]
         public void IND_INDR_OUTD_OTDR_decrease_HL(byte opcode)
         {
             var address = Fixture.Create<ushort>();
@@ -139,7 +139,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("All_Source")]
+        [TestCaseSource(nameof(All_Source))]
         public void INI_IND_INIR_INDR_OUTI_OUTD_OTIR_OTDR_decrease_B(byte opcode)
         {
             var counter = Fixture.Create<byte>();
@@ -153,7 +153,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("All_Source")]
+        [TestCaseSource(nameof(All_Source))]
         public void INI_IND_INIR_INDR_OUTI_OUTD_OTIR_OTDR_set_Z_if_B_reaches_zero(byte opcode)
         {
             for (var i = 0; i < 256; i++)
@@ -168,21 +168,21 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("All_Source")]
+        [TestCaseSource(nameof(All_Source))]
         public void INI_IND_INIR_INDR_OUTI_OUTD_OTIR_OTDR_set_NF(byte opcode)
         {
             AssertSetsFlags(opcode, prefix, "N");
         }
 
         [Test]
-        [TestCaseSource("All_Source")]
+        [TestCaseSource(nameof(All_Source))]
         public void INI_IND_INIR_INDR_OUTI_OUTD_OTIR_OTDR_do_not_change_CF(byte opcode)
         {
             AssertDoesNotChangeFlags(opcode, prefix, "C");
         }
 
         [Test]
-        [TestCaseSource("All_Source")]
+        [TestCaseSource(nameof(All_Source))]
         public void INI_IND_INIR_INDR_OUTI_OUTD_OTIR_OTDR_set_bits_3_and_5_from_result_of_decrementing_B(byte opcode)
         {
             Registers.B = ((byte)1).WithBit(3, 1).WithBit(5, 0);
@@ -197,7 +197,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("All_Source")]
+        [TestCaseSource(nameof(All_Source))]
         public void INI_IND_INIR_INDR_OUTI_OUTD_OTIR_OTDR_set_SF_appropriately(byte opcode)
         {
             Registers.B = 0x02;
@@ -216,10 +216,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INI_Source")]
-        [TestCaseSource("IND_Source")]
-        [TestCaseSource("OUTI_Source")]
-        [TestCaseSource("OUTD_Source")]
+        [TestCaseSource(nameof(INI_Source))]
+        [TestCaseSource(nameof(IND_Source))]
+        [TestCaseSource(nameof(OUTI_Source))]
+        [TestCaseSource(nameof(OUTD_Source))]
         public void INI_IND_OUTI_OUTD_return_proper_T_states(byte opcode)
         {
             var states = Execute(opcode, prefix);
@@ -227,10 +227,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INIR_Source")]
-        [TestCaseSource("INDR_Source")]
-        [TestCaseSource("OTIR_Source")]
-        [TestCaseSource("OTDR_Source")]
+        [TestCaseSource(nameof(INIR_Source))]
+        [TestCaseSource(nameof(INDR_Source))]
+        [TestCaseSource(nameof(OTIR_Source))]
+        [TestCaseSource(nameof(OTDR_Source))]
         public void INIR_INDR_OTIR_OTDR_decrease_PC_by_two_if_counter_does_not_reach_zero(byte opcode)
         {
             var dataAddress = Fixture.Create<ushort>();
@@ -250,10 +250,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INIR_Source")]
-        [TestCaseSource("INDR_Source")]
-        [TestCaseSource("OTIR_Source")]
-        [TestCaseSource("OTDR_Source")]
+        [TestCaseSource(nameof(INIR_Source))]
+        [TestCaseSource(nameof(INDR_Source))]
+        [TestCaseSource(nameof(OTIR_Source))]
+        [TestCaseSource(nameof(OTDR_Source))]
         public void INIR_INDR_OTIR_OTDR_do_not_decrease_PC_by_two_if_counter_reaches_zero(byte opcode)
         {
             var dataAddress = Fixture.Create<ushort>();
@@ -273,10 +273,10 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INIR_Source")]
-        [TestCaseSource("INDR_Source")]
-        [TestCaseSource("OTIR_Source")]
-        [TestCaseSource("OTDR_Source")]
+        [TestCaseSource(nameof(INIR_Source))]
+        [TestCaseSource(nameof(INDR_Source))]
+        [TestCaseSource(nameof(OTIR_Source))]
+        [TestCaseSource(nameof(OTDR_Source))]
         public void INIR_INDR_OTIR_OTDR_return_proper_T_states_depending_of_value_of_B(byte opcode)
         {
             Registers.B = 128;

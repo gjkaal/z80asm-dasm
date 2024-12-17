@@ -20,7 +20,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RL_Source")]
+        [TestCaseSource(nameof(RL_Source))]
         public void RL_rotates_byte_correctly(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var values = new byte[] { 0x6, 0xC, 0x18, 0x30, 0x60, 0xC0, 0x80, 0 };
@@ -34,7 +34,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RL_Source")]
+        [TestCaseSource(nameof(RL_Source))]
         public void RL_sets_bit_0_from_CF(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             SetupRegOrMem(reg, (byte)(Fixture.Create<byte>() | 1), offset);
@@ -49,7 +49,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RL_Source")]
+        [TestCaseSource(nameof(RL_Source))]
         public void RL_sets_CF_correctly(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             SetupRegOrMem(reg, 0x60, offset);
@@ -68,14 +68,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RL_Source")]
+        [TestCaseSource(nameof(RL_Source))]
         public void RL_resets_H_and_N(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             AssertResetsFlags(() => ExecuteBit(opcode, prefix, offset), opcode, prefix, "H", "N");
         }
 
         [Test]
-        [TestCaseSource("RL_Source")]
+        [TestCaseSource(nameof(RL_Source))]
         public void RL_sets_SF_appropriately(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             SetupRegOrMem(reg, 0x20, offset);
@@ -91,7 +91,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RL_Source")]
+        [TestCaseSource(nameof(RL_Source))]
         public void RL_sets_ZF_appropriately(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             for (var i = 0; i < 256; i++)
@@ -103,7 +103,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RL_Source")]
+        [TestCaseSource(nameof(RL_Source))]
         public void RL_sets_PV_appropriately(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             for (var i = 0; i < 256; i++)
@@ -115,7 +115,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RL_Source")]
+        [TestCaseSource(nameof(RL_Source))]
         public void RL_sets_bits_3_and_5_from_result(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             foreach (var b in new byte[] { 0x00, 0xD7, 0x28, 0xFF })
@@ -129,7 +129,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RL_Source")]
+        [TestCaseSource(nameof(RL_Source))]
         public void RL_returns_proper_T_states(string reg, string destReg, byte opcode, byte? prefix, int bit)
         {
             var states = ExecuteBit(opcode, prefix, offset);

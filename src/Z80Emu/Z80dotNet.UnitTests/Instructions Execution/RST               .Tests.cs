@@ -17,7 +17,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("RST_Source")]
+        [TestCaseSource(nameof(RST_Source))]
         public void RST_pushes_SP_and_jumps_to_proper_address(int address, byte opcode)
         {
             var instructionAddress = Fixture.Create<ushort>();
@@ -32,7 +32,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RST_Source")]
+        [TestCaseSource(nameof(RST_Source))]
         public void RST_return_proper_T_states(int address, byte opcode)
         {
             var states = Execute(opcode);
@@ -41,7 +41,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("RST_Source")]
+        [TestCaseSource(nameof(RST_Source))]
         public void RST_do_not_modify_flags(int address, byte opcode)
         {
             AssertDoesNotChangeFlags(opcode);

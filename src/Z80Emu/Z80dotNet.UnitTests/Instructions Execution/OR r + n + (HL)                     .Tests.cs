@@ -32,7 +32,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("OR_r_Source")]
+        [TestCaseSource(nameof(OR_r_Source))]
         public void OR_r_ors_both_registers(string src, byte opcode, byte? prefix)
         {
             var oldValue = Fixture.Create<byte>();
@@ -45,7 +45,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("OR_A_Source")]
+        [TestCaseSource(nameof(OR_A_Source))]
         public void OR_A_does_not_change_A(string src, byte opcode, byte? prefix)
         {
             var value = Fixture.Create<byte>();
@@ -86,7 +86,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("OR_r_Source")]
+        [TestCaseSource(nameof(OR_r_Source))]
         public void OR_r_sets_SF_appropriately(string src, byte opcode, byte? prefix)
         {
             ExecuteCase(src, opcode, 0x00, 0xFF, prefix);
@@ -106,7 +106,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("OR_r_Source")]
+        [TestCaseSource(nameof(OR_r_Source))]
         public void OR_r_sets_ZF_appropriately(string src, byte opcode, byte? prefix)
         {
             ExecuteCase(src, opcode, 0x00, 0x00, prefix);
@@ -120,7 +120,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("OR_r_Source")]
+        [TestCaseSource(nameof(OR_r_Source))]
         public void OR_r_sets_PF_appropriately(string src, byte opcode, byte? prefix)
         {
             ExecuteCase(src, opcode, 0x00, 0x7E, prefix);
@@ -137,15 +137,15 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("OR_r_Source")]
-        [TestCaseSource("OR_A_Source")]
+        [TestCaseSource(nameof(OR_r_Source))]
+        [TestCaseSource(nameof(OR_A_Source))]
         public void OR_r_resets_NF_CF_HF(string src, byte opcode, byte? prefix)
         {
             AssertResetsFlags(opcode, null, "N", "C", "H");
         }
 
         [Test]
-        [TestCaseSource("OR_r_Source")]
+        [TestCaseSource(nameof(OR_r_Source))]
         public void OR_r_sets_bits_3_and_5_from_result(string src, byte opcode, byte? prefix)
         {
             var value = ((byte)0).WithBit(3, 1).WithBit(5, 0);
@@ -162,8 +162,8 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("OR_r_Source")]
-        [TestCaseSource("OR_A_Source")]
+        [TestCaseSource(nameof(OR_r_Source))]
+        [TestCaseSource(nameof(OR_A_Source))]
         public void OR_r_returns_proper_T_states(string src, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);

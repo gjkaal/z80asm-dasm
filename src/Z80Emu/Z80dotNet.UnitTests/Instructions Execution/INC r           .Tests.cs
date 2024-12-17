@@ -21,7 +21,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         ];
 
         [Test]
-        [TestCaseSource("INC_r_Source")]
+        [TestCaseSource(nameof(INC_r_Source))]
         public void INC_r_increases_value_appropriately(string reg, byte opcode, byte? prefix)
         {
             SetReg(reg, 0xFE);
@@ -36,7 +36,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_r_Source")]
+        [TestCaseSource(nameof(INC_r_Source))]
         public void INC_r_sets_SF_appropriately(string reg, byte opcode, byte? prefix)
         {
             SetReg(reg, 0xFD);
@@ -55,7 +55,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_r_Source")]
+        [TestCaseSource(nameof(INC_r_Source))]
         public void INC_r_sets_ZF_appropriately(string reg, byte opcode, byte? prefix)
         {
             SetReg(reg, 0xFD);
@@ -74,7 +74,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_r_Source")]
+        [TestCaseSource(nameof(INC_r_Source))]
         public void INC_r_sets_HF_appropriately(string reg, byte opcode, byte? prefix)
         {
             foreach(byte b in new byte[] { 0x0E, 0x7E, 0xFE }) 
@@ -93,7 +93,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_r_Source")]
+        [TestCaseSource(nameof(INC_r_Source))]
         public void INC_r_sets_PF_appropriately(string reg, byte opcode, byte? prefix)
         {
             SetReg(reg, 0x7E);
@@ -109,14 +109,14 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_r_Source")]
+        [TestCaseSource(nameof(INC_r_Source))]
         public void INC_r_resets_NF(string reg, byte opcode, byte? prefix)
         {
             AssertResetsFlags(opcode, prefix, "N");
         }
 
         [Test]
-        [TestCaseSource("INC_r_Source")]
+        [TestCaseSource(nameof(INC_r_Source))]
         public void INC_r_does_not_change_CF(string reg, byte opcode, byte? prefix)
         {
             var randomValues = Fixture.Create<byte[]>();
@@ -136,7 +136,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_r_Source")]
+        [TestCaseSource(nameof(INC_r_Source))]
         public void INC_r_sets_bits_3_and_5_from_result(string reg, byte opcode, byte? prefix)
         {
             SetReg(reg, ((byte)0).WithBit(3, 1).WithBit(5, 0));
@@ -151,7 +151,7 @@ namespace Konamiman.Z80dotNet.Tests.InstructionsExecution
         }
 
         [Test]
-        [TestCaseSource("INC_r_Source")]
+        [TestCaseSource(nameof(INC_r_Source))]
         public void INC_r_returns_proper_T_states(string reg, byte opcode, byte? prefix)
         {
             var states = Execute(opcode, prefix);
