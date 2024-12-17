@@ -33,6 +33,7 @@ public sealed class CompilerTests
         var position = Compiler.ParseLiteral(code);
 
         byte[]? codeBytes = null;
+        Contentblock[]? contentBlocks = null;
         Assert.IsNotNull(position);
 
         var result = Compiler.GenerateCode(
@@ -48,15 +49,18 @@ public sealed class CompilerTests
                     Console.Write(s);
                 }
             },
-            (bytes) =>
+            (bytes, content) =>
             {
                 codeBytes = bytes;
+                contentBlocks = content.ToArray();
             }
         );
 
         Assert.AreNotEqual(0, Log.WarningCount);
         Assert.IsNotNull(codeBytes);
+        Assert.IsNotNull(contentBlocks);
         Assert.AreEqual(0, codeBytes.Length);
+        Assert.AreEqual(0, contentBlocks.Length);
 
         Console.WriteLine();
         Console.WriteLine("# Log Summary");
@@ -72,6 +76,7 @@ public sealed class CompilerTests
         var position = Compiler.ParseLiteral(code);
 
         byte[]? codeBytes = null;
+        Contentblock[]? contentBlocks = null;
         Assert.IsNotNull(position);
 
         var result = Compiler.GenerateCode(
@@ -87,15 +92,18 @@ public sealed class CompilerTests
                     Console.Write(s);
                 }
             },
-            (bytes) =>
+            (bytes, content) =>
             {
                 codeBytes = bytes;
+                contentBlocks = content.ToArray();
             }
         );
 
         Assert.AreEqual(0, Log.ErrorCount);
         Assert.IsNotNull(codeBytes);
-        Assert.IsTrue(codeBytes.Length == 0);
+        Assert.IsNotNull(contentBlocks);
+        Assert.IsTrue(codeBytes.Length > 0);
+        Assert.IsTrue(contentBlocks.Length > 0);
 
         Console.WriteLine();
         Console.WriteLine("# Log Summary");
@@ -139,6 +147,7 @@ DONE:")]
         var position = Compiler.ParseLiteral(code);
 
         byte[]? codeBytes = null;
+        Contentblock[]? contentBlocks = null;
         Assert.IsNotNull(position);
 
         var result = Compiler.GenerateCode(
@@ -154,15 +163,18 @@ DONE:")]
                     Console.Write(s);
                 }
             },
-            (bytes) =>
+            (bytes, content) =>
             {
                 codeBytes = bytes;
+                contentBlocks = content.ToArray();
             }
         );
 
         Assert.AreEqual(0, Log.ErrorCount);
         Assert.IsNotNull(codeBytes);
+        Assert.IsNotNull(contentBlocks);
         Assert.IsTrue(codeBytes.Length > 0);
+        Assert.IsTrue(contentBlocks.Length > 0);
 
         // Dump the code bytes as hex, each line 16 bytes
         Utils.HexDump(codeBytes, 8, (o) => { o.ShowCrc = true; });

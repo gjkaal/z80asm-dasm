@@ -7,7 +7,7 @@
 SYS_RESET:      EQU 0x0000
 INT_VECTOR:     EQU 0038h
 NMI_VECTOR:     EQU 0066h
-HARDWARE_BASE:  EQU 0x0EFF
+KERNEL_BASE:    EQU 0x0100
 MAIN:           EQU 0xF000
 
 ; output ports, max 256 bytes (high byte is not used)
@@ -88,6 +88,7 @@ NMI_HANDLER:
     ; Return from interrupt
     RETI
 
+ORG KERNEL_BASE
 startup:
 ; Check available RAM memory
 ; in banks 0x1000 to 0x7FFF
@@ -232,8 +233,6 @@ watchdog_kick:
 
 ; Halt the system
 system_halt:
-
-
         halt
         jp system_halt
 

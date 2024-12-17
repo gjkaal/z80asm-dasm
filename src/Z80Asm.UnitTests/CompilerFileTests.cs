@@ -8,13 +8,13 @@ public sealed class CompilerFileTests
     // Read the contents of a file and compile it
     // The file resides in the TestResources directory
     [DataTestMethod]
-    [DataRow("allInstructions.asm")]
-    [DataRow("zc-bootstrap.asm")]
-    [DataRow("macro.asm")]
-    [DataRow("stack-underflow.asm")]
-    [DataRow("strings.asm")]
-    [DataRow("rewriting-code.asm")]
-    public void CanCompileFile(string fileName)
+    [DataRow("allInstructions.asm", 1)]
+    [DataRow("zc-bootstrap.asm", 4)]
+    [DataRow("macro.asm", 0)]
+    [DataRow("stack-underflow.asm", 1)]
+    [DataRow("strings.asm", 1)]
+    [DataRow("rewriting-code.asm", 1)]
+    public void CanCompileFile(string fileName, int expectedCodeBlocks)
     {
         Log.Reset();
         var compiler = new Z80Assembler();
@@ -27,6 +27,9 @@ public sealed class CompilerFileTests
         compiler.CreateIntelHexFile = true;
 
         var (errorCount, warningCount) = compiler.Compile(source);
+
+        var items = compiler.ContentBlocks;
+        Assert.AreEqual(expectedCodeBlocks, items.Count());
 
         Assert.AreEqual(0, errorCount);
         Assert.AreEqual(0, warningCount);
