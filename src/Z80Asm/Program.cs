@@ -53,7 +53,7 @@ namespace Z80Asm
 
         public static void ShowLogo()
         {
-            Version v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            var v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             Console.WriteLine("Z80Asm v{0} - Z80 Assembler", v);
             Console.WriteLine("Copyright (C) Kaalenco. All Rights Reserved.");
 
@@ -72,17 +72,17 @@ namespace Z80Asm
             if (arg.StartsWith('@'))
             {
                 // Get the fully qualified response file name
-                string strResponseFile = Path.GetFullPath(arg.Substring(1));
+                var strResponseFile = Path.GetFullPath(arg.Substring(1));
 
                 // Load and parse the response file
                 var args = Utils.ParseCommandLine(File.ReadAllText(strResponseFile));
 
                 // Set the current directory
-                string OldCurrentDir = Directory.GetCurrentDirectory();
+                var OldCurrentDir = Directory.GetCurrentDirectory();
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(strResponseFile));
 
                 // Load the file
-                bool bRetv = ProcessArgs(args);
+                var bRetv = ProcessArgs(args);
 
                 // Restore current directory
                 Directory.SetCurrentDirectory(OldCurrentDir);
@@ -96,7 +96,7 @@ namespace Z80Asm
                 var SwitchName = arg[(arg.StartsWith("--") ? 2 : 1)..];
                 var Value = string.Empty;
 
-                int colonpos = SwitchName.IndexOf(':');
+                var colonpos = SwitchName.IndexOf(':');
                 if (colonpos >= 0)
                 {
                     // Split it
@@ -303,7 +303,6 @@ namespace Z80Asm
 
                 // Step 3 - Generate
                 var generateContext = new GenerateContext(
-                    layoutContext,
                     (s, newLine) =>
                     {
                         if (listWriter == null) return;

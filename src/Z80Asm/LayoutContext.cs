@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Z80Asm
+﻿namespace Z80Asm
 {
     /// <summary>
-    /// In assembler or compiler applications, Ip (Instruction Pointer) represents the current position in 
-    /// the instruction set being processed, while Op (Output Pointer) represents the position in the 
-    /// generated machine code or intermediate representation. The methods allow setting initial positions 
+    /// In assembler or compiler applications, Ip (Instruction Pointer) represents the current position in
+    /// the instruction set being processed, while Op (Output Pointer) represents the position in the
+    /// generated machine code or intermediate representation. The methods allow setting initial positions
     /// and reserving space as instructions are converted.
     /// </summary>
     public class LayoutContext
@@ -46,4 +40,3 @@ namespace Z80Asm
         }
     }
 }
-

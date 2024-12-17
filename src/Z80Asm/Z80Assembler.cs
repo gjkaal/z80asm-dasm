@@ -42,7 +42,7 @@ public sealed class Z80Assembler
     public (int errorCount, int warningCount) GenerateCode(
        SourcePosition position,
        Action<string, bool> listFile,
-       Action<byte[]> codeFile)
+       Action<byte[], IEnumerable<Contentblock>> codeFile)
     {
         // Calculate the layout
         var layoutContext = new LayoutContext();
@@ -57,7 +57,7 @@ public sealed class Z80Assembler
         }
 
         // Generate the code
-        var generateContext = new GenerateContext(layoutContext, listFile);
+        var generateContext = new GenerateContext(listFile);
         exprNodeIP.SetContext(generateContext);
         exprNodeIP2.SetContext(generateContext);
         exprNodeOP.SetContext(generateContext);
@@ -72,9 +72,13 @@ public sealed class Z80Assembler
         }
 
         var code = generateContext.GetGeneratedBytes();
-        codeFile(code);
+        ContentBlocks.AddRange(generateContext.ContentBlocks);
+
+        codeFile(code, ContentBlocks);
         return (Log.ErrorCount, Log.WarningCount);
     }
+
+    public List<Contentblock> ContentBlocks { get; private set; } = [];
 
     public int CalculateLayout()
     {
@@ -113,9 +117,10 @@ public sealed class Z80Assembler
             listWriter = new StringBuilder();
         }
 
-        var compileResult = GenerateCode(sourcePosition,
+        var compileResult = GenerateCode(
+            sourcePosition,
             (s, b) => ListWriter(listWriter, s, b),
-            (bytes) => CodeWriter(source, bytes));
+            (bytes, blocks) => CodeWriter(source, bytes, blocks, root.GetAllSymbols));
 
         if (listWriter != null)
         {
@@ -142,7 +147,11 @@ public sealed class Z80Assembler
         }
     }
 
-    public void CodeWriter(FileInfo source, byte[] code)
+    public void CodeWriter(
+        FileInfo source,
+        byte[] code,
+        IEnumerable<Contentblock> contentblocks,
+        Func<IEnumerable<(string, long)>>? symbolNames)
     {
         if (CreateBinaryFile)
         {
@@ -153,12 +162,47 @@ public sealed class Z80Assembler
         }
         if (CreateIntelHexFile)
         {
+            var dictionary = new Dictionary<string, long>();
+            if (symbolNames != null)
+            {
+                foreach (var (name, value) in symbolNames())
+                {
+                    dictionary.TryAdd(name, value);
+                }
+            }
             using (var w = source.OpenTextWriter(":default", ".hex"))
             {
-                IntelHex.Write(w, code);
+                if (contentblocks.Count() == 0)
+                {
+                    IntelHex.Write(w, code);
+                }
+                else
+                {
+                    foreach (var block in contentblocks)
+                    {
+                        foreach (var symbol in dictionary)
+                        {
+                            if (block.Address == symbol.Value)
+                            {
+                                block.Name = symbol.Key;
+                            }
+                        }
+                        IntelHex.Write(w, block);
+                    }
+                }
+                IntelHex.EndOfFile(w);
             }
         }
     }
+}
+
+public class Contentblock
+{
+    public string Source { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public int Address { get; set; }
+    public int Length { get; set; }
+    public byte[] Data { get; set; } = [];
 }
 
 public static class IntelHex
@@ -181,6 +225,27 @@ public static class IntelHex
             var data = code.Skip(i).Take(16).ToArray();
             WriteRecord(writer, i, data);
         }
+    }
+
+    public static void Write(TextWriter writer, Contentblock block)
+    {
+        // Add comments (comments should not have a colon in the text)
+        writer.WriteLine("// ------------------------------------------------------");
+        writer.WriteLine($"// Name           {block.Name.Replace(':', '_')}");
+        writer.WriteLine($"// Address space  {block.Address:X4}-{block.Address + block.Length:X4}");
+        writer.WriteLine($"// Length         {block.Length} bytes");
+        writer.WriteLine($"// Source         {block.Source.Replace(':', '_')}");
+        writer.WriteLine("// ------------------------------------------------------");
+        // get every 16 bytes of data
+        for (var i = 0; i < block.Data.Length; i += 16)
+        {
+            var data = block.Data.Skip(i).Take(16).ToArray();
+            WriteRecord(writer, block.Address + i, data);
+        }
+    }
+
+    public static void EndOfFile(TextWriter writer)
+    {
         // write the end of file record
         writer.WriteLine(EOF);
     }
@@ -195,6 +260,10 @@ public static class IntelHex
         {
             throw new ArgumentException("record length must be less than 16 bytes");
         }
+
+        // No need to write a record if it is all 0xFF
+        if (record.All(b => b == 0xFF)) return;
+
         // calculate the length of the data
         var length = Math.Min(16, record.Length);
 

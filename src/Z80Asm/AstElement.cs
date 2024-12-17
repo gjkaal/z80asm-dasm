@@ -10,10 +10,6 @@ namespace Z80Asm
     // Base class for all Abstract Syntax Tree elements
     public abstract class AstElement
     {
-        //public AstElement()
-        //{
-        //}
-
         public AstElement(SourcePosition sourcePosition)
         {
             SourcePosition = sourcePosition;
@@ -360,6 +356,18 @@ namespace Z80Asm
                 if (sym != null && sym is not ExprNodeParameterized)
                     w.Invoke($"    {kv.Key,20}: 0x{sym.EvaluateNumber(this):X4}");
             }
+        }
+
+        public IEnumerable<(string, long)> GetAllSymbols()
+        {
+            var symbolList = new List<(string, long)>();
+            foreach (var kv in _symbols)
+            {
+                var sym = kv.Value as ExprNode;
+                if (sym != null && sym is not ExprNodeParameterized)
+                    symbolList.Add(new(kv.Key, sym.EvaluateNumber(this)));
+            }
+            return symbolList;
         }
 
         public override int DefineSymbols(AstScope? currentScope = null)
